@@ -14,22 +14,23 @@
 			<url>http://vatbub.bplaced.net/mavenRepo/snapshots/</url>
 		</repository>
 	</repositories>
-
+	
 	<parent>
 		<groupId>fokprojects</groupId>
 		<artifactId>parentPom</artifactId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
+	<groupId>fokprojects</groupId>
 	<artifactId>common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FOKProjects Common</name>
 	<description>Common classes for fok projects</description>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-embedder</artifactId>
 			<version>3.3.9</version>
-		</dependency>
+		</dependency>  -->
 	</dependencies>
 </project>
