@@ -1,11 +1,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <repositories>
+    <repository>
+      <id>fokReleaseRepo</id>
+      <name>FOK Release Repository</name>
+      <url>http://vatbub.bplaced.net/mavenRepo/release/</url>
+    </repository>
+    <repository>
+      <id>fokSnapshotRepo</id>
+      <name>FOK Snapshot Repository</name>
+      <url>http://vatbub.bplaced.net/mavenRepo/snapshots/</url>
+    </repository>
+  </repositories>
+  
   <parent>
     <groupId>fokprojects</groupId>
     <artifactId>parentPom</artifactId>
     <version>0.0.1</version>
   </parent>
-  <groupId>fokprojects</groupId>
   <artifactId>common</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>FOKProjects Common</name>
