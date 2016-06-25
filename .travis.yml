@@ -1,10 +1,13 @@
 language: java
 jdk:
 - oraclejdk8
-before_install: "git clone -b travis `git config --get remote.origin.url` target/travis"
-script: "if [ $TRAVIS_PULL_REQUEST == 'false' ] ; then if [ $TRAVIS_BRANCH == release ] ; then mvn clean deploy --settings target/travis/settings.xml; else mvn test -B; fi ; else mvn clean verify --settings target/travis/settings.xml; fi"
+before_install: git clone -b travis `git config --get remote.origin.url` target/travis
+script: if [ $TRAVIS_PULL_REQUEST == 'false' ] ; then if [ $TRAVIS_BRANCH == release
+  ] ; then mvn clean deploy --settings target/travis/settings.xml; else mvn test -B;
+  fi ; else mvn clean verify --settings target/travis/settings.xml; fi
 branches:
   only:
   - master
   - release
-  
+dd:
+  secure: Yjuo6H8IAqALGobldAM0klsswXQ4Bqi2mFRBv3OBa2ISDx/wjS0mm1yFQPalIYqQe0zdBKTO5EdLkW37oAUrhn4YqULPcGYDbvQ6q0c6+siuG5RK1gGNn408wlbb7VYQYEKPyweUXDRAvsWWg3Y5cfoD4Jo3poI4IxpNFvndjwrljyRpl2FHqDPtkmkN23ie2ST4k967AQKhmWmvUtp6pHbFQLU4S/5pc0DMKYvCpXNy3+iahCNoMD5reML+V/7nWtpLUHHgUw1ZXy7wQphq3dF0bsZsRVDs0Y6YQwtz2Nw2WTXhUe2kzA0hhOMvHsKLJXQitP6XOQqym0oUOPa2isUVQxobcH4FAtvknZKQejdmZHwQWLMcabz9G0qzfYaP7qklFgfNMVFVbspaSZcBbBaHta4Lbvv34p6I+1UoYZQQjOS4Bk8+IOPtgtri2vspvu2a61hV3uHany/CaGxj4ytdW6Z7TDZ2SBJwQKMGtTFoQkraqIlT5q+UyBRfoMlTMMYEgwtucpK6UuGa8498KEtmlQ0xMM0uZL7iYVg1qP8u70GhuehQ+Oidy9ELsM06ooSfwilvCi5wva7k+2z5GNy0Us9tqlT7seTvIWfwTSmb0tiWSY2kXbzix3ftcITwsH6zEZHxweHWNUm7VKh0GY8IBOBx/LqMSYvszJrVVgc=
