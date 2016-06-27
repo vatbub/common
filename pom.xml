@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<repositories>
@@ -18,11 +17,11 @@
 	<parent>
 		<groupId>fokprojects</groupId>
 		<artifactId>parentPom</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<groupId>fokprojects</groupId>
 	<artifactId>common</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>FOKProjects Common</name>
 	<description>Common classes for fok projects</description>
 	
@@ -30,7 +29,7 @@
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
 		<url>scm:git:git@github.com:vatbub/common.git</url>
 		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-		<tag>testRelease</tag>
+		<tag>common-0.0.1</tag>
 	</scm>
 
 	<dependencies>
