@@ -1,11 +1,12 @@
 # common
 Common classes for FOKProjects
 
-This repository holds the Maven Artifact fokprojects.common which currently contains classes for:
+This repository holds the Maven Artifact `fokprojects.common` which currently contains classes for:
   - Self-Update of a java app (in developement)
   
 To add this artifact as a maven dependency, add the following repositories and dependency to your pom:
 
+```
 ...
 <repositories>
   ...
@@ -32,5 +33,6 @@ To add this artifact as a maven dependency, add the following repositories and d
 		...
 	</dependencies>
 	...
+```
   
   
