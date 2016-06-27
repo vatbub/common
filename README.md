@@ -6,7 +6,7 @@ This repository holds the Maven Artifact `fokprojects.common` which currently co
   
 To add this artifact as a maven dependency, add the following repositories and dependency to your pom:
 
-```
+```xml
 ...
 <repositories>
   ...
