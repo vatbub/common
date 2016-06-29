@@ -58,7 +58,7 @@ public class Prefs {
 	public void savePreferences(){
         try {
         	System.out.println("Saving preference file as: " + f.getAbsolutePath());
-        	f.mkdirs();
+        	f.getParentFile().mkdirs();
         	FileOutputStream out = new FileOutputStream( f );
 			props.store(out, "This is an optional header comment string");
 		} catch (IOException e) {
