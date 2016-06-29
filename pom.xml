@@ -21,7 +21,7 @@
 	</parent>
 	<groupId>fokprojects</groupId>
 	<artifactId>common</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<name>FOKProjects Common</name>
 	<description>Common classes for fok projects</description>
 	
@@ -29,7 +29,7 @@
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
 		<url>scm:git:git@github.com:vatbub/common.git</url>
 		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-		<tag>common-0.0.5</tag>
+		<tag>testRelease</tag>
 	</scm>
 
 	<dependencies>
