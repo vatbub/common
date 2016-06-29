@@ -3,6 +3,8 @@ package common;
 import java.io.File;
 
 public class Common {
+	
+	private static String appName;
 
 	//General
 	
@@ -17,6 +19,10 @@ public class Common {
 		 *         can save all files that need to persist, e. g. settings
 		 */
 		public static String getAppDataPath() {
+			if (appName==null){
+				throw new NullPointerException("Cannot retreive AppDataPath. No appName specified. Use setAppName(String appName) to set one.");
+			}
+			
 			String workingDirectory;
 			// here, we assign the name of the OS, according to Java, to a
 			// variable...
@@ -36,7 +42,15 @@ public class Common {
 				workingDirectory += "/Library/Application Support";
 			}
 
-			return workingDirectory + File.separator + "hangmanSolver" + File.separator;
+			return workingDirectory + File.separator + appName + File.separator;
+		}
+
+		public static String getAppName() {
+			return appName;
+		}
+
+		public static void setAppName(String appName) {
+			Common.appName = appName;
 		}
 
 }
