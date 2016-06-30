@@ -52,5 +52,20 @@ public class Common {
 		public static void setAppName(String appName) {
 			Common.appName = appName;
 		}
+		
+		/**
+		 * Returns the current artifact version
+		 * 
+		 * @return The current artifact version or the String unknown if the version
+		 *         cannot be determined.
+		 */
+		public static String getAppVersion() {
+			String ver = Common.class.getPackage().getImplementationVersion();
+			if (ver == null) {
+				return "unknown";
+			} else {
+				return ver;
+			}
+		}
 
 }
