@@ -9,6 +9,12 @@ branches:
   only:
   - master
   - release
+notifications:
+  email:
+    recipients:
+    - vatbub123+travisbuildnotification@googlemail.com
+    on_success: never
+    on_failure: always
 env:
   global:
   - secure: eOikzHBMq8rUcR8vaa/jfLGh6/ELVoDwumsB5mUWKfPx1Jqh00y8gGERGfcltOUhqOGQw0dcFnodKtLn0r1iBRDCoxio9194n3rQwTRMU/raIhE0/jvkQk8qDNeGh/gY+SlLwSq5Ht9je4QFLbi9rDTuwPeTXPGmkd4P5NFLFaNoPUMwjugYy027Of1UBQiWhP+YXvjuAxbqg4e/H1oaO89mr7T7oaqW0xcjgiNfuCaaDYZOiixGz+8GaNCA1/A4E+CDcwVozd3XTjSZdbYFjEMbnnQaswiyDp3uTGOI2/O2Gt3uMbGobmokz/FJrLUw/NcVsfuJpbo/sln8zOT3nPCuGZY+WBOH3tqo59t/4wIoFVzNnTHr/CUjHWcSSqUaV1fkAt7Hiz41Rve+kt5+ihabRG5qgPZGDT7+il8ArzcP2H4ZJyhXGyURPfOrxvOmJmVYedFsL2eS4tbz1eCdDzMBQn5DUMAEKMk358nINhPq1LmE1R41QFyDCQ6kb2m/K25XY2B5tzld6jndQlXKjg2jm1388oAXI3leIaw1G30PhunJeUpMWu9Dx0DQjZANGBSD5PbHwaSClU7q4W84wP9Xh+bjttBkxi8SH2eJs31x+PROOa7AVplZY9YHl9uukWAx1NfDOqaRKnGe9jKZjt1zZ5ZZ0Wu6Vz+ytqzKUF0=
