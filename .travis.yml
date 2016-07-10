@@ -1,0 +1,22 @@
+language: java
+jdk:
+- oraclejdk8
+cache:
+  directories:
+  - "$HOME/.m2"
+before_install: git clone -b travis `git config --get remote.origin.url` target/travis
+after_success: mvn clean deploy --settings target/travis/settings.xml
+branches:
+  only:
+  - master
+  - release
+notifications:
+  email:
+    recipients:
+    - vatbub123+travisbuildnotification@googlemail.com
+    on_success: never
+    on_failure: always
+env:
+  global:
+  - secure: xk2+WBo0yQTERePXD0UENV4fHMULrLB6tOFUtpZXOGxq9Pa0Rk1r4aSOfV7Gc/ZOCJ8qeH8G1lt5vdOVFG8L+/aIcq6rb4VGn6tWs+G1g0NXmuzCyak7uyBGWxhjfGICG2IXT8ZG8hP4wObWPwGIkSU5I6WokxHAgTveY37/i/DjDCdDWhSOdN0BZiT6sJ7Sf0CwRKZL9fof+2GeLBxprd9v/kKqwpuyiKwbh/mQQPKtZh0CLIdIcfT/DrDBPgCJstUiKnfW3oj8qpei6E1e7WRkVXX5+dnKL/hWJDyvTjsBF02vGwEddpOajJswEMYik+oq2yTyEvO79wr2ixn4sLECA+U0cmmggbHJF9AsLRioCC74ZVtPRmCBcR47Z4fepkvRhW/vEHkkOO2C03RypriD8p6VYHQxqQjtGhND/z1VcMybdx1fN6iuMR0I74F27ekcD8wCE+bKE34kkpIQJsG4FqpCceE1037FLBaJ4/6dh+FT7gGAAjeALqGcAaazL/5HsaKpDYAqfXg7IzUICQVsNrFSE58EEFJEOrtyAashB/DjJliVm26D9a5WVK+Q2ILzlzvAQEw8ASL7gniJXG2AUCo/lg/w9nIq6mb6AEgrJHI/9vte/Oe6u1GrEj/AOBMx/+aNt/c9/MQLhCv9FwIuOS+Z5ikcmr+wy7K0iBo=
+  - secure: jojCQS4bHcpp83SeNPrVIijV80DDwRikpnEZ+ckBHviZcZ2H69QdMEyWu2W7+UaPDJOhnHZlV0L9AQcxRyJfJS6qGV/l9Fb2zbsWavFn3HIeS4Ba7sxQWRsahqnSMQeEwAIV6sDZ5H0RPwGqvYENe8G8UHIZAc4IVa8U6YiUa4vicJC9pDYD6fc8afmix4+Ezm9xueDLA7CSp+D1gveBJ+4Aywm2jIlmo3Xn4yG4m8WSNEdamFiV95cM0VRXtINkGvj4fV/6UDzR2T/p/+Ys6c14yJaGDwEljAM5EHr9QM+Iyp0IQ9/6nIwX7QTLAXjkDGUC7kBJsZmxI55lewRR7OURyiSVBZ4wnxirUh6hfvqH8/1wicXP47BQOZI/aeZg9jcTUra48/MrC32+ycW3xX7UiiNQpxV0gCKxccOEFXrkbLWCfBmQ7hA0ISTYnLbuJ3lHHKKTzFVZds8m/oothIQ41uXT7k/wZznjx8F4sw6MekN8JhoWoL0zngE/wQLc9c2bLK0nKUXYoE9ML+83rLucKBw+NJRtutU1eEbSEpgQUd3FHf3y7pI/8bOFqDu6h/jnBH+I1lKT7ToZ9ebfDWjuQTTWGQAGXpq82y6ec3aRfJ07QuwLqlXVD4H9tCtvYD9TMdLXMI5Y1BE6s+23plGCxzlDdM2/WbA2tUJk9IA=
