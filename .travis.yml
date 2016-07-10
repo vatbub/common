@@ -5,7 +5,7 @@ cache:
   directories:
   - "$HOME/.m2"
 before_install: git clone -b travis `git config --get remote.origin.url` target/travis
-after_success: mvn deploy
+after_success: mvn clean deploy --settings target/travis/settings.xml
 branches:
   only:
   - master
