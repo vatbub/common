@@ -7,15 +7,15 @@
 	<servers>
 		<server>
 			<id>bintray-vatbub-fokReleases</id>
-			<username>vatbub</username>
-			<password>MRuGeidA.</password>
+			<username>${env.CI_DEPLOY_USERNAME}</username>
+			<password>${env.CI_DEPLOY_PASSWORD}</password>
 		</server>
 		<server>
 			<id>bintray-vatbub-fokprojectsSnapshots</id>
-			<username>vatbub</username>
-			<password>MRuGeidA.</password>
+			<username>${env.CI_DEPLOY_USERNAME}</username>
+			<password>${env.CI_DEPLOY_PASSWORD}</password>
 		</server>
-	</servers>
+</servers>
 	<mirrors/>
 	<proxies/>
 	<profiles/>
