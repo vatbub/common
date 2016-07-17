@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import javafx.util.converter.ByteStringConverter;
-
 /**
  * All custom internet functions
  * 
