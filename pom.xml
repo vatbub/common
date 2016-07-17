@@ -41,7 +41,6 @@
 		<artifactId>parentPom</artifactId>
 		<version>0.0.6</version>
 	</parent>
-	<groupId>fokprojects</groupId>
 	<artifactId>common</artifactId>
 	<version>0.0.9-SNAPSHOT</version>
 	<name>FOKProjects Common</name>
