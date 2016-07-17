@@ -83,7 +83,7 @@ public class Internet {
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("charset", "utf-8");
 			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-			ByteStringConverter bs = new ByteStringConverter();
+			// ByteStringConverter bs = new ByteStringConverter();
 
 			wr.write(postData2);
 			connection.connect();
