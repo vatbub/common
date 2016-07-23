@@ -5,6 +5,7 @@ import java.io.File;
 public class Common {
 	
 	private static String appName;
+	public static String  UNKNOWN_APP_VERSION = "unknown";
 
 	//General
 	
@@ -62,7 +63,7 @@ public class Common {
 		public static String getAppVersion() {
 			String ver = Common.class.getPackage().getImplementationVersion();
 			if (ver == null) {
-				return "unknown";
+				return UNKNOWN_APP_VERSION;
 			} else {
 				return ver;
 			}
