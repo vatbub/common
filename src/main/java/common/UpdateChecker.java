@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.maven.cli.MavenCli;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -16,6 +17,16 @@ public class UpdateChecker {
 
 	private static String latestSeenVersionPrefKey = "updates.latestVersionOnWebsite";
 	private static Prefs updatePrefs = new Prefs(UpdateChecker.class.getName());
+
+	/**
+	 * Versions lower or equal to {@code ver} will be ignored when using
+	 * {@link #isUpdateAvailable(URL, String, String, String)}
+	 * 
+	 * @param ver
+	 */
+	public static void ignoreUpdate(Version ver) {
+		updatePrefs.setPreference(latestSeenVersionPrefKey, ver.toString());
+	}
 
 	/**
 	 * Checks if a new release has been published on the website. This does not
@@ -44,12 +55,11 @@ public class UpdateChecker {
 
 				if (res.toVersion.compareTo(savedVersion) == 1) {
 					// new update found
-					updatePrefs.setPreference(latestSeenVersionPrefKey, res.toVersion.toString());
 					System.out.println("Update available!");
 					System.out.println("Version after update: " + res.toVersion.toString());
 					System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
 					res.showAlert = true;
-				} else if(res.toVersion.compareTo(currentVersion) == 1){
+				} else if (res.toVersion.compareTo(currentVersion) == 1) {
 					// found update that is ignored
 					System.out.println("Update available (Update was ignored by the user)!");
 					System.out.println("Version after update: " + res.toVersion.toString());
@@ -96,6 +106,26 @@ public class UpdateChecker {
 		return res;
 	}
 
+	/**
+	 * Retreives the {@link UpdateInfo} for the latest version available on the
+	 * specified maven repo for the specified artifact.
+	 * 
+	 * @param repoBaseURL
+	 *            The base url where the repo can be reached. For Maven Central,
+	 *            this is {@link http://repo1.maven.org/maven/}
+	 * @param mavenGroupID
+	 *            The groupID of the artifact to be looked up.
+	 * @param mavenArtifactID
+	 *            The artifactId of the artifact to be looked up.
+	 * @return The {@link UpdateINfo} of the latest version of the artifact
+	 *         available at the specified repository.
+	 * @throws JDOMException
+	 *             If mavens {@code maven-metadata.xml} is not parseable (WHich
+	 *             will never be the case unless you don't modify it manually).
+	 * @throws IOException
+	 *             In case mavens {@code maven-metadata.xml} cannot be retreived
+	 *             for any other reason.
+	 */
 	@SuppressWarnings("unused")
 	private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
 			throws JDOMException, IOException {
@@ -126,14 +156,70 @@ public class UpdateChecker {
 		URLConnection connection = new URL(url).openConnection();
 		res.fileSizeInMB = connection.getContentLength() / 1024.0 / 1024.0;
 
+		res.mavenArtifactID = mavenArtifactID;
+		res.mavenGroupID = mavenGroupID;
+		res.mavenRepoBaseURL = repoBaseURL;
+
 		return res;
 	}
 
+	/**
+	 * Get a DOM of mavens {@code maven-metadata.xml}-file of the specified
+	 * artifact.
+	 * 
+	 * @param repoBaseURL
+	 *            The base url where the repo can be reached. For Maven Central,
+	 *            this is {@link http://repo1.maven.org/maven/}
+	 * @param mavenGroupID
+	 *            The groupID of the artifact to be looked up.
+	 * @param mavenArtifactID
+	 *            The artifactId of the artifact to be looked up.
+	 * @return A JDOM {@link Document} representation of mavens
+	 *         {@code maven-metadata.xml}
+	 * @throws JDOMException
+	 *             If mavens {@code maven-metadata.xml} is not parseable (WHich
+	 *             will never be the case unless you don't modify it manually).
+	 * @throws IOException
+	 *             In case mavens {@code maven-metadata.xml} cannot be retreived
+	 *             for any other reason.
+	 */
 	private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
 			throws JDOMException, IOException {
 		Document doc = new SAXBuilder()
 				.build(repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/maven-metadata.xml");
 		return doc;
+	}
+
+	/**
+	 * Downloads the specified update as a jar-file and launches it. The jar
+	 * file will be saved at the same location as the currently executed file
+	 * but will not replace it (unless it has the same filename but this will
+	 * never happen)
+	 * 
+	 * @param updateToInstall
+	 */
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) {
+		MavenCli cli = new MavenCli();
+
+		// Download to local maven repo
+		String mavenParams = " -DrepoUrl=" + updateToInstall.mavenRepoBaseURL.toString() + " -Dartifact="
+				+ updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
+				+ updateToInstall.toVersion.toString() + ":jar";
+		System.out.println("Downloading artifact...");
+		System.out.println("Executing command: mvn dependency:get " + mavenParams);
+		int result = cli.doMain(new String[] { "dependency:get" }, mavenParams, System.out, System.out);
+		System.out.println("result: " + result);
+
+		// Copy to file to current folder
+		String destFolder = System.getProperty("user.dir");
+		mavenParams = " -Dartifact=" + updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
+				+ updateToInstall.toVersion.toString() + ":jar -DoutputDirectory=" + destFolder;
+		
+		System.out.println("Copying file to " + destFolder);
+		System.out.println("Executing command: mvn dependency:copy " + mavenParams);
+		
+		result = cli.doMain(new String[] { "dependency:copy" }, mavenParams, System.out, System.out);
+		System.out.println("result: " + result);
 	}
 
 }
