@@ -31,6 +31,7 @@ public class UpdateChecker {
 		String savedSetting = updatePrefs.getPreference(latestSeenVersionPrefKey, "");
 		UpdateInfo res = null;
 		try {
+			System.out.println("Checking for updates...");
 			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
 
 			if (savedSetting.equals("")) {
@@ -39,11 +40,20 @@ public class UpdateChecker {
 			} else {
 
 				Version savedVersion = new Version(savedSetting);
+				Version currentVersion = new Version(Common.getAppVersion());
 
 				if (res.toVersion.compareTo(savedVersion) == 1) {
 					// new update found
 					updatePrefs.setPreference(latestSeenVersionPrefKey, res.toVersion.toString());
+					System.out.println("Update available!");
+					System.out.println("Version after update: " + res.toVersion.toString());
+					System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
 					res.showAlert = true;
+				} else if(res.toVersion.compareTo(currentVersion) == 1){
+					// found update that is ignored
+					System.out.println("Update available (Update was ignored by the user)!");
+					System.out.println("Version after update: " + res.toVersion.toString());
+					System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
 				}
 			}
 		} catch (JDOMException | IOException e) {
@@ -65,6 +75,7 @@ public class UpdateChecker {
 			String mavenArtifactID, String mavenClassifier) {
 		UpdateInfo res = null;
 		try {
+			System.out.println("Checking for updates...");
 			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
 
 			Version currentVersion = new Version(Common.getAppVersion());
@@ -72,6 +83,9 @@ public class UpdateChecker {
 			if (res.toVersion.compareTo(currentVersion) == 1) {
 				// new update found
 				updatePrefs.setPreference(latestSeenVersionPrefKey, res.toVersion.toString());
+				System.out.println("Update available!");
+				System.out.println("Version after update: " + res.toVersion.toString());
+				System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
 				res.showAlert = true;
 			}
 		} catch (JDOMException | IOException e) {
