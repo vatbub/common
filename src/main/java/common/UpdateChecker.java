@@ -10,6 +10,8 @@ import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+import javafx.application.Platform;
+
 /**
  * This class can be used to self-update applications that are deployed using a
  * maven repository.
@@ -328,6 +330,7 @@ public class UpdateChecker {
 			ProcessBuilder pb = null;
 			if (deleteOldVersion) {
 				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename, "deleteFile=");
+				System.exit(0);
 			} else {
 				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename);
 			}
