@@ -158,6 +158,7 @@ public class UpdateChecker {
 
 		res.mavenArtifactID = mavenArtifactID;
 		res.mavenGroupID = mavenGroupID;
+		res.mavenClassifier = mavenClassifier;
 		res.mavenRepoBaseURL = repoBaseURL;
 
 		return res;
@@ -185,8 +186,8 @@ public class UpdateChecker {
 	 */
 	private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
 			throws JDOMException, IOException {
-		Document doc = new SAXBuilder()
-				.build(new URL(repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/maven-metadata.xml"));
+		Document doc = new SAXBuilder().build(
+				new URL(repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/maven-metadata.xml"));
 		return doc;
 	}
 
@@ -197,8 +198,12 @@ public class UpdateChecker {
 	 * never happen)
 	 * 
 	 * @param updateToInstall
+	 *            The {@link UpdateInfo}-object that contains the information
+	 *            about the update to download
+	 * @throws IllegalStateException
+	 *             if maven fails to download or copy the new artifact.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) {
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException {
 		MavenCli cli = new MavenCli();
 		String destFolder = System.getProperty("user.dir");
 		System.setProperty("maven.multiModuleProjectDirectory", destFolder);
@@ -207,20 +212,40 @@ public class UpdateChecker {
 		String mavenCommand = "dependency:get -DrepoUrl=" + updateToInstall.mavenRepoBaseURL.toString() + " -Dartifact="
 				+ updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
 				+ updateToInstall.toVersion.toString() + ":jar";
+
+		if (!updateToInstall.mavenClassifier.equals("")) {
+			mavenCommand = mavenCommand + ":" + updateToInstall.mavenClassifier;
+		}
+
 		System.out.println("Downloading artifact...");
 		System.out.println("Executing command: mvn " + mavenCommand);
 		int result = cli.doMain(mavenCommand.split(" "), destFolder, System.out, System.out);
-		System.out.println("result: " + result);
+
+		if (result != 0) {
+			throw new IllegalStateException(
+					"Command 'mvn " + mavenCommand + "' exited with invalid status code " + result);
+		}
 
 		// Copy to file to current folder
-		mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
-				+ updateToInstall.toVersion.toString() + ":jar -DoutputDirectory=" + destFolder;
-		
+		if (updateToInstall.mavenClassifier.equals("")) {
+			mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":"
+					+ updateToInstall.mavenArtifactID + ":" + updateToInstall.toVersion.toString()
+					+ ":jar -DoutputDirectory=" + destFolder;
+		} else {
+			mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":"
+					+ updateToInstall.mavenArtifactID + ":" + updateToInstall.toVersion.toString() + ":jar:"
+					+ updateToInstall.mavenClassifier + " -DoutputDirectory=" + destFolder;
+		}
+
 		System.out.println("Copying file to " + destFolder);
 		System.out.println("Executing command: mvn " + mavenCommand);
-		
+
 		result = cli.doMain(mavenCommand.split(" "), destFolder, System.out, System.out);
-		System.out.println("result: " + result);
+
+		if (result != 0) {
+			throw new IllegalStateException(
+					"Command 'mvn " + mavenCommand + "' exited with invalid status code " + result);
+		}
 	}
 
 }
