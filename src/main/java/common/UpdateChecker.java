@@ -186,7 +186,7 @@ public class UpdateChecker {
 	private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
 			throws JDOMException, IOException {
 		Document doc = new SAXBuilder()
-				.build(repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/maven-metadata.xml");
+				.build(new URL(repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/maven-metadata.xml"));
 		return doc;
 	}
 
@@ -200,25 +200,26 @@ public class UpdateChecker {
 	 */
 	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) {
 		MavenCli cli = new MavenCli();
+		String destFolder = System.getProperty("user.dir");
+		System.setProperty("maven.multiModuleProjectDirectory", destFolder);
 
 		// Download to local maven repo
-		String mavenParams = " -DrepoUrl=" + updateToInstall.mavenRepoBaseURL.toString() + " -Dartifact="
+		String mavenCommand = "dependency:get -DrepoUrl=" + updateToInstall.mavenRepoBaseURL.toString() + " -Dartifact="
 				+ updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
 				+ updateToInstall.toVersion.toString() + ":jar";
 		System.out.println("Downloading artifact...");
-		System.out.println("Executing command: mvn dependency:get " + mavenParams);
-		int result = cli.doMain(new String[] { "dependency:get" }, mavenParams, System.out, System.out);
+		System.out.println("Executing command: mvn " + mavenCommand);
+		int result = cli.doMain(mavenCommand.split(" "), destFolder, System.out, System.out);
 		System.out.println("result: " + result);
 
 		// Copy to file to current folder
-		String destFolder = System.getProperty("user.dir");
-		mavenParams = " -Dartifact=" + updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
+		mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
 				+ updateToInstall.toVersion.toString() + ":jar -DoutputDirectory=" + destFolder;
 		
 		System.out.println("Copying file to " + destFolder);
-		System.out.println("Executing command: mvn dependency:copy " + mavenParams);
+		System.out.println("Executing command: mvn " + mavenCommand);
 		
-		result = cli.doMain(new String[] { "dependency:copy" }, mavenParams, System.out, System.out);
+		result = cli.doMain(mavenCommand.split(" "), destFolder, System.out, System.out);
 		System.out.println("result: " + result);
 	}
 
