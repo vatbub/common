@@ -1,10 +1,11 @@
 package common;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.maven.cli.MavenCli;
+import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -167,6 +168,7 @@ public class UpdateChecker {
 		return res;
 	}
 
+	// TODO: Fix javadoc
 	/**
 	 * Get a DOM of mavens {@code maven-metadata.xml}-file of the specified
 	 * artifact.
@@ -205,9 +207,49 @@ public class UpdateChecker {
 	 *            about the update to download
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
+	 * @throws IOException
+	 *             If the updated artifact cannot be launched.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException {
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException, IOException {
 		downloadAndInstallUpdate(updateToInstall, null);
+	}
+
+	/**
+	 * Downloads the specified update as a jar-file and launches it. The jar
+	 * file will be saved at the same location as the currently executed file
+	 * but will not replace it (unless it has the same filename but this will
+	 * never happen)
+	 * 
+	 * @param updateToInstall
+	 *            The {@link UpdateInfo}-object that contains the information
+	 *            about the update to download
+	 * @throws IllegalStateException
+	 *             if maven fails to download or copy the new artifact.
+	 * @throws IOException
+	 *             If the updated artifact cannot be launched.
+	 */
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui)
+			throws IllegalStateException, IOException {
+		downloadAndInstallUpdate(updateToInstall, gui, true);
+	}
+
+	/**
+	 * Downloads the specified update as a jar-file and launches it. The jar
+	 * file will be saved at the same location as the currently executed file
+	 * but will not replace it (unless it has the same filename but this will
+	 * never happen)
+	 * 
+	 * @param updateToInstall
+	 *            The {@link UpdateInfo}-object that contains the information
+	 *            about the update to download
+	 * @throws IllegalStateException
+	 *             if maven fails to download or copy the new artifact.
+	 * @throws IOException
+	 *             If the updated artifact cannot be launched.
+	 */
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
+			boolean launchUpdateAfterInstall) throws IllegalStateException, IOException {
+		downloadAndInstallUpdate(updateToInstall, gui, true, true);
 	}
 
 	/**
@@ -224,68 +266,72 @@ public class UpdateChecker {
 	 *            the current update status.
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
+	 * @throws IOException
+	 *             If the updated artifact cannot be launched.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui)
-			throws IllegalStateException {
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
+			boolean launchUpdateAfterInstall, boolean deleteOldVersion) throws IllegalStateException, IOException {
 
 		if (gui != null) {
 			gui.preparePhaseStarted();
 		}
 
-		MavenCli cli = new MavenCli();
 		String destFolder = System.getProperty("user.dir");
-		System.setProperty("maven.multiModuleProjectDirectory", destFolder);
+		String destFilename;
 
-		// Download to local maven repo
+		// Construct file name of output file
+		if (updateToInstall.mavenClassifier.equals("")) {
+			// No classifier
+			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar";
+		} else {
+			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
+					+ updateToInstall.mavenClassifier + ".jar";
+		}
+
+		URL artifactURL;
+
+		// Construct the download url
+		if (updateToInstall.mavenClassifier.equals("")) {
+			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID + "/"
+					+ updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
+					+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar");
+		} else {
+			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID + "/"
+					+ updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
+					+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
+					+ updateToInstall.mavenClassifier + ".jar");
+		}
+
+		// Create empty file
+		File outputFile = new File(destFolder + File.separator + destFilename);
+
+		// Download
 		if (gui != null) {
 			gui.downloadStarted();
 		}
 
-		String mavenCommand = "dependency:get -DrepoUrl=" + updateToInstall.mavenRepoBaseURL.toString() + " -Dartifact="
-				+ updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
-				+ updateToInstall.toVersion.toString() + ":jar";
+		System.out.println("Downloading artifact from " + artifactURL.toString() + "...");
+		System.out.println("Downloading to: " + outputFile.getAbsolutePath());
+		FileUtils.copyURLToFile(artifactURL, outputFile);
 
-		if (!updateToInstall.mavenClassifier.equals("")) {
-			mavenCommand = mavenCommand + ":" + updateToInstall.mavenClassifier;
-		}
-
-		System.out.println("Downloading artifact...");
-		System.out.println("Executing command: mvn " + mavenCommand);
-		int result = cli.doMain(mavenCommand.split(" "), destFolder, System.out, System.out);
-
-		if (result != 0) {
-			throw new IllegalStateException(
-					"Command 'mvn " + mavenCommand + "' exited with invalid status code " + result);
-		}
-
-		// Copy to file to current folder
+		// Perform install steps (none at the moment)
 		if (gui != null) {
 			gui.installStarted();
-		}
-
-		if (updateToInstall.mavenClassifier.equals("")) {
-			mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":"
-					+ updateToInstall.mavenArtifactID + ":" + updateToInstall.toVersion.toString()
-					+ ":jar -DoutputDirectory=" + destFolder;
-		} else {
-			mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":"
-					+ updateToInstall.mavenArtifactID + ":" + updateToInstall.toVersion.toString() + ":jar:"
-					+ updateToInstall.mavenClassifier + " -DoutputDirectory=" + destFolder;
-		}
-
-		System.out.println("Copying file to " + destFolder);
-		System.out.println("Executing command: mvn " + mavenCommand);
-
-		result = cli.doMain(mavenCommand.split(" "), destFolder, System.out, System.out);
-
-		if (result != 0) {
-			throw new IllegalStateException(
-					"Command 'mvn " + mavenCommand + "' exited with invalid status code " + result);
 		}
 
 		// launch the app
 		if (gui != null) {
 			gui.launchStarted();
+		}
+
+		if (launchUpdateAfterInstall) {
+			ProcessBuilder pb = null;
+			if (deleteOldVersion) {
+				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename, "deleteFile=");
+			} else {
+				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename);
+			}
+			pb.start();
 		}
 	}
 
