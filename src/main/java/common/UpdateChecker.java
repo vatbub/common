@@ -9,10 +9,13 @@ import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
-/*import javax.json.Json;
-import javax.json.JsonReader;
-import javax.json.JsonReaderFactory;*/
-
+/**
+ * This class can be used to self-update applications that are deployed using a
+ * maven repository.
+ * 
+ * @author frede
+ *
+ */
 public class UpdateChecker {
 
 	private static String latestSeenVersionPrefKey = "updates.latestVersionOnWebsite";
@@ -204,11 +207,40 @@ public class UpdateChecker {
 	 *             if maven fails to download or copy the new artifact.
 	 */
 	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException {
+		downloadAndInstallUpdate(updateToInstall, null);
+	}
+
+	/**
+	 * Downloads the specified update as a jar-file and launches it. The jar
+	 * file will be saved at the same location as the currently executed file
+	 * but will not replace it (unless it has the same filename but this will
+	 * never happen)
+	 * 
+	 * @param updateToInstall
+	 *            The {@link UpdateInfo}-object that contains the information
+	 *            about the update to download
+	 * @param gui
+	 *            The reference to an {@link UpdateProgressDialog} that displays
+	 *            the current update status.
+	 * @throws IllegalStateException
+	 *             if maven fails to download or copy the new artifact.
+	 */
+	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui)
+			throws IllegalStateException {
+
+		if (gui != null) {
+			gui.preparePhaseStarted();
+		}
+
 		MavenCli cli = new MavenCli();
 		String destFolder = System.getProperty("user.dir");
 		System.setProperty("maven.multiModuleProjectDirectory", destFolder);
 
 		// Download to local maven repo
+		if (gui != null) {
+			gui.downloadStarted();
+		}
+
 		String mavenCommand = "dependency:get -DrepoUrl=" + updateToInstall.mavenRepoBaseURL.toString() + " -Dartifact="
 				+ updateToInstall.mavenGroupID + ":" + updateToInstall.mavenArtifactID + ":"
 				+ updateToInstall.toVersion.toString() + ":jar";
@@ -227,6 +259,10 @@ public class UpdateChecker {
 		}
 
 		// Copy to file to current folder
+		if (gui != null) {
+			gui.installStarted();
+		}
+
 		if (updateToInstall.mavenClassifier.equals("")) {
 			mavenCommand = "dependency:copy -Dartifact=" + updateToInstall.mavenGroupID + ":"
 					+ updateToInstall.mavenArtifactID + ":" + updateToInstall.toVersion.toString()
@@ -245,6 +281,11 @@ public class UpdateChecker {
 		if (result != 0) {
 			throw new IllegalStateException(
 					"Command 'mvn " + mavenCommand + "' exited with invalid status code " + result);
+		}
+
+		// launch the app
+		if (gui != null) {
+			gui.launchStarted();
 		}
 	}
 
