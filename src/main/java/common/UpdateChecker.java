@@ -35,6 +35,7 @@ public class UpdateChecker {
 	 * @param ver
 	 */
 	public static void ignoreUpdate(Version ver) {
+		System.out.println("User ignores all updates up to (and including) version " + ver.toString());
 		updatePrefs.setPreference(latestSeenVersionPrefKey, ver.toString());
 	}
 
@@ -55,26 +56,29 @@ public class UpdateChecker {
 			System.out.println("Checking for updates...");
 			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
 
-			if (savedSetting.equals("")) {
-				// Never checked for updates before
-				res.showAlert = false;
+			Version currentVersion = new Version(Common.getAppVersion());
+			Version savedVersion = null;
+			try {
+				savedVersion = new Version(savedSetting);
+			} catch (IllegalArgumentException e) {
+				// No update was ever ignored by the user so use the current
+				// version as the savedVersion
+				savedVersion = currentVersion;
+			}
+
+			if (res.toVersion.compareTo(savedVersion) == 1 || savedSetting.equals("")) {
+				// new update found
+				System.out.println("Update available!");
+				System.out.println("Version after update: " + res.toVersion.toString());
+				System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
+				res.showAlert = true;
+			} else if (res.toVersion.compareTo(currentVersion) == 1) {
+				// found update that is ignored
+				System.out.println("Update available (Update was ignored by the user)!");
+				System.out.println("Version after update: " + res.toVersion.toString());
+				System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
 			} else {
-
-				Version savedVersion = new Version(savedSetting);
-				Version currentVersion = new Version(Common.getAppVersion());
-
-				if (res.toVersion.compareTo(savedVersion) == 1) {
-					// new update found
-					System.out.println("Update available!");
-					System.out.println("Version after update: " + res.toVersion.toString());
-					System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
-					res.showAlert = true;
-				} else if (res.toVersion.compareTo(currentVersion) == 1) {
-					// found update that is ignored
-					System.out.println("Update available (Update was ignored by the user)!");
-					System.out.println("Version after update: " + res.toVersion.toString());
-					System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
-				}
+				System.out.println("No update found.");
 			}
 		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
@@ -107,6 +111,8 @@ public class UpdateChecker {
 				System.out.println("Version after update: " + res.toVersion.toString());
 				System.out.println("Filesize:             " + res.fileSizeInMB + "MB");
 				res.showAlert = true;
+			} else {
+				System.out.println("No update found.");
 			}
 		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
