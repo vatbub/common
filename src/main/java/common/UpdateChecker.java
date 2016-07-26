@@ -164,34 +164,26 @@ public class UpdateChecker {
 		}
 
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-		connection.setRequestMethod("HEAD"); 
+		connection.setRequestMethod("HEAD");
 		res.fileSizeInMB = connection.getContentLength();
-		
-		Map<String, List<String>> headers=connection.getHeaderFields();
-		Set<String> keys = headers.keySet();
-		System.out.println(connection.getURL().toString());
-		for (String key:keys){
-			System.out.println(key + " = " + headers.get(key));
-		}
-		
-		if (res.fileSizeInMB!=-1){
+
+		if (res.fileSizeInMB != -1) {
 			// File size is already known, convert it to mb
 			res.fileSizeInMB = res.fileSizeInMB / 1024.0 / 1024.0;
 		} else {
 			// File size is not known
 			try {
 				// Try to get redirects
-				System.out.println(connection.getHeaderField("Location"));
 				URLConnection redirURLconn = new URL(connection.getHeaderField("Location")).openConnection();
 				res.fileSizeInMB = redirURLconn.getContentLength();
-				
-				if (res.fileSizeInMB!=-1){
+
+				if (res.fileSizeInMB != -1) {
 					// File size is already known, convert it to mb
 					res.fileSizeInMB = res.fileSizeInMB / 1024.0 / 1024.0;
 				} else {
 					res.fileSizeInMB = -1;
 				}
-			}catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 				res.fileSizeInMB = -1;
 			}
