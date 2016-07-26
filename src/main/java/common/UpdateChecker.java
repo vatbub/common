@@ -2,8 +2,12 @@ package common;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
@@ -152,15 +156,46 @@ public class UpdateChecker {
 		String url = "";
 		if (!mavenClassifier.equals("")) {
 			// classifier specified
-			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + res.toVersion + "/"
+			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/" + res.toVersion + "/"
 					+ mavenArtifactID + "-" + res.toVersion + "-" + mavenClassifier + ".jar";
 		} else {
-			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + res.toVersion + "/"
+			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/" + res.toVersion + "/"
 					+ mavenArtifactID + "-" + res.toVersion + ".jar";
 		}
 
-		URLConnection connection = new URL(url).openConnection();
-		res.fileSizeInMB = connection.getContentLength() / 1024.0 / 1024.0;
+		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+		connection.setRequestMethod("HEAD"); 
+		res.fileSizeInMB = connection.getContentLength();
+		
+		Map<String, List<String>> headers=connection.getHeaderFields();
+		Set<String> keys = headers.keySet();
+		System.out.println(connection.getURL().toString());
+		for (String key:keys){
+			System.out.println(key + " = " + headers.get(key));
+		}
+		
+		if (res.fileSizeInMB!=-1){
+			// File size is already known, convert it to mb
+			res.fileSizeInMB = res.fileSizeInMB / 1024.0 / 1024.0;
+		} else {
+			// File size is not known
+			try {
+				// Try to get redirects
+				System.out.println(connection.getHeaderField("Location"));
+				URLConnection redirURLconn = new URL(connection.getHeaderField("Location")).openConnection();
+				res.fileSizeInMB = redirURLconn.getContentLength();
+				
+				if (res.fileSizeInMB!=-1){
+					// File size is already known, convert it to mb
+					res.fileSizeInMB = res.fileSizeInMB / 1024.0 / 1024.0;
+				} else {
+					res.fileSizeInMB = -1;
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+				res.fileSizeInMB = -1;
+			}
+		}
 
 		res.mavenArtifactID = mavenArtifactID;
 		res.mavenGroupID = mavenGroupID;
