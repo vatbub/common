@@ -330,11 +330,11 @@ public class UpdateChecker {
 			ProcessBuilder pb = null;
 			if (deleteOldVersion) {
 				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename, "deleteFile=");
-				System.exit(0);
 			} else {
 				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename);
 			}
 			pb.start();
+			System.exit(0);
 		}
 	}
 
