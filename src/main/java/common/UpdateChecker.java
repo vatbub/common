@@ -66,7 +66,7 @@ public class UpdateChecker {
 				savedVersion = currentVersion;
 			}
 
-			if (res.toVersion.compareTo(savedVersion) == 1 || savedSetting.equals("")) {
+			if (res.toVersion.compareTo(savedVersion) == 1) {
 				// new update found
 				System.out.println("Update available!");
 				System.out.println("Version after update: " + res.toVersion.toString());
