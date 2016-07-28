@@ -2,11 +2,17 @@ package common;
 
 import java.io.File;
 
+import com.jcabi.manifests.Manifests;
+
 public class Common {
 
 	private static String appName;
-	public static String UNKNOWN_APP_VERSION = "unknown";
+	public static String UNKNOWN_APP_VERSION = "unknown version";
+	public static String UNKNOWN_BUILD_NUMBER = "unknown build number";
 	private static String mockAppVersion = "";
+	private static String mockBuildNumber = "";
+
+	private static String buildNumberManifestEntry = "Custom-Implementation-Build";
 
 	// General
 
@@ -69,7 +75,7 @@ public class Common {
 	}
 
 	/**
-	 * ENables a mock app version. If a mock app version is set,
+	 * Enables a mock app version. If a mock app version is set,
 	 * {@link #getAppVersion()} will not return the mock app version instead of
 	 * the actual version.
 	 * 
@@ -90,19 +96,53 @@ public class Common {
 	public static String getMockAppVersion() {
 		return mockAppVersion;
 	}
-	
+
 	/**
-	 * Clears a mock app version set using {@link #setMockAppVersion(String)} and replaces it with the actual app version.
+	 * Clears a mock app version set using {@link #setMockAppVersion(String)}
+	 * and replaces it with the actual app version.
 	 */
-	public static void clearMockAppVersion(){
+	public static void clearMockAppVersion() {
 		setMockAppVersion("");
 	}
 
 	/**
-	 * Returns the current artifact version. If a mock app version is specified, the mock app version is returned and not the actual app version.
+	 * Enables a mock build number. If a mock build number is set,
+	 * {@link #getAppVersion(boolean)} will not return the mock build number
+	 * instead of the actual build number.
+	 * 
+	 * @param buildNumber
+	 *            The build number to be used as the mock build number
+	 */
+	public static void setMockBuildNumber(String buildNumber) {
+		System.out.println("Now using mock build number " + buildNumber);
+		mockBuildNumber = buildNumber;
+	}
+
+	/**
+	 * Returns the current value to be used as a mock build number.
+	 * 
+	 * @return The current mock build number value or "" if no mock build number
+	 *         is in use.
+	 */
+	public static String getMockBuildNumber() {
+		return mockBuildNumber;
+	}
+
+	/**
+	 * Clears a mock build number set using {@link #setMockBuildNumber(String)}
+	 * and replaces it with the actual build number.
+	 */
+	public static void clearMockBuildVersion() {
+		setMockBuildNumber("");
+	}
+
+	/**
+	 * Returns the current artifact version. If a mock app version is specified,
+	 * the mock app version is returned and not the actual app version.
 	 * 
 	 * @return The current artifact version or the String
-	 *         {@link #UNKNOWN_APP_VERSION} if the version cannot be determined or the mock app version if one is specified.
+	 *         {@link #UNKNOWN_APP_VERSION} if the version cannot be determined
+	 *         or the mock app version if one is specified.
 	 */
 	public static String getAppVersion() {
 		if (!mockAppVersion.equals("")) {
@@ -116,6 +156,54 @@ public class Common {
 				return ver;
 			}
 		}
+	}
+
+	/**
+	 * Returns the current artifact build number. If a mock build number is
+	 * specified, the mock build number is returned and not the actual build
+	 * number.<br>
+	 * <br>
+	 * For this method to work, the build number must be saved in the
+	 * MANIFEST.MF file in the attribute "Custom-Implementation-Build" (if you
+	 * didn't specify anything else in
+	 * {@link #setBuildNumberManifestEntry(String)}).
+	 * 
+	 * @return The current artifact build number or the String
+	 *         {@link #UNKNOWN_BUILD_NUMBER} if the build number cannot be
+	 *         determined or the mock build number if one is specified.
+	 */
+	public static String getBuildNumber() {
+		if (!mockBuildNumber.equals("")) {
+			// A mock build number was defined
+			return mockBuildNumber;
+		} else if (Manifests.exists(buildNumberManifestEntry)) {
+			return Manifests.read(buildNumberManifestEntry);
+		} else {
+			return UNKNOWN_BUILD_NUMBER;
+		}
+	}
+
+	/**
+	 * Returns the current value of the attribute name where the app looks for
+	 * its build number when using {@link #getBuildNumber()}.
+	 * 
+	 * @return The current value of the attribute name where the app looks for
+	 *         its build number when using {@link #getBuildNumber()}.
+	 */
+	public static String getBuildNumberManifestEntry() {
+		return buildNumberManifestEntry;
+	}
+
+	/**
+	 * Changes the Manifest entry where the app looks for its build number when
+	 * using {@link #getBuildNumber()}. The default value (if you never call
+	 * this method) is {@code "Custom-Implementation-Build"}
+	 * 
+	 * @param buildNumberManifestEntry
+	 *            The new entry to use.
+	 */
+	public static void setBuildNumberManifestEntry(String buildNumberManifestEntry) {
+		Common.buildNumberManifestEntry = buildNumberManifestEntry;
 	}
 
 }
