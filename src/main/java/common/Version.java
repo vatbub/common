@@ -7,6 +7,13 @@ public class Version implements Comparable<Version> {
 	private String buildNumber;
 	private static String snapshotSuffix = "-SNAPSHOT";
 
+	public void setVersion(String version){
+		this.version=version;
+	}
+	
+	public void setBuildNumber(String buildNumber){
+		this.buildNumber=buildNumber;
+	}
 	
 	public String getVersion(){
 		return this.version;
@@ -33,14 +40,14 @@ public class Version implements Comparable<Version> {
 
 	public Version(String version, String buildNumber) {
 		if (buildNumber!=null){
-			this.buildNumber = buildNumber;
+			setVersion(buildNumber);
 		}
 		
 		if (version == null)
 			throw new IllegalArgumentException("Version can not be null");
 		if (!version.matches("[0-9]+(\\.[0-9]+)*(" + snapshotSuffix + ")?"))
 			throw new IllegalArgumentException("Invalid version format");
-		this.version = version;
+		setVersion(version);
 	}
 	
 	public boolean isSnapshot(){
