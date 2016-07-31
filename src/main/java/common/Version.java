@@ -4,19 +4,47 @@ package common;
 public class Version implements Comparable<Version> {
 
 	private String version;
+	private String buildNumber;
 	private static String snapshotSuffix = "-SNAPSHOT";
 
-	@Override
-	public final String toString() {
+	
+	public String getVersion(){
 		return this.version;
 	}
+	
+	public String getBuildNumber(){
+		return this.buildNumber;
+	}
+	
+	@Override
+	public final String toString() {
+		String res = getVersion();
+		
+		if (getBuildNumber()!=null){
+			res = res + "-" + getBuildNumber();
+		}
+		
+		return res;
+	}
+	
+	public Version(String version){
+		this (version, null);
+	}
 
-	public Version(String version) {
+	public Version(String version, String buildNumber) {
+		if (buildNumber!=null){
+			this.buildNumber = buildNumber;
+		}
+		
 		if (version == null)
 			throw new IllegalArgumentException("Version can not be null");
 		if (!version.matches("[0-9]+(\\.[0-9]+)*(" + snapshotSuffix + ")?"))
 			throw new IllegalArgumentException("Invalid version format");
 		this.version = version;
+	}
+	
+	public boolean isSnapshot(){
+		return (this.toString().endsWith(snapshotSuffix));
 	}
 
 	@Override
@@ -24,9 +52,9 @@ public class Version implements Comparable<Version> {
 		if (that == null)
 			return 1;
 		String[] thisParts = this.toString().replace(snapshotSuffix, "").split("\\.");
-		boolean thisIsSnapshot = this.toString().endsWith(snapshotSuffix);
+		boolean thisIsSnapshot = this.isSnapshot();
 		String[] thatParts = that.toString().replace(snapshotSuffix, "").split("\\.");
-		boolean thatIsSnapshot = that.toString().endsWith(snapshotSuffix);
+		boolean thatIsSnapshot = that.isSnapshot();
 		int length = Math.max(thisParts.length, thatParts.length);
 
 		for (int i = 0; i < length; i++) {
