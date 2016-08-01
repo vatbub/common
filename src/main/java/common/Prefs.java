@@ -32,7 +32,7 @@ public class Prefs {
 	private File f;
 
 	public Prefs(String className) {
-		// Retrieve the user preference node for the package com.mycompany
+		// Retrieve the user preference node for the package
 		f = new File(Common.getAppDataPath() + className + ".properties");
 
 		try {
@@ -60,7 +60,7 @@ public class Prefs {
         	System.out.println("Saving preference file as: " + f.getAbsolutePath());
         	f.getParentFile().mkdirs();
         	FileOutputStream out = new FileOutputStream( f );
-			props.store(out, "This is an optional header comment string");
+			props.store(out, "This is a preference file of the app " + Common.getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
