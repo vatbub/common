@@ -5,52 +5,75 @@ public class Version implements Comparable<Version> {
 
 	private String version;
 	private String buildNumber;
+	private String timestamp;
 	private static String snapshotSuffix = "-SNAPSHOT";
 
-	public void setVersion(String version){
-		this.version=version;
+	public void setVersion(String version) {
+		this.version = version;
 	}
-	
-	public void setBuildNumber(String buildNumber){
-		this.buildNumber=buildNumber;
+
+	public void setBuildNumber(String buildNumber) {
+		this.buildNumber = buildNumber;
 	}
-	
-	public String getVersion(){
+
+	public String getVersion() {
 		return this.version;
 	}
-	
-	public String getBuildNumber(){
+
+	public String getBuildNumber() {
 		return this.buildNumber;
 	}
-	
+
+	/**
+	 * @return the timestamp
+	 */
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	/**
+	 * @param timestamp
+	 *            the timestamp to set
+	 */
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	@Override
 	public final String toString() {
 		String res = getVersion();
-		
-		if (getBuildNumber()!=null){
+
+		if (getTimestamp() != null) {
+			res = res + "-" + getTimestamp();
+		}
+
+		if (getBuildNumber() != null) {
 			res = res + "-" + getBuildNumber();
 		}
-		
+
 		return res;
 	}
-	
-	public Version(String version){
-		this (version, null);
+
+	public Version(String version) {
+		this(version, null);
 	}
 
 	public Version(String version, String buildNumber) {
-		if (buildNumber!=null){
-			setVersion(buildNumber);
-		}
-		
+		this(version, buildNumber, null);
+	}
+
+	public Version(String version, String buildNumber, String timestamp) {
+		setBuildNumber(buildNumber);
+		setTimestamp(timestamp);
+
 		if (version == null)
 			throw new IllegalArgumentException("Version can not be null");
 		if (!version.matches("[0-9]+(\\.[0-9]+)*(" + snapshotSuffix + ")?"))
 			throw new IllegalArgumentException("Invalid version format");
 		setVersion(version);
 	}
-	
-	public boolean isSnapshot(){
+
+	public boolean isSnapshot() {
 		return (this.toString().endsWith(snapshotSuffix));
 	}
 
