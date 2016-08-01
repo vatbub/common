@@ -39,9 +39,31 @@ public class Version implements Comparable<Version> {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * Converts this Version to a {@link String} representation. Removes teh
+	 * -SNAPSHOT-Annotation if this version is a snapshot.
+	 * 
+	 * @return A {@link String} representation of this version.
+	 */
 	@Override
 	public final String toString() {
+		return toString(this.isSnapshot());
+	}
+
+	/**
+	 * Converts this Version to a {@link String} representation.
+	 * 
+	 * @param removeSnapshotAnnotaion
+	 *            If {@code true}, the -SNAPSHOT-Annotation will be removed for
+	 *            snapshot versions.
+	 * @return A {@link String} representation of this version.
+	 */
+	public final String toString(boolean removeSnapshotAnnotaion) {
 		String res = getVersion();
+
+		if (removeSnapshotAnnotaion) {
+			res = res.replace(snapshotSuffix, "");
+		}
 
 		if (getTimestamp() != null) {
 			res = res + "-" + getTimestamp();
@@ -74,7 +96,7 @@ public class Version implements Comparable<Version> {
 	}
 
 	public boolean isSnapshot() {
-		return (this.toString().endsWith(snapshotSuffix));
+		return (this.getVersion().endsWith(snapshotSuffix));
 	}
 
 	@Override
