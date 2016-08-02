@@ -127,24 +127,28 @@ public class Version implements Comparable<Version> {
 			return 1;
 
 			// both versions are snapshots, check build number
-		} else if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
-			// this build number is greater and thus this version is newer
-			return 1;
-		} else if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
-			// that build number is greater and thus that version is newer
-			return -1;
+		} else if (getBuildNumber() != null && !getBuildNumber().equals("")) {
+			if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
+				// this build number is greater and thus this version is newer
+				return 1;
+			} else if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
+				// that build number is greater and thus that version is newer
+				return -1;
+			}
 
 			// build numbers are equal, compare timestamps
-		} else if (Double.parseDouble(this.getTimestamp()) > Double.parseDouble(that.getTimestamp())) {
-			// this timestamp is greater and thus version is newer
-			return 1;
-		} else if (Double.parseDouble(this.getTimestamp()) < Double.parseDouble(that.getTimestamp())) {
-			// that timestamp is greater and thus version is newer
-			return -1;
-		} else {
-			// Everything is equal so versions are equal too
-			return 0;
+		} else if (getTimestamp() != null && !getTimestamp().equals("")) {
+			if (Double.parseDouble(this.getTimestamp()) > Double.parseDouble(that.getTimestamp())) {
+				// this timestamp is greater and thus version is newer
+				return 1;
+			} else if (Double.parseDouble(this.getTimestamp()) < Double.parseDouble(that.getTimestamp())) {
+				// that timestamp is greater and thus version is newer
+				return -1;
+			}
 		}
+		
+		// We only arrive here if everything is equal so versions are equal too
+		return 0;
 	}
 
 	@Override
