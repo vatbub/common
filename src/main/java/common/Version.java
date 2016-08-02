@@ -103,9 +103,9 @@ public class Version implements Comparable<Version> {
 	public int compareTo(Version that) {
 		if (that == null)
 			return 1;
-		String[] thisParts = this.toString().replace(snapshotSuffix, "").split("\\.");
+		String[] thisParts = this.getVersion().replace(snapshotSuffix, "").split("\\.");
 		boolean thisIsSnapshot = this.isSnapshot();
-		String[] thatParts = that.toString().replace(snapshotSuffix, "").split("\\.");
+		String[] thatParts = that.getVersion().replace(snapshotSuffix, "").split("\\.");
 		boolean thatIsSnapshot = that.isSnapshot();
 		int length = Math.max(thisParts.length, thatParts.length);
 
@@ -125,8 +125,24 @@ public class Version implements Comparable<Version> {
 		} else if (!thisIsSnapshot && thatIsSnapshot) {
 			// this is a release version and thus newer
 			return 1;
+
+			// both versions are snapshots, check build number
+		} else if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
+			// this build number is greater and thus this version is newer
+			return 1;
+		} else if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
+			// that build number is greater and thus that version is newer
+			return -1;
+
+			// build numbers are equal, compare timestamps
+		} else if (Double.parseDouble(this.getTimestamp()) > Double.parseDouble(that.getTimestamp())) {
+			// this timestamp is greater and thus version is newer
+			return 1;
+		} else if (Double.parseDouble(this.getTimestamp()) < Double.parseDouble(that.getTimestamp())) {
+			// that timestamp is greater and thus version is newer
+			return -1;
 		} else {
-			// both versions are equal
+			// Everything is equal so versions are equal too
 			return 0;
 		}
 	}
