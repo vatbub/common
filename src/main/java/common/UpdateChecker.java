@@ -21,6 +21,7 @@ public class UpdateChecker {
 
 	private static String latestSeenVersionPrefKey = "updates.latestVersionOnWebsite";
 	private static Prefs updatePrefs = new Prefs(UpdateChecker.class.getName());
+	private static boolean cancelDownloadAndLaunch;
 
 	/**
 	 * Versions lower or equal to {@code ver} will be ignored when using
@@ -239,8 +240,8 @@ public class UpdateChecker {
 	 * @throws IOException
 	 *             If the updated artifact cannot be launched.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException, IOException {
-		downloadAndInstallUpdate(updateToInstall, null);
+	public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException, IOException {
+		return downloadAndInstallUpdate(updateToInstall, null);
 	}
 
 	/**
@@ -257,9 +258,9 @@ public class UpdateChecker {
 	 * @throws IOException
 	 *             If the updated artifact cannot be launched.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui)
+	public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui)
 			throws IllegalStateException, IOException {
-		downloadAndInstallUpdate(updateToInstall, gui, true);
+		return downloadAndInstallUpdate(updateToInstall, gui, true);
 	}
 
 	/**
@@ -276,9 +277,9 @@ public class UpdateChecker {
 	 * @throws IOException
 	 *             If the updated artifact cannot be launched.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
+	public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
 			boolean launchUpdateAfterInstall) throws IllegalStateException, IOException {
-		downloadAndInstallUpdate(updateToInstall, gui, true, true);
+		return downloadAndInstallUpdate(updateToInstall, gui, true, true);
 	}
 
 	/**
@@ -293,16 +294,30 @@ public class UpdateChecker {
 	 * @param gui
 	 *            The reference to an {@link UpdateProgressDialog} that displays
 	 *            the current update status.
+	 *            @return {@code true} if the download finished successfully, {@code false}
+	 *         if the download was canelled using
+	 *         {@link #cancelDownloadAndLaunch()}
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
 	 *             If the updated artifact cannot be launched.
 	 */
-	public static void downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
+	public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
 			boolean launchUpdateAfterInstall, boolean deleteOldVersion) throws IllegalStateException, IOException {
+
+		// Reset cancel state
+		cancelDownloadAndLaunch = false;
 
 		if (gui != null) {
 			gui.preparePhaseStarted();
+		}
+
+		// Perform Cancel if requested
+		if (cancelDownloadAndLaunch) {
+			if (gui != null) {
+				gui.operationCanceled();
+			}
+			return false;
 		}
 
 		String destFolder = System.getProperty("user.dir");
@@ -331,6 +346,14 @@ public class UpdateChecker {
 					+ updateToInstall.mavenClassifier + ".jar");
 		}
 
+		// Perform Cancel if requested
+		if (cancelDownloadAndLaunch) {
+			if (gui != null) {
+				gui.operationCanceled();
+			}
+			return false;
+		}
+
 		// Create empty file
 		File outputFile = new File(destFolder + File.separator + destFilename);
 
@@ -343,9 +366,25 @@ public class UpdateChecker {
 		System.out.println("Downloading to: " + outputFile.getAbsolutePath());
 		FileUtils.copyURLToFile(artifactURL, outputFile);
 
+		// Perform Cancel if requested
+		if (cancelDownloadAndLaunch) {
+			if (gui != null) {
+				gui.operationCanceled();
+			}
+			return false;
+		}
+
 		// Perform install steps (none at the moment)
 		if (gui != null) {
 			gui.installStarted();
+		}
+
+		// Perform Cancel if requested
+		if (cancelDownloadAndLaunch) {
+			if (gui != null) {
+				gui.operationCanceled();
+			}
+			return false;
 		}
 
 		// launch the app
@@ -362,6 +401,22 @@ public class UpdateChecker {
 			}
 			pb.start();
 			System.exit(0);
+		}
+		
+		// Everything went smoothly
+		return true;
+	}
+
+	public static void cancelDownloadAndLaunch() {
+		cancelDownloadAndLaunch(null);
+	}
+
+	public static void cancelDownloadAndLaunch(UpdateProgressDialog gui) {
+		cancelDownloadAndLaunch = true;
+		System.out.println("Requested to cancel the current operation, Cancel in progress...");
+
+		if (gui != null) {
+			gui.cancelRequested();
 		}
 	}
 

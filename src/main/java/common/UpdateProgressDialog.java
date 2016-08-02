@@ -27,4 +27,14 @@ public interface UpdateProgressDialog {
 	 * Invoked once the updated artifact is launched.
 	 */
 	public void launchStarted();
+	
+	/**
+	 * Invoked when the user requested to cancel the operation an the request was received.
+	 */
+	public void cancelRequested();
+	
+	/**
+	 * Invoked when the user requested to cancel the current operation on the operation was cancelled.
+	 */
+	public void operationCanceled();
 }

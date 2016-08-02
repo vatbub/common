@@ -29,6 +29,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 	private ResourceBundle bundle = ResourceBundle.getBundle("view.updateAvailableDialog.AlertDialog");
 	private static String messageText;
 	private static UpdateInfo updateInfo;
+	private static Thread downloadThread = new Thread();
 
 	/**
 	 * Constructor stub necessary for FXML, please use
@@ -78,23 +79,33 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 	// Handler for Button[fx:id="cancelButton"] onAction
 	@FXML
 	void ignoreButtonOnAction(ActionEvent event) {
-		this.hide();
-		UpdateChecker.ignoreUpdate(updateInfo.toVersion);
+		if (!downloadThread.isAlive()) {
+			// ignore this update
+			this.hide();
+			UpdateChecker.ignoreUpdate(updateInfo.toVersion);
+		} else {
+			// Cancel download
+			UpdateChecker.cancelDownloadAndLaunch(this);
+		}
 	}
 
 	// Handler for Button[fx:id="okButton"] onAction
 	@FXML
 	void okButtonOnAction(ActionEvent event) {
 		UpdateAvailableDialog t = this;
-		okButton.setDisable(true);
-		cancelButton.setDisable(true);
 
-		Thread downloadThread = new Thread() {
+		okButton.setDisable(true);
+		cancelButton.setText(bundle.getString("button.cancel.cancelDownload"));
+		;
+
+		downloadThread = new Thread() {
 			@Override
 			public void run() {
 				try {
-					UpdateChecker.downloadAndInstallUpdate(updateInfo, t);
-					t.hide();
+					boolean res = UpdateChecker.downloadAndInstallUpdate(updateInfo, t);
+					if (res) {
+						t.hide();
+					}
 				} catch (IllegalStateException | IOException e) {
 					showErrorMessage(e.getLocalizedMessage());
 					e.printStackTrace();
@@ -125,7 +136,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 			messageLabel.setText(bundle.getString("label.noUpdate"));
 			okButton.setDisable(true);
 			cancelButton.setDisable(true);
-			
+
 		}
 		updateProgressAnimation.setVisible(false);
 		updateProgressText.setVisible(false);
@@ -169,7 +180,6 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				stage.hide();
 			}
 
@@ -238,6 +248,25 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 				okButton.setText(bundle.getString("button.ok.retry"));
 			}
 
+		});
+	}
+
+	@Override
+	public void operationCanceled() {
+		updateProgressAnimation.setVisible(false);
+		updateProgressText.setVisible(false);
+		okButton.setText(bundle.getString("button.ok"));
+		okButton.setDisable(false);
+		cancelButton.setText(bundle.getString("button.cancel"));
+	}
+
+	@Override
+	public void cancelRequested() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				updateProgressText.setText(bundle.getString("progress.cancelRequested"));
+			}
 		});
 	}
 }
