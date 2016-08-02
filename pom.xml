@@ -38,6 +38,7 @@
 	<version>0.0.11-SNAPSHOT</version>
 	<name>FOKProjects Common</name>
 	<description>Common classes for fok projects</description>
+	<inceptionYear>2016</inceptionYear>
 
 	<scm>
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
