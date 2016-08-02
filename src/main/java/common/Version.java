@@ -65,11 +65,11 @@ public class Version implements Comparable<Version> {
 			res = res.replace(snapshotSuffix, "");
 		}
 
-		if (getTimestamp() != null) {
+		if (getTimestamp() != null && !getTimestamp().equals("")) {
 			res = res + "-" + getTimestamp();
 		}
 
-		if (getBuildNumber() != null) {
+		if (getBuildNumber() != null && !getBuildNumber().equals("")) {
 			res = res + "-" + getBuildNumber();
 		}
 
