@@ -131,7 +131,7 @@ public class Version implements Comparable<Version> {
 			if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
 				// this build number is greater and thus this version is newer
 				return 1;
-			} else if (Double.parseDouble(this.getBuildNumber()) > Double.parseDouble(that.getBuildNumber())) {
+			} else if (Double.parseDouble(this.getBuildNumber()) < Double.parseDouble(that.getBuildNumber())) {
 				// that build number is greater and thus that version is newer
 				return -1;
 			}
