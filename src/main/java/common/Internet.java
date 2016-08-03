@@ -2,8 +2,10 @@ package common;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -15,51 +17,99 @@ import java.nio.charset.StandardCharsets;
 public class Internet {
 
 	/**
-	 * Sends an event to the IFTTT Maker Channel. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
+	 * Sends an event to the IFTTT Maker Channel. See
+	 * <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 * for more information.
 	 * 
-	 * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
-	 * @param eventName The name of the event to trigger.
-	 * @throws IOException Should actually never be thrown but occurs if something is wrong with the connection (e. g. not connected)
+	 * @param IFTTTMakerChannelApiKey
+	 *            Your Maker API Key. Get your one on
+	 *            <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
+	 * @param eventName
+	 *            The name of the event to trigger.
+	 * @throws IOException
+	 *             Should actually never be thrown but occurs if something is
+	 *             wrong with the connection (e. g. not connected)
 	 */
-	public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName) throws IOException {
+	public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName)
+			throws IOException {
 		return sendEventToIFTTTMakerChannel(IFTTTMakerChannelApiKey, eventName, "");
 	}
-	
+
 	/**
-	 * Sends an event to the IFTTT Maker Channel. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
+	 * Sends an event to the IFTTT Maker Channel. See
+	 * <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 * for more information.
 	 * 
-	 * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
-	 * @param eventName The name of the event to trigger.
-	 * @param Details1 You can send up to three additional fields to the MAker channel which you can use then as IFTTT ingredients. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
-	 * @throws IOException Should actually never be thrown but occurs if something is wrong with the connection (e. g. not connected)
+	 * @param IFTTTMakerChannelApiKey
+	 *            Your Maker API Key. Get your one on
+	 *            <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
+	 * @param eventName
+	 *            The name of the event to trigger.
+	 * @param Details1
+	 *            You can send up to three additional fields to the MAker
+	 *            channel which you can use then as IFTTT ingredients. See
+	 *            <a href=
+	 *            "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 *            for more information.
+	 * @throws IOException
+	 *             Should actually never be thrown but occurs if something is
+	 *             wrong with the connection (e. g. not connected)
 	 */
-	public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName, String Details1) throws IOException {
+	public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName, String Details1)
+			throws IOException {
 		return sendEventToIFTTTMakerChannel(IFTTTMakerChannelApiKey, eventName, Details1, "");
 	}
-	
+
 	/**
-	 * Sends an event to the IFTTT Maker Channel. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
+	 * Sends an event to the IFTTT Maker Channel. See
+	 * <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 * for more information.
 	 * 
-	 * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
-	 * @param eventName The name of the event to trigger.
-	 * @param Details1 You can send up to three additional fields to the MAker channel which you can use then as IFTTT ingredients. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
-	 * @param Details2 The second additional parameter.
-	 * @throws IOException Should actually never be thrown but occurs if something is wrong with the connection (e. g. not connected)
+	 * @param IFTTTMakerChannelApiKey
+	 *            Your Maker API Key. Get your one on
+	 *            <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
+	 * @param eventName
+	 *            The name of the event to trigger.
+	 * @param Details1
+	 *            You can send up to three additional fields to the MAker
+	 *            channel which you can use then as IFTTT ingredients. See
+	 *            <a href=
+	 *            "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 *            for more information.
+	 * @param Details2
+	 *            The second additional parameter.
+	 * @throws IOException
+	 *             Should actually never be thrown but occurs if something is
+	 *             wrong with the connection (e. g. not connected)
 	 */
 	public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName, String Details1,
 			String Details2) throws IOException {
 		return sendEventToIFTTTMakerChannel(IFTTTMakerChannelApiKey, eventName, Details1, Details2, "");
 	}
-	
+
 	/**
-	 * Sends an event to the IFTTT Maker Channel. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
+	 * Sends an event to the IFTTT Maker Channel. See
+	 * <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 * for more information.
 	 * 
-	 * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
-	 * @param eventName The name of the event to trigger.
-	 * @param Details1 You can send up to three additional fields to the MAker channel which you can use then as IFTTT ingredients. See <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a> for more information.
-	 * @param Details2 The second additional parameter.
-	 * @param Details3 The third additional parameter.
-	 * @throws IOException Should actually never be thrown but occurs if something is wrong with the connection (e. g. not connected)
+	 * @param IFTTTMakerChannelApiKey
+	 *            Your Maker API Key. Get your one on
+	 *            <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
+	 * @param eventName
+	 *            The name of the event to trigger.
+	 * @param Details1
+	 *            You can send up to three additional fields to the MAker
+	 *            channel which you can use then as IFTTT ingredients. See
+	 *            <a href=
+	 *            "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
+	 *            for more information.
+	 * @param Details2
+	 *            The second additional parameter.
+	 * @param Details3
+	 *            The third additional parameter.
+	 * @throws IOException
+	 *             Should actually never be thrown but occurs if something is
+	 *             wrong with the connection (e. g. not connected)
 	 */
 	public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName, String Details1,
 			String Details2, String Details3) throws IOException {
@@ -100,23 +150,63 @@ public class Internet {
 		}
 
 	}
-	
+
 	/**
 	 * Sends a GET request to url and retreives the server response
-	 * @param url The url to call.
+	 * 
+	 * @param url
+	 *            The url to call.
 	 * @return The server response
-	 * @throws IOException No Internet connection
+	 * @throws IOException
+	 *             No Internet connection
 	 */
 	public static String webread(URL url) throws IOException {
-	      StringBuilder result = new StringBuilder();
-	      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-	      conn.setRequestMethod("GET");
-	      BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	      String line;
-	      while ((line = rd.readLine()) != null) {
-	         result.append(line);
-	      }
-	      rd.close();
-	      return result.toString();
-	   }
+		StringBuilder result = new StringBuilder();
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		String line;
+		while ((line = rd.readLine()) != null) {
+			result.append(line);
+		}
+		rd.close();
+		return result.toString();
+	}
+
+	/**
+	 * Checks if the computer is connected to the internet by calling
+	 * {@code http://www.google.com}
+	 * 
+	 * @return {@code true} if the computer is connected to the internet,
+	 *         {@code false} otherwise.
+	 */
+	public static boolean isConnected() {
+		try {
+			return isConnected(new URL("http://www.google.com"));
+		} catch (MalformedURLException e) {
+			// Just in case I made a typo in the hardcoded value...
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * Checks if the computer is connected to the internet by calling
+	 * {@code urlToTest}
+	 * 
+	 * @param urlToTest
+	 *            The url to be used to test the connection. It is recommended
+	 *            to use a reliable server (like Google) for this to ensure that
+	 *            the server is always online.
+	 * @return {@code true} if the computer is connected to the internet,
+	 *         {@code false} otherwise.
+	 */
+	public static boolean isConnected(URL urlToTest) {
+		try {
+			webread(urlToTest);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
 }
