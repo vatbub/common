@@ -15,9 +15,40 @@
 			<username>${env.CI_DEPLOY_USERNAME}</username>
 			<password>${env.CI_DEPLOY_PASSWORD}</password>
 		</server>
-</servers>
+	</servers>
 	<mirrors/>
 	<proxies/>
-	<profiles/>
-	<activeProfiles/>
+	<profiles>
+		<profile>
+			<id>disableCodehaus</id>
+			<repositories>
+				<repository>
+					<id>codehaus</id>
+					<url>https://nexus.codehaus.org/snapshots</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>codehaus-snapshots</id>
+					<url>https://nexus.codehaus.org/snapshots</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+
+	<activeProfiles>
+		<activeProfile>disableCodehaus</activeProfile>
+	</activeProfiles>
 </settings>
