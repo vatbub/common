@@ -5,6 +5,7 @@ import org.junit.Test;
 public class PrefsTest {
 	@Test
 	public void readPrefOnCleanEnvironment(){
+		Common.setAppName("fokprojectUnitTests");
 		int randomNumber = (int) Math.random();
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";
@@ -18,6 +19,7 @@ public class PrefsTest {
 	
 	@Test
 	public void savePref(){
+		Common.setAppName("fokprojectUnitTests");
 		int randomNumber = (int) Math.random();
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";
