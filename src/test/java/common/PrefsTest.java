@@ -6,21 +6,20 @@ public class PrefsTest {
 	@Test
 	public void readPrefOnCleanEnvironment(){
 		Common.setAppName("fokprojectUnitTests");
-		int randomNumber = (int) Math.random();
+		int randomNumber = (int) (Math.random()*1000000000);
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";
 		String defaultValue = "theDefaultValue";
 		
 		// Should return the default value on a clean environment as no preferences have been set yet.
 		String prefRead1 = prefs.getPreference(prefKey, defaultValue);
-		
 		assert prefRead1.equals(defaultValue);
 	}
 	
 	@Test
 	public void savePref(){
 		Common.setAppName("fokprojectUnitTests");
-		int randomNumber = (int) Math.random();
+		int randomNumber = (int) (Math.random()*1000000000);
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";
 		String testValue = "theTestValue"; // Must be different than defaultValue
