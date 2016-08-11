@@ -40,7 +40,7 @@ public class Version implements Comparable<Version> {
 	}
 
 	/**
-	 * Converts this Version to a {@link String} representation. Removes teh
+	 * Converts this Version to a {@link String} representation. Removes the
 	 * -SNAPSHOT-Annotation if this version is a snapshot.
 	 * 
 	 * @return A {@link String} representation of this version.
