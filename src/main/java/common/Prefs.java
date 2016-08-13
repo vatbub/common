@@ -33,7 +33,7 @@ public class Prefs {
 
 	public Prefs(String className) {
 		// Retrieve the user preference node for the package
-		f = new File(Common.getAppDataPath() + className + ".properties");
+		f = new File(Common.getAndCreateAppDataPath() + className + ".properties");
 
 		try {
 			if (f.exists()) {

@@ -3,6 +3,7 @@ package common;
 import java.io.File;
 
 import com.jcabi.manifests.Manifests;
+import org.apache.commons.lang.SystemUtils;
 
 public class Common {
 
@@ -33,25 +34,28 @@ public class Common {
 		}
 
 		String workingDirectory;
-		// here, we assign the name of the OS, according to Java, to a
-		// variable...
-		String OS = (System.getProperty("os.name")).toUpperCase();
-		// to determine what the workingDirectory is.
-		// if it is some version of Windows
-		if (OS.contains("WIN")) {
+
+		if (SystemUtils.IS_OS_WINDOWS) {
 			// it is simply the location of the "AppData" folder
 			workingDirectory = System.getenv("AppData");
-		}
-		// Otherwise, we assume Linux or Mac
-		else {
-			// in either case, we would start in the user's home directory
+		} else if (SystemUtils.IS_OS_MAC) {
 			workingDirectory = System.getProperty("user.home");
-			// if we are on a Mac, we are not done, we look for "Application
-			// Support"
 			workingDirectory += "/Library/Application Support";
+		} else {
+			workingDirectory = System.getProperty("user.home");
+			// Support"
+			workingDirectory += "/.local/share";
 		}
 
 		return workingDirectory + File.separator + appName + File.separator;
+	}
+	
+	public static String getAndCreateAppDataPath(){
+		String path = getAppDataPath();
+		
+		new File(path).mkdirs();
+		
+		return path;
 	}
 
 	/**
