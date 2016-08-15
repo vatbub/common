@@ -49,9 +49,9 @@ public class FOKLogger {
 
 	/**
 	 * Log messages must have the specified log level or higher to appear on the
-	 * console. {@code Level.ALL} will enable all log levels. Default Value: {@code Level.WARNING}
+	 * console. {@code Level.ALL} will enable all log levels. Default Value: {@code Level.ALL}
 	 */
-	private static Level consoleLogLevel = Level.WARNING;
+	private static Level consoleLogLevel = Level.ALL;
 	
 	/**
 	 * The name scheme for the file name of the log. Use the place holder
