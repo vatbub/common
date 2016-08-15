@@ -27,9 +27,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import logging.FOKLogger;
+
 public class Prefs {
 	private Properties props = new Properties();
 	private File f;
+	private static FOKLogger log = new FOKLogger(Prefs.class.getName());
 
 	public Prefs(String className) {
 		// Retrieve the user preference node for the package
@@ -57,7 +60,7 @@ public class Prefs {
 	
 	public void savePreferences(){
         try {
-        	System.out.println("Saving preference file as: " + f.getAbsolutePath());
+        	log.getLogger().info("Saving preference file as: " + f.getAbsolutePath());
         	f.getParentFile().mkdirs();
         	FileOutputStream out = new FileOutputStream( f );
 			props.store(out, "This is a preference file of the app " + Common.getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");

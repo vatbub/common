@@ -5,6 +5,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+
+import logging.FOKLogger;
 
 /**
  * All custom internet functions
@@ -13,6 +16,8 @@ import java.nio.charset.StandardCharsets;
  *
  */
 public class Internet {
+	
+	private static FOKLogger log = new FOKLogger(Internet.class.getName());
 
 	/**
 	 * Sends an event to the IFTTT Maker Channel. See
@@ -142,7 +147,7 @@ public class Internet {
 			return response;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.getLogger().log(Level.SEVERE, "An error occured!", e);
 			return "";
 		}
 
