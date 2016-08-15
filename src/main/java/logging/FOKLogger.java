@@ -20,7 +20,6 @@ package logging;
  * #L%
  */
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.*;
@@ -37,29 +36,31 @@ import common.Common;
 public class FOKLogger {
 
 	Logger log;
-	// private static Handler fileHandler;
-	// private static Handler consoleHandler;
+	private static Handler fileHandler;
+	private static Handler consoleHandler;
 	private static boolean handlersInitialized;
-	
+
 	/**
 	 * Log messages must have the specified log level or higher to be saved in
-	 * the log file. {@code Level.ALL} will enable all log levels. Default Value: {@code Level.ALL}
+	 * the log file. {@code Level.ALL} will enable all log levels. Default
+	 * Value: {@code Level.ALL}
 	 */
 	private static Level fileLogLevel = Level.ALL;
 
 	/**
 	 * Log messages must have the specified log level or higher to appear on the
-	 * console. {@code Level.ALL} will enable all log levels. Default Value: {@code Level.ALL}
+	 * console. {@code Level.ALL} will enable all log levels. Default Value:
+	 * {@code Level.ALL}
 	 */
 	private static Level consoleLogLevel = Level.ALL;
-	
+
 	/**
 	 * The name scheme for the file name of the log. Use the place holder
 	 * {@code DateTime} for the current date and time.
 	 */
-	private static String logFileName = "log_" + Common.getAppName() + "_DateTime.xml";
-	
-	private static String logFilePath = Common.getAppDataPath() + "Logs";
+	private static String logFileName;
+
+	private static String logFilePath;
 
 	/**
 	 * @return the fileLogLevel
@@ -69,10 +70,15 @@ public class FOKLogger {
 	}
 
 	/**
-	 * @param fileLogLevel the fileLogLevel to set
+	 * @param fileLogLevel
+	 *            the fileLogLevel to set
 	 */
 	public static void setFileLogLevel(Level newFileLogLevel) {
 		fileLogLevel = newFileLogLevel;
+
+		// set the handlers Log Levels
+		fileHandler.setLevel(fileLogLevel);
+		consoleHandler.setLevel(consoleLogLevel);
 	}
 
 	/**
@@ -83,10 +89,15 @@ public class FOKLogger {
 	}
 
 	/**
-	 * @param consoleLogLevel the consoleLogLevel to set
+	 * @param consoleLogLevel
+	 *            the consoleLogLevel to set
 	 */
-	public static  void setConsoleLogLevel(Level newConsoleLogLevel) {
+	public static void setConsoleLogLevel(Level newConsoleLogLevel) {
 		consoleLogLevel = newConsoleLogLevel;
+
+		// set the handlers Log Levels
+		fileHandler.setLevel(fileLogLevel);
+		consoleHandler.setLevel(consoleLogLevel);
 	}
 
 	/**
@@ -97,27 +108,13 @@ public class FOKLogger {
 	}
 
 	/**
-	 * @param logFileName the logFileName to set
-	 */
-	public static void setLogFileName(String newLogFileName) {
-		logFileName = newLogFileName;
-	}
-
-	/**
 	 * @return the logFilePath
 	 */
 	public static String getLogFilePath() {
 		return logFilePath;
 	}
 
-	/**
-	 * @param logFilePath the logFilePath to set
-	 */
-	public static void setLogFilePath(String newLogFilePath) {
-		logFilePath = newLogFilePath;
-	}
-	
-	public static String getLogFilePathAndName(){
+	public static String getLogFilePathAndName() {
 		return logFilePath + File.separator + logFileName.replace("DateTime", Common.getLaunchTimeStamp());
 	}
 
@@ -131,6 +128,22 @@ public class FOKLogger {
 	 *            {@code (YourClassName).class.getName()}.
 	 */
 	public FOKLogger(String className) {
+		this(className, Common.getAppDataPath() + "Logs", "log_" + Common.getAppName() + "_DateTime.xml");
+	}
+
+	/**
+	 * Creates a new {@link java.util.logging.Logger} instance and attaches
+	 * automatically a {@link FileHandler} and a {@link ConsoleHandler}.
+	 * 
+	 * @param className
+	 *            The name of the calling class. It is recommended to use the
+	 *            fully qualified class name that you can get with
+	 *            {@code (YourClassName).class.getName()}.
+	 */
+	public FOKLogger(String className, String newLogFilePath, String newLogFileName) {
+		logFilePath = newLogFilePath;
+		logFileName = newLogFileName;
+
 		// initialize the handlers
 		if (!handlersInitialized) {
 			FOKLogger.initLogHandlers();
@@ -141,11 +154,11 @@ public class FOKLogger {
 	}
 
 	public static void initLogHandlers() {
-		
+
 		handlersInitialized = true;
 
-		Handler fileHandler = null;
-		Handler consoleHandler = null;
+		fileHandler = null;
+		consoleHandler = null;
 		// Create a directory; all non-existent ancestor directories are
 		// automatically created
 		// Source:
@@ -198,7 +211,8 @@ public class FOKLogger {
 		try {
 			LogManager.getLogManager().readConfiguration();
 		} catch (Exception e) {
-			System.out.println("Cannot read a config file for logging, thus using the default configuration. Reason: " + e.getLocalizedMessage());
+			System.out.println("Cannot read a config file for logging, thus using the default configuration. Reason: "
+					+ e.getLocalizedMessage());
 		}
 
 		System.out.println("Saving log file \n" + getLogFilePathAndName());
