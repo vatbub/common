@@ -120,7 +120,6 @@ public class Internet {
 			String postData = "{ \"value1\" : \"" + Details1 + "\", \"value2\" : \"" + Details2 + "\", \"value3\" : \""
 					+ Details3 + "\" }";
 			byte[] postData2 = postData.getBytes(StandardCharsets.UTF_8);
-			System.out.println(postData);
 
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setDoOutput(true);

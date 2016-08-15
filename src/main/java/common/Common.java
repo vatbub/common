@@ -1,6 +1,8 @@
 package common;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.jcabi.manifests.Manifests;
 import org.apache.commons.lang.SystemUtils;
@@ -14,8 +16,40 @@ public class Common {
 	private static String mockBuildNumber = "";
 
 	private static String buildNumberManifestEntry = "Custom-Implementation-Build";
+	
+	/**
+	 * Time when the app was launched. A simple call of the {@link Date}
+	 * -constructor will get the current timestamp. As this variable is
+	 * initialized when the app is launched, this represents the time when the
+	 * app was launched.
+	 */
+	private static Date launchDate = new Date();
 
 	// General
+	
+	/**
+	 * Returns the current time as a String.
+	 * 
+	 * @return The current time in the format "yyyy-MM-dd_HH-mm-ss"
+	 */
+	public static String getCurrentTimeStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");// dd/MM/yyyy
+		Date now = new Date();
+		String strDate = sdfDate.format(now);
+		return strDate;
+	}
+
+	/**
+	 * Returns the time when the app was launched as a String.
+	 * 
+	 * @return The time when the app was launched in the format
+	 *         "yyyy-MM-dd_HH-mm-ss"
+	 */
+	public static String getLaunchTimeStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");// dd/MM/yyyy
+		String strDate = sdfDate.format(launchDate);
+		return strDate;
+	}
 
 	/**
 	 * Gets the appData directory of the os. In case the current OS is Windows,

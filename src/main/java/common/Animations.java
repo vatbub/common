@@ -3,8 +3,11 @@ package common;
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Control;
 import javafx.util.Duration;
+import logging.FOKLogger;
 
 public class Animations {
+	
+	public static FOKLogger log = new FOKLogger(Animations.class.getName());
 
 	public static void disableControl(Control c, boolean noAnimation) {
 		if (noAnimation) {
@@ -21,7 +24,7 @@ public class Animations {
 	}
 
 	private static void disableControl(Control c, Duration dur) {
-		System.out.println("Disabling control " + c.toString() + ", dur = " + dur.toMillis());
+		log.getLogger().info("Disabling control " + c.toString() + ", dur = " + dur.toMillis());
 		ScaleTransition st = new ScaleTransition(dur, c);
 		st.setByX(-0.5);
 		st.setByY(0.0);
@@ -48,7 +51,7 @@ public class Animations {
 	}
 
 	private static void enableControl(Control c, Duration dur) {
-		System.out.println("Enabling control " + c.toString() + ", dur = " + dur.toMillis());
+		log.getLogger().info("Enabling control " + c.toString() + ", dur = " + dur.toMillis());
 		ScaleTransition st = new ScaleTransition(dur, c);
 		st.setByX(0.5);
 		st.setByY(0.0);
