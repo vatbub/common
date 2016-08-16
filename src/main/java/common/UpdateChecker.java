@@ -56,7 +56,14 @@ public class UpdateChecker {
 			log.getLogger().info("Checking for updates...");
 			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
 
-			Version currentVersion = new Version(Common.getAppVersion());
+			Version currentVersion = null;
+			
+			try {
+				currentVersion = new Version(Common.getAppVersion());
+			} catch (IllegalArgumentException e) {
+				log.getLogger().log(Level.SEVERE, "An error occurred", e);
+				return null;
+			}
 			Version savedVersion = null;
 			try {
 				savedVersion = new Version(savedSetting);
@@ -243,7 +250,8 @@ public class UpdateChecker {
 	 * @throws IOException
 	 *             If the updated artifact cannot be launched.
 	 */
-	public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall) throws IllegalStateException, IOException {
+	public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall)
+			throws IllegalStateException, IOException {
 		return downloadAndInstallUpdate(updateToInstall, null);
 	}
 
@@ -297,7 +305,7 @@ public class UpdateChecker {
 	 * @param gui
 	 *            The reference to an {@link UpdateProgressDialog} that displays
 	 *            the current update status.
-	 *            @return {@code true} if the download finished successfully, {@code false}
+	 * @return {@code true} if the download finished successfully, {@code false}
 	 *         if the download was canelled using
 	 *         {@link #cancelDownloadAndLaunch()}
 	 * @throws IllegalStateException
@@ -405,7 +413,7 @@ public class UpdateChecker {
 			pb.start();
 			System.exit(0);
 		}
-		
+
 		// Everything went smoothly
 		return true;
 	}
