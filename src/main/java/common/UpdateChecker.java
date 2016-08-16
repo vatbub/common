@@ -1,13 +1,14 @@
 package common;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Level;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -384,7 +385,52 @@ public class UpdateChecker {
 
 		log.getLogger().info("Downloading artifact from " + artifactURL.toString() + "...");
 		log.getLogger().info("Downloading to: " + outputFile.getAbsolutePath());
-		FileUtils.copyURLToFile(artifactURL, outputFile);
+		// FileUtils.copyURLToFile(artifactURL, outputFile);
+
+		try {
+			HttpURLConnection httpConnection = (HttpURLConnection) (artifactURL.openConnection());
+			long completeFileSize = httpConnection.getContentLength();
+
+			java.io.BufferedInputStream in = new java.io.BufferedInputStream(httpConnection.getInputStream());
+			java.io.FileOutputStream fos = new java.io.FileOutputStream(outputFile);
+			java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
+			byte[] data = new byte[1024];
+			long downloadedFileSize = 0;
+			int x = 0;
+			while ((x = in.read(data, 0, 1024)) >= 0) {
+				downloadedFileSize += x;
+
+				// calculate progress
+				// final int currentProgress = (int)
+				// ((((double)downloadedFileSize) / ((double)completeFileSize))
+				// * 100000d);
+
+				// update progress bar
+				if (gui != null) {
+					gui.downloadProgressChanged((double) (downloadedFileSize / 1024.0),
+							(double) (completeFileSize / 1024.0));
+				}
+
+				bout.write(data, 0, x);
+
+				// Perform Cancel if requested
+				if (cancelDownloadAndLaunch) {
+					bout.close();
+					in.close();
+					outputFile.delete();
+					if (gui != null) {
+						gui.operationCanceled();
+					}
+					return false;
+				}
+			}
+			bout.close();
+			in.close();
+		} catch (FileNotFoundException e) {
+			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+		} catch (IOException e) {
+			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+		}
 
 		// Perform Cancel if requested
 		if (cancelDownloadAndLaunch) {

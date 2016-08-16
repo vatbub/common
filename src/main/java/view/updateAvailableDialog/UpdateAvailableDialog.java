@@ -269,4 +269,16 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 			}
 		});
 	}
+	
+	@Override
+	public void downloadProgressChanged(double kilobytesDownloaded, double totalFileSizeInKB) {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				updateProgressAnimation.setProgress(kilobytesDownloaded/totalFileSizeInKB);
+			}
+
+		});
+	}
 }
