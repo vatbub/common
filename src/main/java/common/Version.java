@@ -161,5 +161,10 @@ public class Version implements Comparable<Version> {
 			return false;
 		return this.compareTo((Version) that) == 0;
 	}
+	
+	@Override
+	public Version clone(){
+		return new Version(this.getVersion(), this.getBuildNumber(), this.getTimestamp());
+	}
 
 }

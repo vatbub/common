@@ -5,6 +5,11 @@ import java.util.Collection;
 
 public class VersionList extends ArrayList<Version> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2012909928456027745L;
+
 	public VersionList() {
 		super();
 	}
@@ -51,6 +56,16 @@ public class VersionList extends ArrayList<Version> {
 		}
 
 		return false;
+	}
+	
+	@Override
+	public VersionList clone(){
+		VersionList res = new VersionList();
+		for (Version ver:this){
+			res.add(ver.clone());
+		}
+		
+		return res;
 	}
 
 }
