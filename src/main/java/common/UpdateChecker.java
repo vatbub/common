@@ -57,12 +57,13 @@ public class UpdateChecker {
 			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
 
 			Version currentVersion = null;
-			
+
 			try {
 				currentVersion = new Version(Common.getAppVersion());
 			} catch (IllegalArgumentException e) {
 				log.getLogger().log(Level.SEVERE, "An error occurred", e);
-				return null;
+				res.showAlert = false;
+				return res;
 			}
 			Version savedVersion = null;
 			try {
@@ -108,7 +109,15 @@ public class UpdateChecker {
 			log.getLogger().info("Checking for updates...");
 			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
 
-			Version currentVersion = new Version(Common.getAppVersion());
+			Version currentVersion = null;
+
+			try {
+				currentVersion = new Version(Common.getAppVersion());
+			} catch (IllegalArgumentException e) {
+				log.getLogger().log(Level.SEVERE, "An error occurred", e);
+				res.showAlert = false;
+				return res;
+			}
 
 			if (res.toVersion.compareTo(currentVersion) == 1) {
 				// new update found
