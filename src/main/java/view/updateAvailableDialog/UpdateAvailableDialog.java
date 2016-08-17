@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
@@ -56,6 +57,9 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 
 	@FXML // URL location of the FXML file that was given to the FXMLLoader
 	private URL location;
+	
+    @FXML // fx:id="updateProgressBar"
+    private ProgressBar updateProgressBar; // Value injected by FXMLLoader
 
 	@FXML // fx:id="cancelButton"
 	private Button cancelButton; // Value injected by FXMLLoader
@@ -118,13 +122,13 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 	@FXML // This method is called by the FXMLLoader when initialization is
 			// complete
 	void initialize() {
-		assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-		assert detailsLabel != null : "fx:id=\"detailsLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-		assert messageLabel != null : "fx:id=\"messageLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-		assert okButton != null : "fx:id=\"okButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-		assert updateProgressAnimation != null : "fx:id=\"updateProgressAnimation\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-		assert updateProgressText != null : "fx:id=\"updateProgressText\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-
+		 assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+	        assert detailsLabel != null : "fx:id=\"detailsLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+	        assert messageLabel != null : "fx:id=\"messageLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+	        assert okButton != null : "fx:id=\"okButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+	        assert updateProgressAnimation != null : "fx:id=\"updateProgressAnimation\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+	        assert updateProgressBar != null : "fx:id=\"updateProgressBar\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+	        assert updateProgressText != null : "fx:id=\"updateProgressText\" was not injected: check your FXML file 'AlertDialog.fxml'.";
 		// Initialize your logic here: all @FXML variables will have been
 		// injected
 		if (updateInfo.showAlert) {
@@ -207,6 +211,8 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 			@Override
 			public void run() {
 				updateProgressText.setText(bundle.getString("progress.downloading"));
+				updateProgressBar.setVisible(true);
+				updateProgressBar.setProgress(-1);
 			}
 
 		});
@@ -246,6 +252,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 				updateProgressText.setVisible(false);
 				okButton.setDisable(false);
 				okButton.setText(bundle.getString("button.ok.retry"));
+				updateProgressBar.setVisible(false);
 			}
 
 		});
@@ -253,11 +260,18 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 
 	@Override
 	public void operationCanceled() {
-		updateProgressAnimation.setVisible(false);
-		updateProgressText.setVisible(false);
-		okButton.setText(bundle.getString("button.ok"));
-		okButton.setDisable(false);
-		cancelButton.setText(bundle.getString("button.cancel"));
+		Platform.runLater(new Runnable(){
+			@Override
+			public void run() {
+				updateProgressAnimation.setVisible(false);
+				updateProgressText.setVisible(false);
+				okButton.setText(bundle.getString("button.ok"));
+				okButton.setDisable(false);
+				cancelButton.setText(bundle.getString("button.cancel"));
+				updateProgressBar.setVisible(false);
+			}
+			
+		});
 	}
 
 	@Override
@@ -276,7 +290,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 
 			@Override
 			public void run() {
-				updateProgressAnimation.setProgress(kilobytesDownloaded/totalFileSizeInKB);
+				updateProgressBar.setProgress(kilobytesDownloaded/totalFileSizeInKB);
 			}
 
 		});
