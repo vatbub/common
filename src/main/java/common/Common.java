@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import org.apache.commons.lang.SystemUtils;
 
+@SuppressWarnings("restriction")
 public class Common {
 
 	private static String appName;
