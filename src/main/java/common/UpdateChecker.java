@@ -4,9 +4,11 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.logging.Level;
 
 import org.jdom2.Document;
@@ -461,10 +463,18 @@ public class UpdateChecker {
 		if (launchUpdateAfterInstall) {
 			ProcessBuilder pb = null;
 			if (deleteOldVersion) {
-				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename, "deleteFile=");
-			} else {
-				pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename);
+				try {
+					String path = UpdateChecker.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+					String decodedPath = URLDecoder.decode(path, "UTF-8");
+					log.getLogger().info("The following file will be deleted, once the JVM exits: " + decodedPath);
+					(new File(decodedPath)).deleteOnExit();
+				} catch (UnsupportedEncodingException e) {
+					log.getLogger().log(Level.SEVERE, "An error occurred", e);
+				}
 			}
+			
+			log.getLogger().info("Launching new version using command: java -jar " + destFolder + File.separator + destFilename);
+			pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename).inheritIO();
 			pb.start();
 			System.exit(0);
 		}
