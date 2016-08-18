@@ -15,6 +15,7 @@ import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+import javafx.application.Platform;
 import logging.FOKLogger;
 
 /**
@@ -475,8 +476,15 @@ public class UpdateChecker {
 			
 			log.getLogger().info("Launching new version using command: java -jar " + destFolder + File.separator + destFilename);
 			pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename).inheritIO();
-			pb.start();
-			System.exit(0);
+			Process process = pb.start();
+			
+			// Wait for process to end
+			try {
+				process.waitFor();
+			} catch (InterruptedException e) {
+				log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			}
+			Platform.exit();
 		}
 
 		// Everything went smoothly
