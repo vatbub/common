@@ -21,6 +21,23 @@ public class VersionList extends ArrayList<Version> {
 	public VersionList(Collection<? extends Version> c) {
 		super(c);
 	}
+	
+	/**
+	 * Removes all snapshots from this list
+	 */
+	public void removeSnapshots(){
+		VersionList versToRemove = new VersionList();
+		
+		// collect Versions to be removed
+		for (Version ver:this){
+			if (ver.isSnapshot()){
+				versToRemove.add(ver);
+			}
+		}
+		
+		// remove them
+		this.removeAll(versToRemove);
+	}
 
 	/**
 	 * Checks if this list contains a snapshot version.
