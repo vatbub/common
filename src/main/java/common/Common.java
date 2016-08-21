@@ -1,18 +1,17 @@
 package common;
 
 import java.io.File;
-import java.lang.reflect.Method;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
 
 import com.jcabi.manifests.Manifests;
-import com.sun.javafx.tk.TKStage;
-
-import javafx.stage.Stage;
+import logging.FOKLogger;
 
 import org.apache.commons.lang.SystemUtils;
 
-@SuppressWarnings("restriction")
 public class Common {
 
 	private static String appName;
@@ -22,7 +21,8 @@ public class Common {
 	private static String mockBuildNumber = "";
 
 	private static String buildNumberManifestEntry = "Custom-Implementation-Build";
-	
+	private static FOKLogger log;
+
 	/**
 	 * Time when the app was launched. A simple call of the {@link Date}
 	 * -constructor will get the current timestamp. As this variable is
@@ -32,7 +32,7 @@ public class Common {
 	private static Date launchDate = new Date();
 
 	// General
-	
+
 	/**
 	 * Returns the current time as a String.
 	 * 
@@ -89,12 +89,12 @@ public class Common {
 
 		return workingDirectory + File.separator + appName + File.separator;
 	}
-	
-	public static String getAndCreateAppDataPath(){
+
+	public static String getAndCreateAppDataPath() {
 		String path = getAppDataPath();
-		
+
 		new File(path).mkdirs();
-		
+
 		return path;
 	}
 
@@ -116,6 +116,9 @@ public class Common {
 	 */
 	public static void setAppName(String appName) {
 		Common.appName = appName;
+
+		// Initialize the logger
+		log = new FOKLogger(UpdateChecker.class.getName());
 	}
 
 	/**
@@ -248,6 +251,41 @@ public class Common {
 	 */
 	public static void setBuildNumberManifestEntry(String buildNumberManifestEntry) {
 		Common.buildNumberManifestEntry = buildNumberManifestEntry;
+	}
+
+	/**
+	 * Returns the Path and name of the jar file this app was launcehd from.
+	 * 
+	 * @return The Path and name of the jar file this app was launcehd from.
+	 */
+	public static String getPathAndNameOfCurrentJar() {
+		String path = UpdateChecker.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+		try {
+			return URLDecoder.decode(path, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			return null;
+		}
+	}
+
+	/**
+	 * Returns how this java program is packaged. To be more specific, the file
+	 * extension of this program is returned. If this program is packaged as a
+	 * *.jar file, this method will return {@code "jar"}. If it is packaged as a
+	 * Windows Executable, this method will return {@code "exe"} and so on.
+	 * 
+	 * @return The file extension of this program or {@code null} if the
+	 *         packaging cannot be determined.
+	 */
+	public static String getPackaging() {
+		String path = Common.getPathAndNameOfCurrentJar();
+
+		int positionOfLastDot = path.lastIndexOf(".");
+		if (positionOfLastDot != -1) {
+			return path.substring(positionOfLastDot + 1);
+		} else {
+			return null;
+		}
 	}
 
 }

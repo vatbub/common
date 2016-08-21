@@ -4,11 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 import java.util.logging.Level;
 
 import org.jdom2.Document;
@@ -37,6 +35,7 @@ public class UpdateChecker {
 	 * {@link #isUpdateAvailable(URL, String, String, String)}
 	 * 
 	 * @param ver
+	 *            The version to ignore
 	 */
 	public static void ignoreUpdate(Version ver) {
 		log.getLogger().info("User ignores all updates up to (and including) version " + ver.toString());
@@ -47,18 +46,52 @@ public class UpdateChecker {
 	 * Checks if a new release has been published on the website. This does not
 	 * compare the current app version to the release version on the website,
 	 * just checks if something happened on the website. This ensures that
-	 * updates that were ignored by the user do not show up again.
+	 * updates that were ignored by the user do not show up again. Assumes that
+	 * the artifact has a jar-packaging.
 	 * 
+	 * @param repoBaseURL
+	 *            The base url of the maven repo to use
+	 * @param mavenGroupID
+	 *            The maven groupId of the artifact to update
+	 * @param mavenArtifactID
+	 *            The maven artifactId of the artifact to update
+	 * @param mavenClassifier
+	 *            The maven classifier of the artifact to update
 	 * @return {@code true} if a new release is available and the user did not
 	 *         ignore it.
 	 */
 	public static UpdateInfo isUpdateAvailable(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
 			String mavenClassifier) {
+		return isUpdateAvailable(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
+	}
+
+	/**
+	 * Checks if a new release has been published on the website. This does not
+	 * compare the current app version to the release version on the website,
+	 * just checks if something happened on the website. This ensures that
+	 * updates that were ignored by the user do not show up again.
+	 * 
+	 * @param repoBaseURL
+	 *            The base url of the maven repo to use
+	 * @param mavenGroupID
+	 *            The maven groupId of the artifact to update
+	 * @param mavenArtifactID
+	 *            The maven artifactId of the artifact to update
+	 * @param mavenClassifier
+	 *            The maven classifier of the artifact to update
+	 * @param packaging
+	 *            The packaging type of the artifact to update
+	 * @see Common#getPackaging()
+	 * @return {@code true} if a new release is available and the user did not
+	 *         ignore it.
+	 */
+	public static UpdateInfo isUpdateAvailable(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
+			String mavenClassifier, String packaging) {
 		String savedSetting = updatePrefs.getPreference(latestSeenVersionPrefKey, "");
 		UpdateInfo res = null;
 		try {
 			log.getLogger().info("Checking for updates...");
-			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
+			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, packaging);
 
 			Version currentVersion = null;
 
@@ -102,16 +135,48 @@ public class UpdateChecker {
 	/**
 	 * Checks if a new release has been published on the website. This compares
 	 * the current appVersion to the version available on the website and thus
-	 * does not take into account if the user ignored that update.
+	 * does not take into account if the user ignored that update. Assumes that
+	 * the artifact has a jar-packaging.
 	 * 
+	 * @param repoBaseURL
+	 *            The base url of the maven repo to use
+	 * @param mavenGroupID
+	 *            The maven groupId of the artifact to update
+	 * @param mavenArtifactID
+	 *            The maven artifactId of the artifact to update
+	 * @param mavenClassifier
+	 *            The maven classifier of the artifact to update
 	 * @return {@code true} if a new release is available.
 	 */
 	public static UpdateInfo isUpdateAvailableCompareAppVersion(URL repoBaseURL, String mavenGroupID,
 			String mavenArtifactID, String mavenClassifier) {
+		return isUpdateAvailableCompareAppVersion(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
+	}
+
+	/**
+	 * Checks if a new release has been published on the website. This compares
+	 * the current appVersion to the version available on the website and thus
+	 * does not take into account if the user ignored that update.
+	 * 
+	 * @param repoBaseURL
+	 *            The base url of the maven repo to use
+	 * @param mavenGroupID
+	 *            The maven groupId of the artifact to update
+	 * @param mavenArtifactID
+	 *            The maven artifactId of the artifact to update
+	 * @param mavenClassifier
+	 *            The maven classifier of the artifact to update
+	 * @param packaging
+	 *            The packaging type of the artifact to update
+	 * @see Common#getPackaging()
+	 * @return {@code true} if a new release is available.
+	 */
+	public static UpdateInfo isUpdateAvailableCompareAppVersion(URL repoBaseURL, String mavenGroupID,
+			String mavenArtifactID, String mavenClassifier, String packaging) {
 		UpdateInfo res = null;
 		try {
 			log.getLogger().info("Checking for updates...");
-			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier);
+			res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, packaging);
 
 			Version currentVersion = null;
 
@@ -166,8 +231,58 @@ public class UpdateChecker {
 		return getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, "");
 	}
 
+	/**
+	 * Retreives the {@link UpdateInfo} for the latest version available on the
+	 * specified maven repo for the specified artifact. Assumes that the
+	 * artifact has a jar-packaging.
+	 * 
+	 * @param repoBaseURL
+	 *            The base url where the repo can be reached. For Maven Central,
+	 *            this is {@link http://repo1.maven.org/maven/}
+	 * @param mavenGroupID
+	 *            The groupID of the artifact to be looked up.
+	 * @param mavenArtifactID
+	 *            The artifactId of the artifact to be looked up.
+	 * @param mavenClassifier
+	 *            The classifier of the artifact to be looked up.
+	 * @return The {@link UpdateINfo} of the latest version of the artifact
+	 *         available at the specified repository.
+	 * @throws JDOMException
+	 *             If mavens {@code maven-metadata.xml} is not parseable (WHich
+	 *             will never be the case unless you don't modify it manually).
+	 * @throws IOException
+	 *             In case mavens {@code maven-metadata.xml} cannot be retreived
+	 *             for any other reason.
+	 */
 	private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
 			String mavenClassifier) throws JDOMException, IOException {
+		return getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
+	}
+
+	/**
+	 * Retreives the {@link UpdateInfo} for the latest version available on the
+	 * specified maven repo for the specified artifact.
+	 * 
+	 * @param repoBaseURL
+	 *            The base url where the repo can be reached. For Maven Central,
+	 *            this is {@link http://repo1.maven.org/maven/}
+	 * @param mavenGroupID
+	 *            The groupID of the artifact to be looked up.
+	 * @param mavenArtifactID
+	 *            The artifactId of the artifact to be looked up.
+	 * @param mavenClassifier
+	 *            The classifier of the artifact to be looked up.
+	 * @return The {@link UpdateINfo} of the latest version of the artifact
+	 *         available at the specified repository.
+	 * @throws JDOMException
+	 *             If mavens {@code maven-metadata.xml} is not parseable (WHich
+	 *             will never be the case unless you don't modify it manually).
+	 * @throws IOException
+	 *             In case mavens {@code maven-metadata.xml} cannot be retreived
+	 *             for any other reason.
+	 */
+	private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
+			String mavenClassifier, String packaging) throws JDOMException, IOException {
 		UpdateInfo res = new UpdateInfo();
 
 		Document mavenMetadata = getMavenMetadata(repoBaseURL, mavenGroupID, mavenArtifactID);
@@ -181,10 +296,10 @@ public class UpdateChecker {
 		if (!mavenClassifier.equals("")) {
 			// classifier specified
 			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/" + res.toVersion + "/"
-					+ mavenArtifactID + "-" + res.toVersion + "-" + mavenClassifier + ".jar";
+					+ mavenArtifactID + "-" + res.toVersion + "-" + mavenClassifier + "." + packaging;
 		} else {
 			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/" + res.toVersion + "/"
-					+ mavenArtifactID + "-" + res.toVersion + ".jar";
+					+ mavenArtifactID + "-" + res.toVersion + "." + packaging;
 		}
 
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -464,20 +579,16 @@ public class UpdateChecker {
 		if (launchUpdateAfterInstall) {
 			ProcessBuilder pb = null;
 			if (deleteOldVersion) {
-				try {
-					String path = UpdateChecker.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-					String decodedPath = URLDecoder.decode(path, "UTF-8");
-					log.getLogger().info("The following file will be deleted, once the JVM exits: " + decodedPath);
-					(new File(decodedPath)).deleteOnExit();
-				} catch (UnsupportedEncodingException e) {
-					log.getLogger().log(Level.SEVERE, "An error occurred", e);
-				}
+				String decodedPath = Common.getPathAndNameOfCurrentJar();
+				log.getLogger().info("The following file will be deleted, once the JVM exits: " + decodedPath);
+				(new File(decodedPath)).deleteOnExit();
 			}
-			
-			log.getLogger().info("Launching new version using command: java -jar " + destFolder + File.separator + destFilename);
+
+			log.getLogger().info(
+					"Launching new version using command: java -jar " + destFolder + File.separator + destFilename);
 			pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename).inheritIO();
 			Process process = pb.start();
-			
+
 			// Wait for process to end
 			try {
 				process.waitFor();
