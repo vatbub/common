@@ -249,26 +249,5 @@ public class Common {
 	public static void setBuildNumberManifestEntry(String buildNumberManifestEntry) {
 		Common.buildNumberManifestEntry = buildNumberManifestEntry;
 	}
-	
-	/**
-	 * Returns the native window pointer of the specified {@link Stage} (Windows only).
-	 * @param stage The stage to which the pointer shall be returned.
-	 * @return
-	 */
-	public static long getWindowPointer(Stage stage) {
-	    try {
-	        TKStage tkStage = stage.impl_getPeer();
-	        Method getPlatformWindow = tkStage.getClass().getDeclaredMethod("getPlatformWindow" );
-	        getPlatformWindow.setAccessible(true);
-	        Object platformWindow = getPlatformWindow.invoke(tkStage);
-	        Method getNativeHandle = platformWindow.getClass().getMethod( "getNativeHandle" );
-	        getNativeHandle.setAccessible(true);
-	        Object nativeHandle = getNativeHandle.invoke(platformWindow);
-	        return (Long) nativeHandle;
-	    } catch (Throwable e) {
-	        System.err.println("Error getting Window Pointer");
-	        return 0;
-	    }
-	}
 
 }
