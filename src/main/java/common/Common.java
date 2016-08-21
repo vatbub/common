@@ -19,6 +19,7 @@ public class Common {
 	public static String UNKNOWN_BUILD_NUMBER = "unknown build number";
 	private static String mockAppVersion = "";
 	private static String mockBuildNumber = "";
+	private static String mockPackaging = "";
 
 	private static String buildNumberManifestEntry = "Custom-Implementation-Build";
 	private static FOKLogger log;
@@ -130,7 +131,7 @@ public class Common {
 	 *            The version string to be used as the mock app version
 	 */
 	public static void setMockAppVersion(String version) {
-		System.out.println("Now using mock app version " + version);
+		log.getLogger().info("Now using mock app version " + version);
 		mockAppVersion = version;
 	}
 
@@ -161,7 +162,7 @@ public class Common {
 	 *            The build number to be used as the mock build number
 	 */
 	public static void setMockBuildNumber(String buildNumber) {
-		System.out.println("Now using mock build number " + buildNumber);
+		log.getLogger().info("Now using mock build number " + buildNumber);
 		mockBuildNumber = buildNumber;
 	}
 
@@ -181,6 +182,19 @@ public class Common {
 	 */
 	public static void clearMockBuildVersion() {
 		setMockBuildNumber("");
+	}
+
+	public static void setMockPackaging(String packaging) {
+		log.getLogger().info("Now using mock packaging " + packaging);
+		mockPackaging = packaging;
+	}
+
+	public static String getMockPackaging() {
+		return mockPackaging;
+	}
+
+	public static void clearMockPackaging() {
+		setMockPackaging("");
 	}
 
 	/**
@@ -278,13 +292,19 @@ public class Common {
 	 *         packaging cannot be determined.
 	 */
 	public static String getPackaging() {
-		String path = Common.getPathAndNameOfCurrentJar();
-
-		int positionOfLastDot = path.lastIndexOf(".");
-		if (positionOfLastDot != -1) {
-			return path.substring(positionOfLastDot + 1);
+		if (!Common.getMockPackaging().equals("")) {
+			// return the mock packaging
+			return Common.getMockPackaging();
 		} else {
-			return null;
+			// return the true packaging
+			String path = Common.getPathAndNameOfCurrentJar();
+
+			int positionOfLastDot = path.lastIndexOf(".");
+			if (positionOfLastDot != -1) {
+				return path.substring(positionOfLastDot + 1);
+			} else {
+				return null;
+			}
 		}
 	}
 
