@@ -295,10 +295,10 @@ public class UpdateChecker {
 		String url = "";
 		if (!mavenClassifier.equals("")) {
 			// classifier specified
-			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/" + res.toVersion + "/"
+			url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.',  '/') + "/" + mavenArtifactID + "/" + res.toVersion + "/"
 					+ mavenArtifactID + "-" + res.toVersion + "-" + mavenClassifier + "." + packaging;
 		} else {
-			url = repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/" + res.toVersion + "/"
+			url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.',  '/') + "/" + mavenArtifactID + "/" + res.toVersion + "/"
 					+ mavenArtifactID + "-" + res.toVersion + "." + packaging;
 		}
 
@@ -360,7 +360,7 @@ public class UpdateChecker {
 	private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
 			throws JDOMException, IOException {
 		Document doc = new SAXBuilder().build(
-				new URL(repoBaseURL.toString() + "/" + mavenGroupID + "/" + mavenArtifactID + "/maven-metadata.xml"));
+				new URL(repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/') + "/" + mavenArtifactID + "/maven-metadata.xml"));
 		return doc;
 	}
 
@@ -475,11 +475,11 @@ public class UpdateChecker {
 
 		// Construct the download url
 		if (updateToInstall.mavenClassifier.equals("")) {
-			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID + "/"
+			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.',  '/') + "/"
 					+ updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
 					+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar");
 		} else {
-			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID + "/"
+			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.',  '/') + "/"
 					+ updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
 					+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
 					+ updateToInstall.mavenClassifier + ".jar");
