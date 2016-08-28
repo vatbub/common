@@ -51,4 +51,10 @@ public interface UpdateProgressDialog {
 	 * operation was cancelled.
 	 */
 	public void operationCanceled();
+	
+	/**
+	 * Invoked when any error happens
+	 * @param message The message to display
+	 */
+	public void showErrorMessage(String message);
 }
