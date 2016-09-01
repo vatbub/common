@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import logging.FOKLogger;
 
@@ -45,7 +46,7 @@ public class Prefs {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.getLogger().log(Level.SEVERE, "An error occurred", e);
 		}
 	}
 
