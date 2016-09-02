@@ -59,14 +59,28 @@ public class Common {
 	}
 
 	/**
-	 * Gets the appData directory of the os. In case the current OS is Windows,
-	 * it returns C:\Users\(username)\AppData\Roaming, in case of Mac, it
-	 * returns (home directory)/Library/Application Support and in case of
-	 * Linux, it returns the home directory.<br>
+	 * Gets the appData directory of the os including a subdirectory for this
+	 * app.<br>
+	 * In case the current OS is Windows, it returns
+	 * {@code C:\Users\(username)\AppData\Roaming\(appName)\}, in case of Mac,
+	 * it returns
+	 * {@code (home directory)/Library/Application Support/(appName)/} and in
+	 * case of Linux, it returns the home directory.<br>
+	 * <br>
+	 * The path returned by this method always finishes with a \ (Windows) or a
+	 * / (Mac, Linux) (See {@link File#seperator})<br>
+	 * As this method uses the app name, you need to set the app name using
+	 * {@link Common#setAppName(String)} or you will get a
+	 * {@code NullPointerException}<br>
 	 * <br>
 	 * 
+	 * @throws NullPointerException
+	 *             if no app name is specified using
+	 *             {@link Common#setAppName(String)}
 	 * @return The sub directory of the home directory of the os where the app
 	 *         can save all files that need to persist, e. g. settings
+	 * @see Common#setAppName(String)
+	 * @see Common#getAndCreateAppDataPath()
 	 */
 	public static String getAppDataPath() {
 		if (appName == null) {
@@ -91,6 +105,18 @@ public class Common {
 		return workingDirectory + File.separator + appName + File.separator;
 	}
 
+	/**
+	 * Returns the same path as {@link Common#getAppDataPath()} but also creates
+	 * the whole underlying folder structure if not already present.
+	 * 
+	 * @throws NullPointerException
+	 *             if no app name is specified using
+	 *             {@link Common#setAppName(String)}
+	 * @return The sub directory of the home directory of the os where the app
+	 *         can save all files that need to persist, e. g. settings
+	 * @see Common#setAppName(String)
+	 * @see Common#getAppDataPath()
+	 */
 	public static String getAndCreateAppDataPath() {
 		String path = getAppDataPath();
 
