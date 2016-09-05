@@ -68,7 +68,7 @@ public class Common {
 	 * case of Linux, it returns the home directory.<br>
 	 * <br>
 	 * The path returned by this method always finishes with a \ (Windows) or a
-	 * / (Mac, Linux) (See {@link File#seperator})<br>
+	 * / (Mac, Linux) (See {@code File#seperator})<br>
 	 * As this method uses the app name, you need to set the app name using
 	 * {@link Common#setAppName(String)} or you will get a
 	 * {@code NullPointerException}<br>
@@ -129,7 +129,8 @@ public class Common {
 	 * Get the current name of the app that was set with
 	 * {@link #setAppName(String)}.
 	 * 
-	 * @return
+	 * @return The current name of the app that was set with
+	 *         {@link #setAppName(String)}.
 	 */
 	public static String getAppName() {
 		return appName;
@@ -139,7 +140,7 @@ public class Common {
 	 * Sets the name of the app. This is necessary to get the AppDataPath using
 	 * {@link #getAppDataPath()}.
 	 * 
-	 * @param appName
+	 * @param appName The name of the app.
 	 */
 	public static void setAppName(String appName) {
 		Common.appName = appName;
@@ -181,7 +182,7 @@ public class Common {
 
 	/**
 	 * Enables a mock build number. If a mock build number is set,
-	 * {@link #getAppVersion(boolean)} will not return the mock build number
+	 * {@link #getAppVersion()} will not return the mock build number
 	 * instead of the actual build number.
 	 * 
 	 * @param buildNumber

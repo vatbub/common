@@ -295,11 +295,12 @@ public class UpdateChecker {
 		String url = "";
 		if (!mavenClassifier.equals("")) {
 			// classifier specified
-			url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.',  '/') + "/" + mavenArtifactID + "/" + res.toVersion + "/"
-					+ mavenArtifactID + "-" + res.toVersion + "-" + mavenClassifier + "." + packaging;
+			url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/') + "/" + mavenArtifactID + "/"
+					+ res.toVersion + "/" + mavenArtifactID + "-" + res.toVersion + "-" + mavenClassifier + "."
+					+ packaging;
 		} else {
-			url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.',  '/') + "/" + mavenArtifactID + "/" + res.toVersion + "/"
-					+ mavenArtifactID + "-" + res.toVersion + "." + packaging;
+			url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/') + "/" + mavenArtifactID + "/"
+					+ res.toVersion + "/" + mavenArtifactID + "-" + res.toVersion + "." + packaging;
 		}
 
 		HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -359,8 +360,8 @@ public class UpdateChecker {
 	 */
 	private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
 			throws JDOMException, IOException {
-		Document doc = new SAXBuilder().build(
-				new URL(repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/') + "/" + mavenArtifactID + "/maven-metadata.xml"));
+		Document doc = new SAXBuilder().build(new URL(repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/')
+				+ "/" + mavenArtifactID + "/maven-metadata.xml"));
 		return doc;
 	}
 
@@ -373,6 +374,9 @@ public class UpdateChecker {
 	 * @param updateToInstall
 	 *            The {@link UpdateInfo}-object that contains the information
 	 *            about the update to download
+	 * @return {@code true} if the download finished successfully, {@code false}
+	 *         if the download was canelled using
+	 *         {@link #cancelDownloadAndLaunch()}
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -392,6 +396,12 @@ public class UpdateChecker {
 	 * @param updateToInstall
 	 *            The {@link UpdateInfo}-object that contains the information
 	 *            about the update to download
+	 * @param gui
+	 *            The reference to an {@link UpdateProgressDialog} that displays
+	 *            the current update status.
+	 * @return {@code true} if the download finished successfully, {@code false}
+	 *         if the download was canelled using
+	 *         {@link #cancelDownloadAndLaunch()}
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -411,6 +421,15 @@ public class UpdateChecker {
 	 * @param updateToInstall
 	 *            The {@link UpdateInfo}-object that contains the information
 	 *            about the update to download
+	 * @param gui
+	 *            The reference to an {@link UpdateProgressDialog} that displays
+	 *            the current update status.
+	 * @param launchUpdateAfterInstall
+	 *            If {@code true}, the downloaded file will be launched after
+	 *            the download succeeds.
+	 * @return {@code true} if the download finished successfully, {@code false}
+	 *         if the download was canelled using
+	 *         {@link #cancelDownloadAndLaunch()}
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -433,6 +452,12 @@ public class UpdateChecker {
 	 * @param gui
 	 *            The reference to an {@link UpdateProgressDialog} that displays
 	 *            the current update status.
+	 * @param launchUpdateAfterInstall
+	 *            If {@code true}, the downloaded file will be launched after
+	 *            the download succeeds.
+	 * @param deleteOldVersion
+	 *            If {@code true}, the old app version will be automatically
+	 *            deleted once the new version is downloaded.
 	 * @return {@code true} if the download finished successfully, {@code false}
 	 *         if the download was canelled using
 	 *         {@link #cancelDownloadAndLaunch()}
@@ -475,14 +500,15 @@ public class UpdateChecker {
 
 		// Construct the download url
 		if (updateToInstall.mavenClassifier.equals("")) {
-			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.',  '/') + "/"
-					+ updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
-					+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar");
+			artifactURL = new URL(
+					updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.', '/')
+							+ "/" + updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
+							+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar");
 		} else {
-			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.',  '/') + "/"
-					+ updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
-					+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
-					+ updateToInstall.mavenClassifier + ".jar");
+			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/"
+					+ updateToInstall.mavenGroupID.replace('.', '/') + "/" + updateToInstall.mavenArtifactID + "/"
+					+ updateToInstall.toVersion.toString() + "/" + updateToInstall.mavenArtifactID + "-"
+					+ updateToInstall.toVersion.toString() + "-" + updateToInstall.mavenClassifier + ".jar");
 		}
 
 		// Perform Cancel if requested

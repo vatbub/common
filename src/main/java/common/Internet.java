@@ -16,7 +16,7 @@ import logging.FOKLogger;
  *
  */
 public class Internet {
-	
+
 	private static FOKLogger log = new FOKLogger(Internet.class.getName());
 
 	/**
@@ -29,6 +29,7 @@ public class Internet {
 	 *            <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
 	 * @param eventName
 	 *            The name of the event to trigger.
+	 * @return The response text from IFTTT
 	 * @throws IOException
 	 *             Should actually never be thrown but occurs if something is
 	 *             wrong with the connection (e. g. not connected)
@@ -54,6 +55,7 @@ public class Internet {
 	 *            <a href=
 	 *            "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
 	 *            for more information.
+	 * @return The response text from IFTTT
 	 * @throws IOException
 	 *             Should actually never be thrown but occurs if something is
 	 *             wrong with the connection (e. g. not connected)
@@ -81,6 +83,7 @@ public class Internet {
 	 *            for more information.
 	 * @param Details2
 	 *            The second additional parameter.
+	 * @return The response text from IFTTT
 	 * @throws IOException
 	 *             Should actually never be thrown but occurs if something is
 	 *             wrong with the connection (e. g. not connected)
@@ -110,6 +113,7 @@ public class Internet {
 	 *            The second additional parameter.
 	 * @param Details3
 	 *            The third additional parameter.
+	 * @return The response text from IFTTT
 	 * @throws IOException
 	 *             Should actually never be thrown but occurs if something is
 	 *             wrong with the connection (e. g. not connected)

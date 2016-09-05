@@ -70,7 +70,7 @@ public class FOKLogger {
 	}
 
 	/**
-	 * @param fileLogLevel
+	 * @param newFileLogLevel
 	 *            the fileLogLevel to set
 	 */
 	public static void setFileLogLevel(Level newFileLogLevel) {
@@ -89,7 +89,7 @@ public class FOKLogger {
 	}
 
 	/**
-	 * @param consoleLogLevel
+	 * @param newConsoleLogLevel
 	 *            the consoleLogLevel to set
 	 */
 	public static void setConsoleLogLevel(Level newConsoleLogLevel) {
@@ -139,6 +139,10 @@ public class FOKLogger {
 	 *            The name of the calling class. It is recommended to use the
 	 *            fully qualified class name that you can get with
 	 *            {@code (YourClassName).class.getName()}.
+	 * @param newLogFilePath
+	 *            The file where the log file shall be saved in
+	 * @param newLogFileName
+	 *            The name of the log file
 	 */
 	public FOKLogger(String className, String newLogFilePath, String newLogFileName) {
 		logFilePath = newLogFilePath;
