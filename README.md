@@ -3,6 +3,10 @@ Common classes for FOKProjects
 
 This repository holds the Maven Artifact `fokprojects.common` which currently contains classes for:
   - Self-Update of a java app (in developement)
+  - Saving preferences
+  - Logging (using `java.util.logging`)
+  - Comparing version numbers
+  - A basic dialog to notify the user of an update
   
 To add this artifact as a maven dependency, add the following repositories and dependency to your pom:
 
