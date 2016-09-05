@@ -9,26 +9,29 @@ To add this artifact as a maven dependency, add the following repositories and d
 ```xml
 ...
 <repositories>
-  ...
-    <repository>
-      <id>fokReleaseRepo</id>
-      <name>FOK Release Repository</name>
-      <url>http://vatbub.bplaced.net/mavenRepo/release/</url>
-    </repository>
-    <repository>
-      <id>fokSnapshotRepo</id>
-      <name>FOK Snapshot Repository</name>
-      <url>http://vatbub.bplaced.net/mavenRepo/snapshots/</url>
-    </repository>
-  ...
-  </repositories>
-  ...
+    ...
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-vatbub-fokprojectsSnapshots</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/vatbub/fokprojectsSnapshots</url>
+        </repository>
+        <repository>
+            <snapshots />
+            <id>snapshots</id>
+            <name>libs-snapshot</name>
+            <url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
+        </repository>
+    </repositories>
+    ...
   <dependencies>
 		...
 		<dependency>
 			<groupId>fokprojects</groupId>
 			<artifactId>common</artifactId>
-			<version>0.0.2</version>
+			<version>0.0.12</version>
 		</dependency>
 		...
 	</dependencies>
