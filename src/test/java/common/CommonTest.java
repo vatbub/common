@@ -53,5 +53,24 @@ public class CommonTest {
 
 		Common.setMockAppVersion(mockVersion);
 		assert Common.getAppVersion().equals(mockVersion);
+		
+		Common.clearMockAppVersion();
+		assert Common.getAppVersion().equals(Common.UNKNOWN_APP_VERSION);
+	}
+	
+	@Test
+	public void setMockBuildNumberTest(){
+		String mockBuildNumber = "111";
+		// set app name
+		String appName = "UnitTests";
+
+		Common.setAppName(appName);
+		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
+		
+		Common.setMockBuildNumber(mockBuildNumber);
+		assert Common.getBuildNumber().equals(mockBuildNumber);
+		
+		Common.clearMockAppVersion();
+		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
 	}
 }
