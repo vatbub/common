@@ -15,8 +15,8 @@ import org.apache.commons.lang.SystemUtils;
 public class Common {
 
 	private static String appName;
-	public static String UNKNOWN_APP_VERSION = "unknown version";
-	public static String UNKNOWN_BUILD_NUMBER = "unknown build number";
+	public static final String UNKNOWN_APP_VERSION = "unknown version";
+	public static final String UNKNOWN_BUILD_NUMBER = "unknown build number";
 	private static String mockAppVersion = "";
 	private static String mockBuildNumber = "";
 	private static String mockPackaging = "";
