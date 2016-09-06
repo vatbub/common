@@ -146,7 +146,7 @@ public class Common {
 		Common.appName = appName;
 
 		// Initialize the logger
-		log = new FOKLogger(UpdateChecker.class.getName());
+		log = new FOKLogger(Common.class.getName());
 	}
 
 	/**
