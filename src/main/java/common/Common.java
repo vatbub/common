@@ -92,12 +92,12 @@ public class Common {
 
 		if (SystemUtils.IS_OS_WINDOWS) {
 			// it is simply the location of the "AppData" folder
-			workingDirectory = System.getenv("AppData");
+			workingDirectory = System.getenv("AppData"); // $COVERAGE-IGNORE$
 		} else if (SystemUtils.IS_OS_MAC) {
-			workingDirectory = System.getProperty("user.home");
+			workingDirectory = System.getProperty("user.home"); // $COVERAGE-IGNORE$
 			workingDirectory += "/Library/Application Support";
 		} else {
-			workingDirectory = System.getProperty("user.home");
+			workingDirectory = System.getProperty("user.home"); // $COVERAGE-IGNORE$
 			// Support"
 			workingDirectory += "/.local/share";
 		}
@@ -241,7 +241,7 @@ public class Common {
 			if (ver == null) {
 				return UNKNOWN_APP_VERSION;
 			} else {
-				return ver;
+				return ver; // $COVERAGE-IGNORE$
 			}
 		}
 	}
@@ -265,7 +265,7 @@ public class Common {
 			// A mock build number was defined
 			return mockBuildNumber;
 		} else if (Manifests.exists(buildNumberManifestEntry)) {
-			return Manifests.read(buildNumberManifestEntry);
+			return Manifests.read(buildNumberManifestEntry); // $COVERAGE-IGNORE$
 		} else {
 			return UNKNOWN_BUILD_NUMBER;
 		}
@@ -304,7 +304,7 @@ public class Common {
 		try {
 			return URLDecoder.decode(path, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			log.getLogger().log(Level.SEVERE, "An error occurred", e); // $COVERAGE-IGNORE$
 			return null;
 		}
 	}
@@ -328,7 +328,7 @@ public class Common {
 
 			int positionOfLastDot = path.lastIndexOf(".");
 			if (positionOfLastDot != -1) {
-				return path.substring(positionOfLastDot + 1);
+				return path.substring(positionOfLastDot + 1); // $COVERAGE-IGNORE$
 			} else {
 				return null;
 			}
