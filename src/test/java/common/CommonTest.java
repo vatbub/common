@@ -1,6 +1,7 @@
 package common;
 
 import java.io.File;
+import java.util.Calendar;
 
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Test;
@@ -43,6 +44,60 @@ public class CommonTest {
 	}
 
 	@Test
+	public void getCurrentTimeStampTest() {
+		String timestamp = Common.getCurrentTimeStamp();
+
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+
+		String monthString;
+		if (month < 10) {
+			monthString = "0" + month;
+		} else {
+			monthString = Integer.toString(month);
+		}
+
+		int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+		String dayString;
+		if (day < 10) {
+			dayString = "0" + day;
+		} else {
+			dayString = Integer.toString(day);
+		}
+
+		int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+		String hourString;
+		if (hour < 10) {
+			hourString = "0" + hour;
+		} else {
+			hourString = Integer.toString(hour);
+		}
+
+		int minute = Calendar.getInstance().get(Calendar.MINUTE);
+
+		String minuteString;
+		if (minute < 10) {
+			minuteString = "0" + minute;
+		} else {
+			minuteString = Integer.toString(minute);
+		}
+
+		int second = Calendar.getInstance().get(Calendar.SECOND);
+
+		String secondString;
+		if (second < 10) {
+			secondString = "0" + second;
+		} else {
+			secondString = Integer.toString(second);
+		}
+		
+		assert timestamp.equals(year + "-" + monthString + "-" + dayString + "_" + hourString + "-" + minuteString + "-"
+				+ secondString);
+	}
+
+	@Test
 	public void setMockAppVersionTest() {
 		String mockVersion = "111";
 		// set app name
@@ -55,14 +110,14 @@ public class CommonTest {
 		Common.setMockAppVersion(mockVersion);
 		assert Common.getMockAppVersion().equals(mockVersion);
 		assert Common.getAppVersion().equals(mockVersion);
-		
+
 		Common.clearMockAppVersion();
 		assert Common.getAppVersion().equals(Common.UNKNOWN_APP_VERSION);
 		assert Common.getMockAppVersion().equals("");
 	}
-	
+
 	@Test
-	public void setMockBuildNumberTest(){
+	public void setMockBuildNumberTest() {
 		String mockBuildNumber = "111";
 		// set app name
 		String appName = "UnitTests";
@@ -70,18 +125,18 @@ public class CommonTest {
 		Common.setAppName(appName);
 		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
 		assert Common.getMockBuildNumber().equals("");
-		
+
 		Common.setMockBuildNumber(mockBuildNumber);
 		assert Common.getBuildNumber().equals(mockBuildNumber);
 		assert Common.getMockBuildNumber().equals(mockBuildNumber);
-		
+
 		Common.clearMockBuildVersion();
 		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
 		assert Common.getMockBuildNumber().equals("");
 	}
-	
-	@Test 
-	public void packagingTest(){
+
+	@Test
+	public void packagingTest() {
 		String mockBuildNumber = "111";
 		// set app name
 		String appName = "UnitTests";
@@ -89,15 +144,15 @@ public class CommonTest {
 
 		Common.setAppName(appName);
 		// no mock packaging set
-		assert Common.getPackaging()==null;
+		assert Common.getPackaging() == null;
 		assert Common.getMockPackaging().equals("");
-		
+
 		Common.setMockPackaging(packaging);
 		assert Common.getPackaging().equals(packaging);
 		assert Common.getMockPackaging().equals(packaging);
-		
+
 		Common.clearMockPackaging();
-		assert Common.getPackaging()==null;
+		assert Common.getPackaging() == null;
 		assert Common.getMockPackaging().equals("");
 	}
 }
