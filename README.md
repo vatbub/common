@@ -1,6 +1,8 @@
 # common
 Common classes for FOKProjects
 
+[![Build Status](https://travis-ci.org/vatbub/common.svg?branch=master)](https://travis-ci.org/vatbub/common)     [![Coverage Status](https://coveralls.io/repos/github/vatbub/common/badge.svg?branch=master)](https://coveralls.io/github/vatbub/common?branch=master)
+
 This repository holds the Maven Artifact `fokprojects.common` which currently contains classes for:
   - Self-Update of a java app (in developement)
   - Saving preferences
