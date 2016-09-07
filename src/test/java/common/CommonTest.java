@@ -69,11 +69,14 @@ public class CommonTest {
 
 		Common.setAppName(appName);
 		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
+		assert Common.getMockBuildNumber().equals("");
 		
 		Common.setMockBuildNumber(mockBuildNumber);
 		assert Common.getBuildNumber().equals(mockBuildNumber);
+		assert Common.getMockBuildNumber().equals(mockBuildNumber);
 		
 		Common.clearMockBuildVersion();
 		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
+		assert Common.getMockBuildNumber().equals("");
 	}
 }
