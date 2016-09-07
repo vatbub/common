@@ -50,12 +50,15 @@ public class CommonTest {
 
 		Common.setAppName(appName);
 		assert Common.getAppVersion().equals(Common.UNKNOWN_APP_VERSION);
+		assert Common.getMockAppVersion().equals("");
 
 		Common.setMockAppVersion(mockVersion);
+		assert Common.getMockAppVersion().equals(mockVersion);
 		assert Common.getAppVersion().equals(mockVersion);
 		
 		Common.clearMockAppVersion();
 		assert Common.getAppVersion().equals(Common.UNKNOWN_APP_VERSION);
+		assert Common.getMockAppVersion().equals("");
 	}
 	
 	@Test
@@ -70,7 +73,7 @@ public class CommonTest {
 		Common.setMockBuildNumber(mockBuildNumber);
 		assert Common.getBuildNumber().equals(mockBuildNumber);
 		
-		Common.clearMockAppVersion();
+		Common.clearMockBuildVersion();
 		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
 	}
 }
