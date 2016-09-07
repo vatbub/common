@@ -19,7 +19,7 @@ public class VersionTest {
 		assert new Version(olderVersion).compareTo(new Version(newerVersion)) == -1;
 		assert new Version(newerVersion).compareTo(new Version(olderVersion)) == 1;
 	}
-	
+
 	@Test
 	public void compareSnapshotVersionWithBuildNumberTest() {
 		String olderVersion = "0.0.1-SNAPSHOT";
@@ -46,9 +46,9 @@ public class VersionTest {
 		assert new Version(olderVersion).compareTo(new Version(newerVersion)) == 0;
 		assert new Version(olderVersion).equals(new Version(newerVersion));
 	}
-	
+
 	@Test
-	public void compareToNullTest(){
+	public void compareToNullTest() {
 		String olderVersion = "0.0.1-SNAPSHOT";
 		assert new Version(olderVersion).compareTo(null) == 1;
 	}
@@ -66,15 +66,15 @@ public class VersionTest {
 		} catch (Exception e) {
 			if (e instanceof IllegalArgumentException) {
 				assert true;
-			}else {
+			} else {
 				// Any other exception was thrown
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	@Test
-	public void versionNullTest(){
+	public void versionNullTest() {
 		String olderVersion = null;
 		try {
 			// this is an illegal version format so an exception should be
@@ -86,7 +86,7 @@ public class VersionTest {
 		} catch (Exception e) {
 			if (e instanceof IllegalArgumentException) {
 				assert true;
-			}else {
+			} else {
 				// Any other exception was thrown
 				e.printStackTrace();
 			}
@@ -97,6 +97,21 @@ public class VersionTest {
 	public void getVersionTest() {
 		String olderVersion = "0.0.1";
 		assert new Version(olderVersion).getVersion().equals(olderVersion);
+	}
+
+	@Test
+	public void equalTest() {
+		Version v1 = new Version("0.0.1");
+		String someString = "123";
+		assert v1.equals(v1);
+		assert !(v1.equals(null));
+		assert !(v1.equals(someString));
+	}
+	
+	@Test
+	public void cloneTest(){
+		Version v1 = new Version("0.0.1");
+		assert v1.equals(v1.clone());
 	}
 
 }
