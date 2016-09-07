@@ -101,8 +101,11 @@ public class VersionTest {
 	
 	@Test
 	public void toStringTest(){
-		String versionString1 = "0.0.1";
-		String versionString2 = versionString1 + "-SNAPSHOT";
+		final String versionString1 = "0.0.1";
+		final String versionString2 = versionString1 + "-SNAPSHOT";
+		final String timestamp = "11111111";
+		final String buildNumber = "162";
+		
 		Version v1 = new Version(versionString1);
 		Version v2 = new Version(versionString2);
 		assert v1.toString().equals(versionString1);
@@ -112,6 +115,16 @@ public class VersionTest {
 		
 		// Explicitly leave the snapshot remark
 		assert v2.toString(false).equals(versionString2);
+		
+		// Add timestamp
+		v1.setTimestamp(timestamp);
+		assert v1.getTimestamp().equals(timestamp);
+		assert v1.toString().equals(versionString1 + "-" + timestamp);
+		v1.setTimestamp("");
+		
+		v1.setBuildNumber(buildNumber);
+		assert v1.getBuildNumber().equals(buildNumber);
+		assert v1.toString().equals(versionString1 + "-" + buildNumber);
 	}
 
 	@Test
