@@ -137,7 +137,6 @@ public class CommonTest {
 
 	@Test
 	public void packagingTest() {
-		String mockBuildNumber = "111";
 		// set app name
 		String appName = "UnitTests";
 		String packaging = "jar";
