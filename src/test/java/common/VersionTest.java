@@ -9,6 +9,7 @@ public class VersionTest {
 		String olderVersion = "0.0.1";
 		String newerVersion = "0.0.3";
 		assert new Version(olderVersion).compareTo(new Version(newerVersion)) == -1;
+		assert new Version(newerVersion).compareTo(new Version(olderVersion)) == 1;
 	}
 
 	@Test
@@ -16,6 +17,7 @@ public class VersionTest {
 		String olderVersion = "0.0.1-SNAPSHOT";
 		String newerVersion = "0.0.1";
 		assert new Version(olderVersion).compareTo(new Version(newerVersion)) == -1;
+		assert new Version(newerVersion).compareTo(new Version(olderVersion)) == 1;
 	}
 	
 	@Test
