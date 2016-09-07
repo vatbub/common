@@ -79,4 +79,25 @@ public class CommonTest {
 		assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
 		assert Common.getMockBuildNumber().equals("");
 	}
+	
+	@Test 
+	public void packagingTest(){
+		String mockBuildNumber = "111";
+		// set app name
+		String appName = "UnitTests";
+		String packaging = "jar";
+
+		Common.setAppName(appName);
+		// no mock packaging set
+		assert Common.getPackaging()==null;
+		assert Common.getMockPackaging().equals("");
+		
+		Common.setMockPackaging(packaging);
+		assert Common.getPackaging().equals(packaging);
+		assert Common.getMockPackaging().equals(packaging);
+		
+		Common.clearMockPackaging();
+		assert Common.getPackaging()==null;
+		assert Common.getMockPackaging().equals("");
+	}
 }
