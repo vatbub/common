@@ -22,13 +22,14 @@ public class VersionTest {
 
 	@Test
 	public void compareSnapshotVersionWithBuildNumberTest() {
-		String olderVersion = "0.0.1-SNAPSHOT";
+		String olderVersionString = "0.0.1-SNAPSHOT";
 		String oldBuildNumber = "10";
-		String newerVersion = "0.0.1-SNAPSHOT";
+		String newerVersionString = "0.0.1-SNAPSHOT";
 		String newBuildNumber = "11";
-		Version old = new Version(olderVersion, oldBuildNumber);
-		Version n = new Version(newerVersion, newBuildNumber);
-		assert old.compareTo(n) == -1;
+		Version oldVersion = new Version(olderVersionString, oldBuildNumber);
+		Version newVersion = new Version(newerVersionString, newBuildNumber);
+		assert oldVersion.compareTo(newVersion) == -1;
+		assert newVersion.compareTo(oldVersion) == 1;
 	}
 
 	@Test
@@ -98,30 +99,30 @@ public class VersionTest {
 		String olderVersion = "0.0.1";
 		assert new Version(olderVersion).getVersion().equals(olderVersion);
 	}
-	
+
 	@Test
-	public void toStringTest(){
+	public void toStringTest() {
 		final String versionString1 = "0.0.1";
 		final String versionString2 = versionString1 + "-SNAPSHOT";
 		final String timestamp = "11111111";
 		final String buildNumber = "162";
-		
+
 		Version v1 = new Version(versionString1);
 		Version v2 = new Version(versionString2);
 		assert v1.toString().equals(versionString1);
-		
+
 		// Snapshot remark should be removed
 		assert v2.toString().equals(versionString1);
-		
+
 		// Explicitly leave the snapshot remark
 		assert v2.toString(false).equals(versionString2);
-		
+
 		// Add timestamp
 		v1.setTimestamp(timestamp);
 		assert v1.getTimestamp().equals(timestamp);
 		assert v1.toString().equals(versionString1 + "-" + timestamp);
 		v1.setTimestamp("");
-		
+
 		v1.setBuildNumber(buildNumber);
 		assert v1.getBuildNumber().equals(buildNumber);
 		assert v1.toString().equals(versionString1 + "-" + buildNumber);
@@ -135,9 +136,9 @@ public class VersionTest {
 		assert !(v1.equals(null));
 		assert !(v1.equals(someString));
 	}
-	
+
 	@Test
-	public void cloneTest(){
+	public void cloneTest() {
 		Version v1 = new Version("0.0.1");
 		assert v1.equals(v1.clone());
 	}
