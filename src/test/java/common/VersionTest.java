@@ -98,6 +98,21 @@ public class VersionTest {
 		String olderVersion = "0.0.1";
 		assert new Version(olderVersion).getVersion().equals(olderVersion);
 	}
+	
+	@Test
+	public void toStringTest(){
+		String versionString1 = "0.0.1";
+		String versionString2 = versionString1 + "-SNAPSHOT";
+		Version v1 = new Version(versionString1);
+		Version v2 = new Version(versionString2);
+		assert v1.toString().equals(versionString1);
+		
+		// Snapshot remark should be removed
+		assert v2.toString().equals(versionString1);
+		
+		// Explicitly leave the snapshot remark
+		assert v2.toString(false).equals(versionString2);
+	}
 
 	@Test
 	public void equalTest() {
