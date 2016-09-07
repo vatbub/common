@@ -44,6 +44,12 @@ public class VersionTest {
 		assert new Version(olderVersion).compareTo(new Version(newerVersion)) == 0;
 		assert new Version(olderVersion).equals(new Version(newerVersion));
 	}
+	
+	@Test
+	public void compareToNullTest(){
+		String olderVersion = "0.0.1-SNAPSHOT";
+		assert new Version(olderVersion).compareTo(null) == 1;
+	}
 
 	@Test
 	public void illegalVersionFormatTest() {
