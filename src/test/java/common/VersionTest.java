@@ -31,6 +31,20 @@ public class VersionTest {
 		assert oldVersion.compareTo(newVersion) == -1;
 		assert newVersion.compareTo(oldVersion) == 1;
 	}
+	
+	@Test
+	public void compareSnapshotVersionWithTimestampTest(){
+		String olderVersionString = "0.0.1-SNAPSHOT";
+		String oldTimestamp = "20160401";
+		String newerVersionString = "0.0.1-SNAPSHOT";
+		String newTimestamp = "20160402";
+		Version oldVersion = new Version(olderVersionString);
+		oldVersion.setTimestamp(oldTimestamp);
+		Version newVersion = new Version(newerVersionString);
+		newVersion.setTimestamp(newTimestamp);
+		assert oldVersion.compareTo(newVersion) == -1;
+		assert newVersion.compareTo(oldVersion) == 1;
+	}
 
 	@Test
 	public void compareEqualReleaseVersionTest() {
