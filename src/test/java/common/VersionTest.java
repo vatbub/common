@@ -64,6 +64,26 @@ public class VersionTest {
 			}
 		}
 	}
+	
+	@Test
+	public void versionNullTest(){
+		String olderVersion = null;
+		try {
+			// this is an illegal version format so an exception should be
+			// thrown
+			new Version(olderVersion);
+
+			// No exception occurred
+			assert false;
+		} catch (Exception e) {
+			if (e instanceof IllegalArgumentException) {
+				assert true;
+			}else {
+				// Any other exception was thrown
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Test
 	public void getVersionTest() {
