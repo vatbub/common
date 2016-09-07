@@ -155,4 +155,14 @@ public class CommonTest {
 		assert Common.getPackaging() == null;
 		assert Common.getMockPackaging().equals("");
 	}
+	
+	@Test
+	public void buildNumberManifestEntryTest(){
+		// no entry set, check for the default one
+		assert Common.getBuildNumberManifestEntry().equals("Custom-Implementation-Build");
+		
+		String newEntry = "testEntryName";
+		Common.setBuildNumberManifestEntry(newEntry);
+		assert Common.getBuildNumberManifestEntry().equals(newEntry);
+	}
 }
