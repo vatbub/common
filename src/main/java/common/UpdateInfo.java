@@ -30,6 +30,11 @@ public class UpdateInfo {
 	public String mavenClassifier;
 	
 	/**
+	 * Describes how the artifact is packed.
+	 */
+	public String packaging;
+	
+	/**
 	 * {@code true} if a dialog should be presented to the user to download the update
 	 */
 	public boolean showAlert;

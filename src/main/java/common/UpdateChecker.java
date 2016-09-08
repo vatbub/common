@@ -333,6 +333,7 @@ public class UpdateChecker {
 		res.mavenGroupID = mavenGroupID;
 		res.mavenClassifier = mavenClassifier;
 		res.mavenRepoBaseURL = repoBaseURL;
+		res.packaging = packaging;
 
 		return res;
 	}
@@ -490,25 +491,26 @@ public class UpdateChecker {
 		// Construct file name of output file
 		if (updateToInstall.mavenClassifier.equals("")) {
 			// No classifier
-			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar";
+			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "." + updateToInstall.packaging;
 		} else {
 			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
-					+ updateToInstall.mavenClassifier + ".jar";
+					+ updateToInstall.mavenClassifier + "." + updateToInstall.packaging;
 		}
 
 		URL artifactURL;
 
 		// Construct the download url
 		if (updateToInstall.mavenClassifier.equals("")) {
-			artifactURL = new URL(
-					updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.', '/')
-							+ "/" + updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
-							+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + ".jar");
-		} else {
 			artifactURL = new URL(updateToInstall.mavenRepoBaseURL.toString() + "/"
 					+ updateToInstall.mavenGroupID.replace('.', '/') + "/" + updateToInstall.mavenArtifactID + "/"
 					+ updateToInstall.toVersion.toString() + "/" + updateToInstall.mavenArtifactID + "-"
-					+ updateToInstall.toVersion.toString() + "-" + updateToInstall.mavenClassifier + ".jar");
+					+ updateToInstall.toVersion.toString() + "." + updateToInstall.packaging);
+		} else {
+			artifactURL = new URL(
+					updateToInstall.mavenRepoBaseURL.toString() + "/" + updateToInstall.mavenGroupID.replace('.', '/')
+							+ "/" + updateToInstall.mavenArtifactID + "/" + updateToInstall.toVersion.toString() + "/"
+							+ updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
+							+ updateToInstall.mavenClassifier + "." + updateToInstall.packaging);
 		}
 
 		// Perform Cancel if requested
@@ -614,6 +616,10 @@ public class UpdateChecker {
 					"Launching new version using command: java -jar " + destFolder + File.separator + destFilename);
 			pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename).inheritIO();
 			Process process = pb.start();
+			
+			if (gui!=null){
+				
+			}
 
 			// Wait for process to end
 			try {
