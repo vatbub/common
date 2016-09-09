@@ -651,8 +651,12 @@ public class UpdateChecker {
 		if (launchUpdateAfterInstall) {
 			ProcessBuilder pb = null;
 			List<String> startupArgs = new ArrayList<String>();
-			startupArgs.add("java");
-			startupArgs.add("-jar");
+
+			if (updateToInstall.packaging.equals("jar")) {
+				startupArgs.add("java");
+				startupArgs.add("-jar");
+			}
+
 			startupArgs.add(destFolder + File.separator + destFilename);
 
 			if (deleteOldVersion) {
@@ -664,15 +668,14 @@ public class UpdateChecker {
 			log.getLogger()
 					.info("Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
 
-			pb = new ProcessBuilder(startupArgs);//.inheritIO();
+			pb = new ProcessBuilder(startupArgs);// .inheritIO();
 			Process process = pb.start();
 
-			/*// Wait for process to end
-			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				log.getLogger().log(Level.SEVERE, "An error occurred", e);
-			}*/
+			/*
+			 * // Wait for process to end try { process.waitFor(); } catch
+			 * (InterruptedException e) { log.getLogger().log(Level.SEVERE,
+			 * "An error occurred", e); }
+			 */
 			Platform.exit();
 		}
 
@@ -694,7 +697,7 @@ public class UpdateChecker {
 	 */
 	public static void completeUpdate(String[] startupArgs) {
 		for (String arg : startupArgs) {
-			if (arg.toLowerCase().matches("deleteFile=.*")) {
+			if (arg.toLowerCase().matches("deletefile=.*")) {
 				// delete a file
 				fileToDelete = arg.substring(arg.toLowerCase().indexOf('=') + 1);
 				deleteFileThread.setName("deleteFileThread");
