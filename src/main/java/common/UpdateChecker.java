@@ -669,7 +669,7 @@ public class UpdateChecker {
 					.info("Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
 
 			pb = new ProcessBuilder(startupArgs);// .inheritIO();
-			Process process = pb.start();
+			pb.start();
 
 			/*
 			 * // Wait for process to end try { process.waitFor(); } catch
