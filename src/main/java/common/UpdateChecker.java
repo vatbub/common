@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
@@ -29,6 +32,25 @@ public class UpdateChecker {
 	private static Prefs updatePrefs = new Prefs(UpdateChecker.class.getName());
 	private static boolean cancelDownloadAndLaunch;
 	private static FOKLogger log = new FOKLogger(UpdateChecker.class.getName());
+
+	private static boolean cancelUpdateCompletion = false;
+	private static String fileToDelete;
+	private static Thread deleteFileThread = new Thread() {
+		@Override
+		public void run() {
+			log.getLogger().info("Attempting to delete file " + fileToDelete + " ...");
+			do {
+				if (cancelUpdateCompletion) {
+					// cancel requested
+					log.getLogger().info("Update completion cancelled. The file " + fileToDelete + " was not deleted.");
+					break;
+				}
+			} while (!new File(fileToDelete).delete());
+
+			// If we arrive here, we successfully deleted the file
+			log.getLogger().info("Successfully deleted file " + fileToDelete);
+		}
+	};
 
 	/**
 	 * Versions lower or equal to {@code ver} will be ignored when using
@@ -370,7 +392,11 @@ public class UpdateChecker {
 	 * Downloads the specified update as a jar-file and launches it. The jar
 	 * file will be saved at the same location as the currently executed file
 	 * but will not replace it (unless it has the same filename but this will
-	 * never happen)
+	 * never happen). The old app file will be deleted once the updated one is
+	 * launched. <b>Please note</b> that the file can't delete itself on some
+	 * operating systems. Therefore, the deletion is done by the updated file.
+	 * To actually delete the file, you need to call
+	 * {@link #completeUpdate(String[])} in your applications main method.
 	 * 
 	 * @param updateToInstall
 	 *            The {@link UpdateInfo}-object that contains the information
@@ -378,6 +404,7 @@ public class UpdateChecker {
 	 * @return {@code true} if the download finished successfully, {@code false}
 	 *         if the download was canelled using
 	 *         {@link #cancelDownloadAndLaunch()}
+	 * @see #completeUpdate(String[])
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -392,7 +419,11 @@ public class UpdateChecker {
 	 * Downloads the specified update as a jar-file and launches it. The jar
 	 * file will be saved at the same location as the currently executed file
 	 * but will not replace it (unless it has the same filename but this will
-	 * never happen)
+	 * never happen). The old app file will be deleted once the updated one is
+	 * launched. <b>Please note</b> that the file can't delete itself on some
+	 * operating systems. Therefore, the deletion is done by the updated file.
+	 * To actually delete the file, you need to call
+	 * {@link #completeUpdate(String[])} in your applications main method.
 	 * 
 	 * @param updateToInstall
 	 *            The {@link UpdateInfo}-object that contains the information
@@ -403,6 +434,7 @@ public class UpdateChecker {
 	 * @return {@code true} if the download finished successfully, {@code false}
 	 *         if the download was canelled using
 	 *         {@link #cancelDownloadAndLaunch()}
+	 * @see #completeUpdate(String[])
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -417,7 +449,11 @@ public class UpdateChecker {
 	 * Downloads the specified update as a jar-file and launches it. The jar
 	 * file will be saved at the same location as the currently executed file
 	 * but will not replace it (unless it has the same filename but this will
-	 * never happen)
+	 * never happen). The old app file will be deleted once the updated one is
+	 * launched. <b>Please note</b> that the file can't delete itself on some
+	 * operating systems. Therefore, the deletion is done by the updated file.
+	 * To actually delete the file, you need to call
+	 * {@link #completeUpdate(String[])} in your applications main method.
 	 * 
 	 * @param updateToInstall
 	 *            The {@link UpdateInfo}-object that contains the information
@@ -431,6 +467,7 @@ public class UpdateChecker {
 	 * @return {@code true} if the download finished successfully, {@code false}
 	 *         if the download was canelled using
 	 *         {@link #cancelDownloadAndLaunch()}
+	 * @see #completeUpdate(String[])
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -458,10 +495,16 @@ public class UpdateChecker {
 	 *            the download succeeds.
 	 * @param deleteOldVersion
 	 *            If {@code true}, the old app version will be automatically
-	 *            deleted once the new version is downloaded.
+	 *            deleted once the new version is downloaded. <b>Please note</b>
+	 *            that the file can't delete itself on some operating systems.
+	 *            Therefore, the deletion is done by the updated file. To
+	 *            actually delete the file, you need to call
+	 *            {@link #completeUpdate(String[])} in your applications main
+	 *            method.
 	 * @return {@code true} if the download finished successfully, {@code false}
 	 *         if the download was canelled using
 	 *         {@link #cancelDownloadAndLaunch()}
+	 * @see #completeUpdate(String[])
 	 * @throws IllegalStateException
 	 *             if maven fails to download or copy the new artifact.
 	 * @throws IOException
@@ -491,7 +534,8 @@ public class UpdateChecker {
 		// Construct file name of output file
 		if (updateToInstall.mavenClassifier.equals("")) {
 			// No classifier
-			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "." + updateToInstall.packaging;
+			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "."
+					+ updateToInstall.packaging;
 		} else {
 			destFilename = updateToInstall.mavenArtifactID + "-" + updateToInstall.toVersion.toString() + "-"
 					+ updateToInstall.mavenClassifier + "." + updateToInstall.packaging;
@@ -606,32 +650,65 @@ public class UpdateChecker {
 
 		if (launchUpdateAfterInstall) {
 			ProcessBuilder pb = null;
+			List<String> startupArgs = new ArrayList<String>();
+			startupArgs.add("java");
+			startupArgs.add("-jar");
+			startupArgs.add(destFolder + File.separator + destFilename);
+
 			if (deleteOldVersion) {
 				String decodedPath = Common.getPathAndNameOfCurrentJar();
-				log.getLogger().info("The following file will be deleted, once the JVM exits: " + decodedPath);
-				(new File(decodedPath)).deleteOnExit();
+				log.getLogger().info("The following file will be deleted once the update completes: " + decodedPath);
+				startupArgs.add("deleteFile=" + decodedPath);
 			}
 
-			log.getLogger().info(
-					"Launching new version using command: java -jar " + destFolder + File.separator + destFilename);
-			pb = new ProcessBuilder("java", "-jar", destFolder + File.separator + destFilename).inheritIO();
+			log.getLogger()
+					.info("Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
+
+			pb = new ProcessBuilder(startupArgs);//.inheritIO();
 			Process process = pb.start();
-			
-			if (gui!=null){
-				
-			}
 
-			// Wait for process to end
+			/*// Wait for process to end
 			try {
 				process.waitFor();
 			} catch (InterruptedException e) {
 				log.getLogger().log(Level.SEVERE, "An error occurred", e);
-			}
+			}*/
 			Platform.exit();
 		}
 
 		// Everything went smoothly
 		return true;
+	}
+
+	/**
+	 * Completes the update after the updated version of the app is launched.
+	 * Especially deletes the old application file if commanded.<br>
+	 * <br>
+	 * <b>Note:</b> The old file is deleted in a seperate thread. This way, the
+	 * file is deleted, as soon as it is unlocked by the os. If you wish to
+	 * cancel the delete thread (e. g. because the user exits the app), call
+	 * {@link #cancelUpdateCompletion()}
+	 * 
+	 * @param startupArgs
+	 *            All arguments passed to the {@code main}-method of the app.
+	 */
+	public static void completeUpdate(String[] startupArgs) {
+		for (String arg : startupArgs) {
+			if (arg.toLowerCase().matches("deleteFile=.*")) {
+				// delete a file
+				fileToDelete = arg.substring(arg.toLowerCase().indexOf('=') + 1);
+				deleteFileThread.setName("deleteFileThread");
+				deleteFileThread.start();
+			}
+		}
+	}
+
+	/**
+	 * Cancels the update completion started using
+	 * {@link #completeUpdate(String[])}
+	 */
+	public static void cancelUpdateCompletion() {
+		cancelUpdateCompletion = true;
 	}
 
 	public static void cancelDownloadAndLaunch() {
