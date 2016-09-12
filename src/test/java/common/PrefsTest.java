@@ -32,4 +32,24 @@ public class PrefsTest {
 		
 		assert prefRead1.equals(testValue);
 	}
+	
+	@Test
+	public void readAfterSaveTest(){
+		Common.setAppName("fokprojectUnitTests");
+		int randomNumber = (int) (Math.random()*1000000000);
+		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
+		String prefKey = "testPreference";
+		String testValue = "theTestValue"; // Must be different than defaultValue
+		String defaultValue = "theDefaultValue";
+		
+		prefs.setPreference(prefKey, testValue);
+		
+		// Reread the preferences
+		Prefs prefs2 = new Prefs(PrefsTest.class.getName() + randomNumber);
+		
+		// Should return testValue
+		String prefRead1 = prefs2.getPreference(prefKey, defaultValue);
+		
+		assert prefRead1.equals(testValue);
+	}
 }
