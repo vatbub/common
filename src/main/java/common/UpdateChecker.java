@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -528,7 +529,16 @@ public class UpdateChecker {
 			return false;
 		}
 
-		String destFolder = System.getProperty("user.dir");
+		String destFolder;
+		File currentSourceFolder = (new File(URLDecoder.decode(UpdateChecker.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8")));
+		
+		// get up the structure if we are currently on a file
+		while (currentSourceFolder.isFile()){
+			currentSourceFolder = currentSourceFolder.getParentFile();
+		}
+		
+		destFolder = currentSourceFolder.getAbsolutePath();
+		
 		String destFilename;
 
 		// Construct file name of output file

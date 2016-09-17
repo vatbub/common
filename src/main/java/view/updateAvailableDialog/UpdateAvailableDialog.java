@@ -100,7 +100,6 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 
 		okButton.setDisable(true);
 		cancelButton.setText(bundle.getString("button.cancel.cancelDownload"));
-		;
 
 		downloadThread = new Thread() {
 			@Override
