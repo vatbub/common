@@ -10,7 +10,7 @@ This repository holds the Maven Artifact `fokprojects.common` which currently co
   - Comparing version numbers
   - A basic dialog to notify the user of an update
   
-Learn how to use all of this functionality, go to the wiki.
+Learn how to use all of this functionality, go to the [wiki](../../wiki).
   
 To add this artifact as a maven dependency, add the following repositories and dependency to your pom:
 
