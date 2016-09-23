@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import common.Common;
 import common.UpdateChecker;
 import common.UpdateInfo;
 import common.UpdateProgressDialog;
@@ -165,7 +166,8 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 			Scene scene = new Scene(root);
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-			stage.setTitle(bundle.getString("window.Title"));
+			// Set the window title and put the app name in it
+			stage.setTitle(bundle.getString("window.Title").replace("{appName}", Common.getAppName()));
 
 			stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
 			stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
