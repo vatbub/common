@@ -4,7 +4,13 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 
 import com.jcabi.manifests.Manifests;
@@ -140,7 +146,8 @@ public class Common {
 	 * Sets the name of the app. This is necessary to get the AppDataPath using
 	 * {@link #getAppDataPath()}.
 	 * 
-	 * @param appName The name of the app.
+	 * @param appName
+	 *            The name of the app.
 	 */
 	public static void setAppName(String appName) {
 		Common.appName = appName;
@@ -182,8 +189,8 @@ public class Common {
 
 	/**
 	 * Enables a mock build number. If a mock build number is set,
-	 * {@link #getAppVersion()} will not return the mock build number
-	 * instead of the actual build number.
+	 * {@link #getAppVersion()} will not return the mock build number instead of
+	 * the actual build number.
 	 * 
 	 * @param buildNumber
 	 *            The build number to be used as the mock build number
@@ -333,6 +340,49 @@ public class Common {
 				return null;
 			}
 		}
+	}
+
+	/**
+	 * Returns a list of {@code Locale}s that are supported by the specified
+	 * {@code ResourceBundle}.<br>
+	 * <b><i>Important Note:</i></b> This method will not check for the default
+	 * bundle file {@code <resourceBaseName>.properties}.
+	 * 
+	 * @param bundle
+	 *            The bundle to be checked
+	 * @return A set of locales supported by the specified resource bundle
+	 */
+	public static List<Locale> getLanguagesSupportedByResourceBundle(ResourceBundle bundle) {
+		return getLanguagesSupportedByResourceBundle(bundle.getBaseBundleName());
+	}
+
+	/**
+	 * Returns a list of {@code Locale}s that are supported by the
+	 * {@code ResourceBundle} with the given base name.<br>
+	 * <b><i>Important Note:</i></b> This method will not check for the default
+	 * bundle file {@code <resourceBaseName>.properties}.
+	 * 
+	 * @param resourceBaseName
+	 *            The base name of the resource bundle
+	 * @return A set of locales supported by the specified resource bundle
+	 */
+	public static List<Locale> getLanguagesSupportedByResourceBundle(String resourceBaseName) {
+		List<Locale> locales = new ArrayList<Locale>();
+
+		for (Locale locale : Locale.getAvailableLocales()) {
+			try {
+				// Try to load the resource bundle with the locale
+				ResourceBundle bundle = ResourceBundle.getBundle(resourceBaseName, locale);
+				// No fail so add the locale to the list
+				if (bundle.getLocale().equals(locale)) {
+					locales.add(locale);
+				}
+			} catch (MissingResourceException ex) {
+				// failed, so don't add it to the list
+			}
+		}
+
+		return Collections.unmodifiableList(locales);
 	}
 
 }
