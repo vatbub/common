@@ -4,17 +4,22 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 
 /**
- * A {@link Button} that can display a control text (E. g. {@code Cancel}) and a progress text at the same time. The results are like so:<br>
+ * A {@link Button} that can display a control text (E. g. {@code Cancel}) and a
+ * progress text at the same time. The results are like so:<br>
  * <ul>
- * <li>If you set a controlText (let's say {@code Start operation}) but no progressText: {@code Start operation}</li>
- * <li>If you set a progressText (let's say {@code Download running}) but no controlText: {@code Cancel}</li>
- * <li>If you set a controlText (let's say {@code Cancel}) and a progressText (let's say {@code Download running}): {@code Download running - Cancel}</li>
+ * <li>If you set a controlText (let's say {@code Start operation}) but no
+ * progressText: {@code Start operation}</li>
+ * <li>If you set a progressText (let's say {@code Download running}) but no
+ * controlText: {@code Cancel}</li>
+ * <li>If you set a controlText (let's say {@code Cancel}) and a progressText
+ * (let's say {@code Download running}): {@code Download running - Cancel}</li>
  * </ul>
+ * 
  * @author frede
  *
  */
 public class ProgressButton extends Button {
-	
+
 	private String controlText = "";
 	private String progressText = "";
 
@@ -46,46 +51,42 @@ public class ProgressButton extends Button {
 	public ProgressButton(String text, Node graphic) {
 		super(text, graphic);
 	}
-	
-	public void setControlText(String controlText){
+
+	public void setControlText(String controlText) {
 		this.controlText = controlText;
 		updateText();
 	}
-	
-	public String getControlText(){
+
+	public String getControlText() {
 		return this.controlText;
 	}
-	
-	public void setProgressText(String progressText){
+
+	public void setProgressText(String progressText) {
 		this.progressText = progressText;
 		updateText();
 	}
-	
-	public String getProgressText(){
+
+	public String getProgressText() {
 		return this.progressText;
 	}
-	
-	private void updateText(){
+
+	private void updateText() {
 		String finalText;
-		
-		if (!this.progressText.equals("")){
+
+		if (!this.progressText.equals("")) {
 			finalText = this.progressText;
-		}else{
+		} else {
 			finalText = "";
 		}
-		
-		if (!this.controlText.equals("")){
-			if (!this.progressText.equals("")){
-				// Add - 
-				finalText = finalText + " - ";
-			}
-			
-			// add the controlText
-			finalText = finalText +  controlText;
-		}else{
-			finalText = controlText;
+
+		if (!this.progressText.equals("") && !this.controlText.equals("")) {
+			// Add -
+			finalText = finalText + " - ";
 		}
-		
+
+		// add the controlText
+		finalText = finalText + controlText;
+
 		super.setText(finalText);
 	}
 }
