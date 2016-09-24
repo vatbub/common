@@ -188,7 +188,7 @@ public class Internet {
 	 */
 	public static boolean isConnected() {
 		try {
-			return isConnected(new URL("http://www.google.com"));
+			return isConnected(new URL("https://www.google.com"));
 		} catch (MalformedURLException e) {
 			// Just in case I made a typo in the hardcoded value...
 			e.printStackTrace();
