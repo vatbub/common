@@ -39,11 +39,17 @@ To add this artifact as a maven dependency, add the following repositories and d
 		<dependency>
 			<groupId>fokprojects</groupId>
 			<artifactId>common</artifactId>
-			<version>0.0.12</version>
+			<version>0.0.14</version>
 		</dependency>
 		...
 	</dependencies>
 	...
 ```
   
-  
+## Build the current snapshot
+1. Clone this repository
+2. Run `mvn install`
+
+## Build the latest release
+Repeat the steps mentioned above but switch to the `release` branch by running `git checkout release` prior to runing `mvn install`.
+
