@@ -43,10 +43,20 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
-		<url>scm:git:git@github.com:vatbub/common.git</url>
+		<url>https://github.com/vatbub/common/blob/master/</url>
 		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
 		<tag>testRelease</tag>
 	</scm>
+	
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/vatbub/common/issues</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/vatbub/common</url>
+	</ciManagement>
 
 	<dependencies>
 		<dependency>
