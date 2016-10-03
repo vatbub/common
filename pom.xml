@@ -47,7 +47,7 @@
 		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
 		<tag>testRelease</tag>
 	</scm>
-	
+
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/vatbub/common/issues</url>
@@ -78,6 +78,11 @@
 			<groupId>com.rometools</groupId>
 			<artifactId>rome</artifactId>
 			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codefx.libfx</groupId>
+			<artifactId>LibFX</artifactId>
+			<version>0.3.0</version>
 		</dependency>
 	</dependencies>
 </project>

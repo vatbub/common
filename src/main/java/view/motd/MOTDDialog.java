@@ -12,6 +12,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
+import javax.swing.event.HyperlinkEvent.EventType;
+
+import org.codefx.libfx.control.webview.WebViewHyperlinkListener;
+import org.codefx.libfx.control.webview.WebViews;
 import com.rometools.rome.feed.synd.SyndContent;
 
 import javafx.event.ActionEvent;
@@ -186,5 +190,29 @@ public class MOTDDialog {
 		log.getLogger().finest("MOTD content:\n" + content);
 
 		rssWebView.getEngine().loadContent(content);
+
+		// Add listener to open links in the standard browser rather than in the
+		// web view
+		WebViewHyperlinkListener eventPrintingListener = event -> {
+			try {
+				/*
+				 * This listener is always called when the user enters, exits or
+				 * clicks on the link with his mouse so only react on clicks.
+				 */
+				if (event.getEventType() == EventType.ACTIVATED) {
+					log.getLogger().info("User clicked on hyperlink in MOTD");
+					log.getLogger().fine(WebViews.hyperlinkEventToString(event));
+					stage.setAlwaysOnTop(false);
+					Desktop.getDesktop().browse(new URI(event.getURL().toString()));
+				}
+			} catch (URISyntaxException | IOException e) {
+				log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			}
+
+			// return true to prevent the WebView from browsing the url behind
+			// the hyperlink
+			return true;
+		};
+		WebViews.addHyperlinkListener(rssWebView, eventPrintingListener);
 	}
 }
