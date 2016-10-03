@@ -19,6 +19,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 
 import common.Common;
+import logging.FOKLogger;
 
 /**
  * A class that represents a message of the day
@@ -39,6 +40,8 @@ public class MOTD {
 	 * continue to grow with each read message.
 	 */
 	protected static final String latestMOTDSerializedFileName = "messageOfTheDay{index}.serializedObject";
+	
+	static FOKLogger log = new FOKLogger(MOTD.class.getName());
 
 	/**
 	 * The message icon
@@ -239,6 +242,7 @@ public class MOTD {
 	 *             thrown if there is a problem reading the stream of the URL.
 	 */
 	public static MOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
+		log.getLogger().info("Retreiving latest MOTD from url" + feedUrl.toString());
 		SyndFeed feed = (new SyndFeedInput()).build(new XmlReader(feedUrl));
 		return new MOTD(feed.getImage(),feed.getTitle(), feed.getEntries().get(0));
 	}

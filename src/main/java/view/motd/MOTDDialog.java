@@ -132,7 +132,7 @@ public class MOTDDialog {
 			openWebpageButton.setText(bundle.getString("readMoreLink"));
 		}
 
-		System.out.println(content);
+		log.getLogger().finest("MOTD content:\n" + content);
 
 		rssWebView.getEngine().loadContent(content);
 	}
