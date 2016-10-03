@@ -25,12 +25,14 @@ import logging.FOKLogger;
  * A class that represents a message of the day
  * 
  * @author frede
+ * @since 0.0.15
  *
  */
 public class MOTD {
-	
+
 	/**
-	 * The name of the folder which is used to save serialized messages of the day.
+	 * The name of the folder which is used to save serialized messages of the
+	 * day.
 	 */
 	protected static final String latestMOTDSerializedFilePath = "motd";
 
@@ -40,14 +42,14 @@ public class MOTD {
 	 * continue to grow with each read message.
 	 */
 	protected static final String latestMOTDSerializedFileName = "messageOfTheDay{index}.serializedObject";
-	
+
 	static FOKLogger log = new FOKLogger(MOTD.class.getName());
 
 	/**
 	 * The message icon
 	 */
 	private SyndImage image;
-	
+
 	/**
 	 * The title of the underlying rss feed
 	 */
@@ -110,7 +112,8 @@ public class MOTD {
 	}
 
 	/**
-	 * @param feedTitle the feedTitle to set
+	 * @param feedTitle
+	 *            the feedTitle to set
 	 */
 	public void setFeedTitle(String feedTitle) {
 		this.feedTitle = feedTitle;
@@ -131,9 +134,8 @@ public class MOTD {
 	 */
 	public void markAsRead() throws IOException, ClassNotFoundException {
 		if (!this.isMarkedAsRead()) {
-			FileOutputStream fileOut = new FileOutputStream(
-					Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath + File.separator
-							+ getNextSerializationFileName());
+			FileOutputStream fileOut = new FileOutputStream(Common.getAndCreateAppDataPath()
+					+ latestMOTDSerializedFilePath + File.separator + getNextSerializationFileName());
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(entry);
 			out.close();
@@ -171,6 +173,11 @@ public class MOTD {
 		return entryList.contains(entry);
 	}
 
+	/**
+	 * Returns the file name to be used for serializing a new {@code MOTD}
+	 * 
+	 * @return The file name to be used for serializing a new {@code MOTD}
+	 */
 	private static String getNextSerializationFileName() {
 		List<Integer> usedIndexes = getUsedIndexes();
 
@@ -185,6 +192,11 @@ public class MOTD {
 		return latestMOTDSerializedFileName.replace("{index}", Integer.toString(maxUsedIndex + 1));
 	}
 
+	/**
+	 * Returns a list of indexes already used by serialized {@code MOTD}s
+	 * 
+	 * @return A list of indexes already used by serialized {@code MOTD}s
+	 */
 	private static List<Integer> getUsedIndexes() {
 		File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
 		List<Integer> res = new ArrayList<Integer>();
@@ -198,6 +210,11 @@ public class MOTD {
 		return res;
 	}
 
+	/**
+	 * Returns a list of files that contain serialized {@code MOTD}s
+	 * 
+	 * @return A list of files that contain serialized {@code MOTD}s
+	 */
 	public static List<File> getSerializedMOTFiles() {
 		File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
 		folder.mkdirs();
@@ -212,6 +229,15 @@ public class MOTD {
 		return res;
 	}
 
+	/**
+	 * Returns the index used in the given file name of a serialized
+	 * {@code MOTD}
+	 * 
+	 * @param fileName
+	 *            The file name to be analyzed
+	 * @return The index used in the given file name of a serialized
+	 *         {@code MOTD}
+	 */
 	private static int getIndexFromFilename(String fileName) {
 		// remove the beginning of the file name
 		String resStr = fileName.replace(
@@ -224,10 +250,17 @@ public class MOTD {
 		return Integer.parseInt(resStr);
 	}
 
+	/**
+	 * Returns the regex to be used to match a file name of a serialized
+	 * {@code MOTD}
+	 * 
+	 * @return The regex to be used to match a file name of a serialized
+	 *         {@code MOTD}
+	 */
 	public static String getRegexToMatchSerializedMOTs() {
 		return latestMOTDSerializedFileName.replaceAll("\\.", "\\\\.").replace("{index}", "\\d+");
 	}
-	
+
 	/**
 	 * Gets the latest {@link MOTD} from the specified RSS-feed
 	 * 
@@ -245,7 +278,7 @@ public class MOTD {
 	public static MOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
 		log.getLogger().info("Retreiving latest MOTD from url" + feedUrl.toString());
 		SyndFeed feed = (new SyndFeedInput()).build(new XmlReader(feedUrl));
-		return new MOTD(feed.getImage(),feed.getTitle(), feed.getEntries().get(0));
+		return new MOTD(feed.getImage(), feed.getTitle(), feed.getEntries().get(0));
 	}
 
 }

@@ -28,9 +28,18 @@ import view.updateAvailableDialog.UpdateAvailableDialog;
 
 import java.lang.reflect.Field;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue; 
+import javafx.beans.value.ObservableValue;
 import org.w3c.dom.Document;
 
+/**
+ * A default javaFx dialog to present a {@link MOTD} to the user using a WebView
+ * and CSS.<br>
+ * <b>Please note:</b> This class is <i>*NOT*</i> thread safe.
+ * 
+ * @author frede
+ * @since 0.0.15
+ *
+ */
 public class MOTDDialog {
 
 	private static Stage stage;
@@ -38,21 +47,55 @@ public class MOTDDialog {
 	FOKLogger log = new FOKLogger(MOTDDialog.class.getName());
 	private static MOTD motd;
 	private static String css;
-	private static final String defaultCss = ".motdContent{\n	font-family: Arial, Helvetica, sans-serif;\n	top: 0;\n	right: 0;\n	bottom: 0;\n	left: 0;\n	z-index: 99999;\n	pointer-events: none;\n}";
+	public static final String defaultCss = ".motdContent{\n	font-family: Arial, Helvetica, sans-serif;\n	top: 0;\n	right: 0;\n	bottom: 0;\n	left: 0;\n	z-index: 99999;\n	pointer-events: none;\n}";
 
 	@Deprecated
+	/**
+	 * Only exists for the FXMLLoader
+	 */
 	public MOTDDialog() {
 
 	}
-	
-	public MOTDDialog(MOTD motd){
+
+	/**
+	 * Creates a new {@code MOTDDialog} with the default settings. The window
+	 * title will be the feed title retreived using {@link MOTD#getFeedTitle()}
+	 * 
+	 * @param motd
+	 *            The {@link MOTD} to display
+	 */
+	public MOTDDialog(MOTD motd) {
 		this(motd, motd.getFeedTitle());
 	}
 
+	/**
+	 * Creates a new {@code MOTDDialog} with a custom windowTitle.
+	 * 
+	 * @param motd
+	 *            The {@link MOTD} to display
+	 * @param windowTitle
+	 *            The title of the javaFx stage
+	 */
 	public MOTDDialog(MOTD motd, String windowTitle) {
 		this(motd, windowTitle, defaultCss);
 	}
-	
+
+	/**
+	 * Creates a new {@code MOTDDialog} with a custom windowTitle.
+	 * 
+	 * @param motd
+	 *            The {@link MOTD} to display
+	 * @param windowTitle
+	 *            The title of the javaFx stage
+	 * @param contentCss
+	 *            The css style of the motd. <b>Please note: </b><br>
+	 *            <ul>
+	 *            <li>The specified style will be used as an inline css
+	 *            stylesheet.</li>
+	 *            <li>The content background will <i>always</i> match the window
+	 *            background color (some gray value)</li>
+	 *            </ul>
+	 */
 	public MOTDDialog(MOTD motd, String windowTitle, String contentCss) {
 		MOTDDialog.motd = motd;
 		css = contentCss;
@@ -112,6 +155,10 @@ public class MOTDDialog {
 		}
 	}
 
+	/**
+	 * Hides this {@code MOTDDialog} and marks its {@link MOTD} as read using
+	 * {@link MOTD#markAsRead()}
+	 */
 	private void hide() {
 		try {
 			motd.markAsRead();
@@ -136,8 +183,6 @@ public class MOTDDialog {
 			}
 		}
 		content = content + "</div></body>";
-		
-		
 
 		if (content.contains("<span id=\"more")) {
 			// We've got a read more link so stop parsing the message
@@ -146,29 +191,35 @@ public class MOTDDialog {
 			content = content.substring(0, content.indexOf("<span id=\"more"));
 			openWebpageButton.setText(bundle.getString("readMoreLink"));
 		}
-		
+
 		rssWebView.getEngine().documentProperty().addListener(new DocListener());
 
 		log.getLogger().finest("MOTD content:\n" + content);
 
 		rssWebView.getEngine().loadContent(content);
 	}
-	
-	class DocListener implements ChangeListener<Document>{  
-        @SuppressWarnings({ "restriction" })
+
+	/**
+	 * Used to set the background of the webpage to the window background
+	 * @author frede
+	 *
+	 */
+	class DocListener implements ChangeListener<Document> {
+		@SuppressWarnings({ "restriction" })
 		@Override
-        public void changed(ObservableValue<? extends Document> observable, Document oldValue, Document newValue) {
-            try {
+		public void changed(ObservableValue<? extends Document> observable, Document oldValue, Document newValue) {
+			try {
 
-                // Use reflection to retrieve the WebEngine's private 'page' field. 
-                Field f = rssWebView.getEngine().getClass().getDeclaredField("page"); 
-                f.setAccessible(true); 
-                com.sun.webkit.WebPage page = (com.sun.webkit.WebPage) f.get(rssWebView.getEngine());  
-                page.setBackgroundColor((new java.awt.Color(0, 0, 0, 0)).getRGB()); 
+				// Use reflection to retrieve the WebEngine's private 'page'
+				// field.
+				Field f = rssWebView.getEngine().getClass().getDeclaredField("page");
+				f.setAccessible(true);
+				com.sun.webkit.WebPage page = (com.sun.webkit.WebPage) f.get(rssWebView.getEngine());
+				page.setBackgroundColor((new java.awt.Color(0, 0, 0, 0)).getRGB());
 
-            } catch (Exception e) {
-            }
+			} catch (Exception e) {
+			}
 
-        }
-    }  
+		}
+	}
 }
