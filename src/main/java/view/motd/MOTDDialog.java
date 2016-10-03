@@ -42,7 +42,7 @@ public class MOTDDialog {
 	FOKLogger log = new FOKLogger(MOTDDialog.class.getName());
 	private static MOTD motd;
 	private static String css;
-	public static final String defaultCss = ".motdContent{\n	font-family: Arial, Helvetica, sans-serif;\n	top: 0;\n	right: 0;\n	bottom: 0;\n	left: 0;\n	z-index: 99999;\n	pointer-events: none;\n}";
+	public static final String defaultCss = ".motdContent{font-family: Arial, Helvetica, sans-serif; top: 0; right: 0; bottom: 0; left: 0; z-index: 99999; pointer-events: none;}";
 	private static Scene scene;
 
 	@Deprecated
