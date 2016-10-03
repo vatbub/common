@@ -26,12 +26,19 @@ import javafx.stage.Stage;
 import logging.FOKLogger;
 import view.updateAvailableDialog.UpdateAvailableDialog;
 
+import java.lang.reflect.Field;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue; 
+import org.w3c.dom.Document;
+
 public class MOTDDialog {
 
 	private static Stage stage;
 	private ResourceBundle bundle = ResourceBundle.getBundle("view.motd.MOTDDialog");
 	FOKLogger log = new FOKLogger(MOTDDialog.class.getName());
 	private static MOTD motd;
+	private static String css;
+	private static final String defaultCss = ".motdContent{\n	font-family: Arial, Helvetica, sans-serif;\n	top: 0;\n	right: 0;\n	bottom: 0;\n	left: 0;\n	z-index: 99999;\n	pointer-events: none;\n}";
 
 	@Deprecated
 	public MOTDDialog() {
@@ -43,7 +50,12 @@ public class MOTDDialog {
 	}
 
 	public MOTDDialog(MOTD motd, String windowTitle) {
+		this(motd, windowTitle, defaultCss);
+	}
+	
+	public MOTDDialog(MOTD motd, String windowTitle, String contentCss) {
 		MOTDDialog.motd = motd;
+		css = contentCss;
 		this.show(windowTitle);
 	}
 
@@ -117,12 +129,15 @@ public class MOTDDialog {
 		assert openWebpageButton != null : "fx:id=\"openWebpageButton\" was not injected: check your FXML file 'MOTDDialog.fxml'.";
 
 		// Get the motd content
-		String content = "";
+		String content = "<head><style>" + css + "</style></head><body><div class=\"motdContent\">";
 		for (SyndContent str : motd.getEntry().getContents()) {
 			if (str.getValue() != null) {
 				content = content + str.getValue();
 			}
 		}
+		content = content + "</div></body>";
+		
+		
 
 		if (content.contains("<span id=\"more")) {
 			// We've got a read more link so stop parsing the message
@@ -131,9 +146,29 @@ public class MOTDDialog {
 			content = content.substring(0, content.indexOf("<span id=\"more"));
 			openWebpageButton.setText(bundle.getString("readMoreLink"));
 		}
+		
+		rssWebView.getEngine().documentProperty().addListener(new DocListener());
 
 		log.getLogger().finest("MOTD content:\n" + content);
 
 		rssWebView.getEngine().loadContent(content);
 	}
+	
+	class DocListener implements ChangeListener<Document>{  
+        @SuppressWarnings({ "restriction" })
+		@Override
+        public void changed(ObservableValue<? extends Document> observable, Document oldValue, Document newValue) {
+            try {
+
+                // Use reflection to retrieve the WebEngine's private 'page' field. 
+                Field f = rssWebView.getEngine().getClass().getDeclaredField("page"); 
+                f.setAccessible(true); 
+                com.sun.webkit.WebPage page = (com.sun.webkit.WebPage) f.get(rssWebView.getEngine());  
+                page.setBackgroundColor((new java.awt.Color(0, 0, 0, 0)).getRGB()); 
+
+            } catch (Exception e) {
+            }
+
+        }
+    }  
 }
