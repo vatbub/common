@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -48,6 +49,7 @@ public class MOTDDialog {
 	private static MOTD motd;
 	private static String css;
 	public static final String defaultCss = ".motdContent{\n	font-family: Arial, Helvetica, sans-serif;\n	top: 0;\n	right: 0;\n	bottom: 0;\n	left: 0;\n	z-index: 99999;\n	pointer-events: none;\n}";
+	private static Scene scene;
 
 	@Deprecated
 	/**
@@ -88,13 +90,8 @@ public class MOTDDialog {
 	 * @param windowTitle
 	 *            The title of the javaFx stage
 	 * @param contentCss
-	 *            The css style of the motd. <b>Please note: </b><br>
-	 *            <ul>
-	 *            <li>The specified style will be used as an inline css
-	 *            stylesheet.</li>
-	 *            <li>The content background will <i>always</i> match the window
-	 *            background color (some gray value)</li>
-	 *            </ul>
+	 *            The css style of the motd. <b>Please note: </b> The specified
+	 *            style will be used as an inline css stylesheet.
 	 */
 	public MOTDDialog(MOTD motd, String windowTitle, String contentCss) {
 		MOTDDialog.motd = motd;
@@ -137,7 +134,7 @@ public class MOTDDialog {
 		Parent root;
 		try {
 			root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("/view/motd/MOTDDialog.fxml"), bundle);
-			Scene scene = new Scene(root);
+			scene = new Scene(root);
 			stage.setAlwaysOnTop(true);
 			stage.getIcons().add(new Image(new URL(motd.getImage().getUrl()).openStream()));
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -192,34 +189,8 @@ public class MOTDDialog {
 			openWebpageButton.setText(bundle.getString("readMoreLink"));
 		}
 
-		rssWebView.getEngine().documentProperty().addListener(new DocListener());
-
 		log.getLogger().finest("MOTD content:\n" + content);
 
 		rssWebView.getEngine().loadContent(content);
-	}
-
-	/**
-	 * Used to set the background of the webpage to the window background
-	 * @author frede
-	 *
-	 */
-	class DocListener implements ChangeListener<Document> {
-		@SuppressWarnings({ "restriction" })
-		@Override
-		public void changed(ObservableValue<? extends Document> observable, Document oldValue, Document newValue) {
-			try {
-
-				// Use reflection to retrieve the WebEngine's private 'page'
-				// field.
-				Field f = rssWebView.getEngine().getClass().getDeclaredField("page");
-				f.setAccessible(true);
-				com.sun.webkit.WebPage page = (com.sun.webkit.WebPage) f.get(rssWebView.getEngine());
-				page.setBackgroundColor((new java.awt.Color(0, 0, 0, 0)).getRGB());
-
-			} catch (Exception e) {
-			}
-
-		}
 	}
 }
