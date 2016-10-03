@@ -200,6 +200,7 @@ public class MOTD {
 
 	public static List<File> getSerializedMOTFiles() {
 		File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
+		folder.mkdirs();
 		List<File> res = new ArrayList<File>();
 
 		for (File file : folder.listFiles()) {
