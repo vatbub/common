@@ -20,17 +20,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logging.FOKLogger;
 import view.updateAvailableDialog.UpdateAvailableDialog;
-
-import java.lang.reflect.Field;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import org.w3c.dom.Document;
 
 /**
  * A default javaFx dialog to present a {@link MOTD} to the user using a WebView
