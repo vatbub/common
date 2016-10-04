@@ -18,6 +18,9 @@ import org.codefx.libfx.control.webview.WebViewHyperlinkListener;
 import org.codefx.libfx.control.webview.WebViews;
 import com.rometools.rome.feed.synd.SyndContent;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -169,9 +172,36 @@ public class MOTDDialog {
 		assert closeButton != null : "fx:id=\"closeButton\" was not injected: check your FXML file 'MOTDDialog.fxml'.";
 		assert rssWebView != null : "fx:id=\"rssWebView\" was not injected: check your FXML file 'MOTDDialog.fxml'.";
 		assert openWebpageButton != null : "fx:id=\"openWebpageButton\" was not injected: check your FXML file 'MOTDDialog.fxml'.";
+		
+		// adapt the webView height to its content
+
+		rssWebView.prefHeightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+            	stage.setHeight((double) number2 + closeButton.prefHeightProperty().doubleValue()+85);
+            }
+        });
+		
+		rssWebView.getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+		        if (newValue != Worker.State.SUCCEEDED) {
+		             return;
+		        }
+		        
+		        Object result = rssWebView.getEngine().executeScript("document.getElementById('motdContent').offsetHeight");
+                if (result instanceof Integer) {
+                    Integer i = (Integer) result;
+                    double height = new Double(i);
+                    height = height + 20;
+                    rssWebView.setPrefHeight(height);
+                    rssWebView.getPrefHeight();
+                }
+		    }
+		});
 
 		// Get the motd content
-		String content = "<head><style>" + css + "</style></head><body><div class=\"motdContent\">";
+		String content = "<head><style>" + css + "</style></head><body><div class=\"motdContent\" id=\"motdContent\">";
 		for (SyndContent str : motd.getEntry().getContents()) {
 			if (str.getValue() != null) {
 				content = content + str.getValue();
