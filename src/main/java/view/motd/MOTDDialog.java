@@ -136,7 +136,7 @@ public class MOTDDialog {
 		try {
 			root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("/view/motd/MOTDDialog.fxml"), bundle);
 			scene = new Scene(root);
-			stage.setAlwaysOnTop(true);
+			
 			stage.getIcons().add(new Image(new URL(motd.getImage().getUrl()).openStream()));
 			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
@@ -232,7 +232,6 @@ public class MOTDDialog {
 				if (event.getEventType() == EventType.ACTIVATED) {
 					log.getLogger().info("User clicked on hyperlink in MOTD");
 					log.getLogger().fine(WebViews.hyperlinkEventToString(event));
-					stage.setAlwaysOnTop(false);
 					Desktop.getDesktop().browse(new URI(event.getURL().toString()));
 				}
 			} catch (URISyntaxException | IOException e) {
