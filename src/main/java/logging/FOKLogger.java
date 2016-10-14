@@ -128,8 +128,7 @@ public class FOKLogger {
 	 *            {@code (YourClassName).class.getName()}.
 	 */
 	public FOKLogger(String className) {
-		this(className, Common.getAppDataPath() + "Logs" + File.separator + className,
-				"log_" + Common.getAppName() + "_DateTime.xml");
+		this(className, Common.getAppDataPath() + "Logs", "log_" + Common.getAppName() + "_DateTime.xml");
 	}
 
 	/**
