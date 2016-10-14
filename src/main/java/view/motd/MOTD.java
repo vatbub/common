@@ -276,7 +276,7 @@ public class MOTD {
 	 *             thrown if there is a problem reading the stream of the URL.
 	 */
 	public static MOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
-		log.getLogger().info("Retreiving latest MOTD from url" + feedUrl.toString());
+		log.getLogger().info("Retreiving latest MOTD from url " + feedUrl.toString());
 		SyndFeed feed = (new SyndFeedInput()).build(new XmlReader(feedUrl));
 		return new MOTD(feed.getImage(), feed.getTitle(), feed.getEntries().get(0));
 	}
