@@ -1,15 +1,16 @@
 package common;
 
-import javafx.animation.ScaleTransition;
-import javafx.scene.control.Control;
+import javafx.animation.FadeTransition;
+import javafx.scene.Node;
 import javafx.util.Duration;
 import logging.FOKLogger;
 
 public class Animations {
-	
-	public static FOKLogger log = new FOKLogger(Animations.class.getName());
 
-	public static void disableControl(Control c, boolean noAnimation) {
+	private static FOKLogger log = new FOKLogger(Animations.class.getName());
+	private static final Duration defaultDuration = Duration.millis(300);
+
+	public static void disableControl(Node c, boolean noAnimation) {
 		if (noAnimation) {
 			disableControl(c, Duration.millis(0.1));
 		} else {
@@ -17,26 +18,21 @@ public class Animations {
 		}
 	}
 
-	public static void disableControl(Control c) {
+	public static void disableControl(Node c) {
 		if (!c.isDisabled()) {
-			disableControl(c, Duration.millis(50));
+			disableControl(c, defaultDuration);
 		}
 	}
 
-	private static void disableControl(Control c, Duration dur) {
+	private static void disableControl(Node c, Duration dur) {
 		log.getLogger().info("Disabling control " + c.toString() + ", dur = " + dur.toMillis());
-		ScaleTransition st = new ScaleTransition(dur, c);
-		st.setByX(-0.5);
-		st.setByY(0.0);
-		st.setCycleCount(1);
-		st.setAutoReverse(false);
-
-		st.play();
+		doFadeTransition(c, dur, 0.0);
 
 		c.setDisable(true);
+		c.setVisible(false);
 	}
 
-	public static void enableControl(Control c, boolean noAnimation) {
+	public static void enableControl(Node c, boolean noAnimation) {
 		if (noAnimation) {
 			enableControl(c, Duration.millis(0.1));
 		} else {
@@ -44,23 +40,25 @@ public class Animations {
 		}
 	}
 
-	public static void enableControl(Control c) {
+	public static void enableControl(Node c) {
 		if (!c.isDisabled()) {
-			enableControl(c, Duration.millis(50));
+			enableControl(c, defaultDuration);
 		}
 	}
 
-	private static void enableControl(Control c, Duration dur) {
+	private static void enableControl(Node c, Duration dur) {
 		log.getLogger().info("Enabling control " + c.toString() + ", dur = " + dur.toMillis());
-		ScaleTransition st = new ScaleTransition(dur, c);
-		st.setByX(0.5);
-		st.setByY(0.0);
-		st.setCycleCount(1);
-		st.setAutoReverse(false);
+		c.setVisible(true);
+		doFadeTransition(c, dur, 1.0);
 
-		st.play();
+		c.setDisable(false);
+	}
 
-		c.setDisable(true);
+	private static void doFadeTransition(Node c, Duration dur, double toValue) {
+		FadeTransition fade = new FadeTransition(dur, c);
+		fade.setFromValue(c.getOpacity());
+		fade.setToValue(toValue);
+		fade.play();
 	}
 
 }
