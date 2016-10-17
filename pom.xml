@@ -29,9 +29,9 @@
 	</pluginRepositories>
 
 	<parent>
-		<groupId>fokprojects</groupId>
+		<groupId>com.github.vatbub</groupId>
 		<artifactId>parentPom</artifactId>
-		<version>0.0.14-SNAPSHOT</version>
+		<version>0.0.15-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>common</artifactId>
