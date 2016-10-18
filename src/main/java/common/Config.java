@@ -61,11 +61,10 @@ public class Config {
 
 	/**
 	 * Creates a new {@code Config}-instance and reads the config from the
-	 * remote url asynchronsously. See
-	 * {@link #Config(URL, File, boolean, boolean)} to see how it works. If this
-	 * fails for any reason and a cached config is available, the cached config
-	 * is used instead. If the remote config can't be read and no cached version
-	 * is available, the fallbackConfig is used.
+	 * remote url asynchronsously. See the constructor below to see how it
+	 * works. If this fails for any reason and a cached config is available, the
+	 * cached config is used instead. If the remote config can't be read and no
+	 * cached version is available, the fallbackConfig is used.
 	 * 
 	 * @param remoteConfig
 	 *            The {@code URL} of the remote config to be read.
@@ -82,7 +81,6 @@ public class Config {
 	 *             If the specified fallbackConfig does not exist.
 	 * @throws IOException
 	 *             If the specified fallbackConfig cannot be read.
-	 * @see #Config(URL, File, boolean, boolean)
 	 */
 	public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName)
 			throws FileNotFoundException, IOException {
@@ -103,6 +101,9 @@ public class Config {
 	 * @param cacheRemoteConfig
 	 *            If {@code true}, the remote config will be cached once
 	 *            downloaded for offline use.
+	 * @param cacheFileName
+	 *            The file name of the offline cache. Only taken into account if
+	 *            {@code cacheRemoteConfig==true}
 	 * @param readAsynchronously
 	 *            If {@code true}, the remote config will be read
 	 *            asynchronously. This happens as follows: First, the
