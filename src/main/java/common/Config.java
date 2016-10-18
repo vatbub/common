@@ -14,15 +14,9 @@ import logging.FOKLogger;
 
 public class Config {
 
-	private static final String offlineConfigCacheFileName = "remoteConfigCache.properties";
-
 	private Properties props = new Properties();
 	private boolean remoteConfigEnabled;
 	private static FOKLogger log = new FOKLogger(Config.class.getName());
-
-	public Config() {
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * Creates a new {@code Config}-Instance from the specified
@@ -54,13 +48,15 @@ public class Config {
 	 *            The config file to be read in case the {@code remoteConfig}
 	 *            cannot be downloaded and no cached version is available.
 	 *            downloaded for offline use.
+	 * @param cacheFileName
+	 *            The file name of the offline cache.
 	 * @throws FileNotFoundException
 	 *             If the specified fallbackConfig does not exist.
 	 * @throws IOException
 	 *             If the specified fallbackConfig cannot be read.
 	 */
-	public Config(URL remoteConfig, File fallbackConfig) throws IOException {
-		this(remoteConfig, fallbackConfig, true);
+	public Config(URL remoteConfig, File fallbackConfig, String cacheFileName) throws IOException {
+		this(remoteConfig, fallbackConfig, true, cacheFileName);
 	}
 
 	/**
@@ -79,13 +75,16 @@ public class Config {
 	 * @param cacheRemoteConfig
 	 *            If {@code true}, the remote config will be cached once
 	 *            downloaded for offline use.
+	 * @param cacheFileName
+	 *            The file name of the offline cache. Only taken into account if
+	 *            {@code cacheRemoteConfig==true}
 	 * @throws FileNotFoundException
 	 *             If the specified fallbackConfig does not exist.
 	 * @throws IOException
 	 *             If the specified fallbackConfig cannot be read.
 	 * @see #Config(URL, File, boolean, boolean)
 	 */
-	public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig)
+	public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName)
 			throws FileNotFoundException, IOException {
 
 	}
@@ -120,12 +119,12 @@ public class Config {
 	 * @throws IOException
 	 *             If the specified fallbackConfig cannot be read.
 	 */
-	public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, boolean readAsynchronously)
-			throws FileNotFoundException, IOException {
+	public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
+			boolean readAsynchronously) throws FileNotFoundException, IOException {
 		if (readAsynchronously) {
-			this.readRemoteConfigAsynchronous(remoteConfig, fallbackConfig, cacheRemoteConfig);
+			this.readRemoteConfigAsynchronous(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName);
 		} else {
-			this.readRemoteConfig(remoteConfig, fallbackConfig, cacheRemoteConfig);
+			this.readRemoteConfig(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName);
 		}
 	}
 
@@ -163,18 +162,18 @@ public class Config {
 	 * @throws IOException
 	 *             If the specified fallbackConfig cannot be read.
 	 */
-	private void readRemoteConfig(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig)
-			throws FileNotFoundException, IOException {
+	private void readRemoteConfig(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig,
+			String cacheFileName) throws FileNotFoundException, IOException {
 		try {
-			getRemoteConfig(remoteConfig, cacheRemoteConfig);
+			getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
 		} catch (IOException e) {
 			// Something went wrong
 			// Check if offline cache exists
-			checkForOfflineCacheOrLoadFallback(fallbackConfig);
+			checkForOfflineCacheOrLoadFallback(fallbackConfig, cacheFileName);
 		}
 	}
 
-	private void getRemoteConfig(URL remoteConfig, boolean cacheRemoteConfig) throws IOException {
+	private void getRemoteConfig(URL remoteConfig, boolean cacheRemoteConfig, String cacheFileName) throws IOException {
 		log.getLogger().info("Trying to read remote config...");
 		props.load(remoteConfig.openStream());
 		remoteConfigEnabled = true;
@@ -183,7 +182,7 @@ public class Config {
 		if (cacheRemoteConfig) {
 			// Update the offline cache
 			log.getLogger().info("Caching remote config for offline use...");
-			File f = new File(Common.getAndCreateAppDataPath() + Config.offlineConfigCacheFileName);
+			File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
 			f.getParentFile().mkdirs();
 			FileOutputStream out = new FileOutputStream(f);
 			props.store(out, "Config of app " + Common.getAppName());
@@ -191,8 +190,9 @@ public class Config {
 		}
 	}
 
-	private void checkForOfflineCacheOrLoadFallback(File fallbackConfig) throws FileNotFoundException, IOException {
-		File f = new File(Common.getAndCreateAppDataPath() + Config.offlineConfigCacheFileName);
+	private void checkForOfflineCacheOrLoadFallback(File fallbackConfig, String cacheFileName)
+			throws FileNotFoundException, IOException {
+		File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
 		if (f.exists()) {
 			// Offline cache exists
 			log.getLogger().info("Reading cached config...");
@@ -204,17 +204,17 @@ public class Config {
 		}
 	}
 
-	private void readRemoteConfigAsynchronous(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig)
-			throws FileNotFoundException, IOException {
+	private void readRemoteConfigAsynchronous(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig,
+			String cacheFileName) throws FileNotFoundException, IOException {
 		// Read offline cache or fallback first
-		checkForOfflineCacheOrLoadFallback(fallbackConfig);
+		checkForOfflineCacheOrLoadFallback(fallbackConfig, cacheFileName);
 
 		// Now load the remote config in a new Thread
 		Thread loadConfigThread = new Thread() {
 			@Override
 			public void run() {
 				try {
-					getRemoteConfig(remoteConfig, cacheRemoteConfig);
+					getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
 				} catch (IOException e) {
 					log.getLogger().log(Level.SEVERE, "An error occurred", e);
 				}
@@ -267,5 +267,4 @@ public class Config {
 
 		return res;
 	}
-
 }
