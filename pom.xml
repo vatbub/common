@@ -43,7 +43,7 @@
 	</parent>
 
 	<artifactId>common</artifactId>
-	<version>0.0.17</version>
+	<version>0.0.18-SNAPSHOT</version>
 	<name>FOKProjects Common</name>
 	<description>Common classes for fok projects</description>
 	<inceptionYear>2016</inceptionYear>
@@ -52,7 +52,7 @@
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
 		<url>https://github.com/vatbub/common/blob/master/</url>
 		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-		<tag>common-0.0.17</tag>
+		<tag>testRelease</tag>
 	</scm>
 
 	<issueManagement>
