@@ -1,7 +1,7 @@
 # common
 Common classes for FOKProjects
 
-[![Build Status](https://travis-ci.org/vatbub/common.svg?branch=master)](https://travis-ci.org/vatbub/common)     [![Coverage Status](https://coveralls.io/repos/github/vatbub/common/badge.svg?branch=master)](https://coveralls.io/github/vatbub/common?branch=master) [![Maven Central](https://img.shields.io/maven-central/v/com.github.vatbub/common.svg)](http://search.maven.org/#artifactdetails|com.github.vatbub|common|)
+[![Build Status](https://travis-ci.org/vatbub/common.svg?branch=master)](https://travis-ci.org/vatbub/common)     [![Coverage Status](https://coveralls.io/repos/github/vatbub/common/badge.svg?branch=master)](https://coveralls.io/github/vatbub/common?branch=master) [![Maven Central](https://img.shields.io/maven-central/v/com.github.vatbub/common.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.vatbub%22%20AND%20a%3A%22common%22)
 
 This repository holds the Maven Artifact `fokprojects.common` which currently contains classes for:
   - Self-Update of a java app (in developement)
