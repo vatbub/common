@@ -79,6 +79,12 @@
 		<system>Travis CI</system>
 		<url>https://travis-ci.org/vatbub/common</url>
 	</ciManagement>
+	
+	<properties>
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<gitRepoName>common</gitRepoName>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 	<dependencies>
 		<dependency>
