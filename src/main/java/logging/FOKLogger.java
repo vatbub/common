@@ -176,7 +176,7 @@ public class FOKLogger {
 				public void publish(LogRecord record) {
 					if (record.getLevel().intValue() >= this.getLevel().intValue()) {
 						if (getFormatter() == null) {
-							setFormatter(new SimpleFormatter());
+							setFormatter(new OneLineFormatter());
 						}
 
 						try {
