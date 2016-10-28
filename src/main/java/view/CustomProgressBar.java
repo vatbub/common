@@ -24,7 +24,7 @@ public class CustomProgressBar extends ProgressBar {
 		Timeline timeline = new Timeline();
 
 		KeyValue keyValue = new KeyValue(this.progressProperty(), progress);
-		KeyFrame keyFrame = new KeyFrame(new Duration(500), keyValue);
+		KeyFrame keyFrame = new KeyFrame(new Duration(400), keyValue);
 		timeline.getKeyFrames().add(keyFrame);
 
 		timeline.play();
