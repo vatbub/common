@@ -233,10 +233,10 @@ public class UpdateChecker {
      * specified maven repo for the specified artifact.
      *
      * @param repoBaseURL     The base url where the repo can be reached. For Maven Central,
-     *                        this is {@link http://repo1.maven.org/maven/}
+     *                        this is <a href="http://repo1.maven.org/maven/">http://repo1.maven.org/maven/</a>
      * @param mavenGroupID    The groupID of the artifact to be looked up.
      * @param mavenArtifactID The artifactId of the artifact to be looked up.
-     * @return The {@link UpdateINfo} of the latest version of the artifact
+     * @return The {@link UpdateInfo} of the latest version of the artifact
      * available at the specified repository.
      * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
      *                       will never be the case unless you don't modify it manually).
@@ -255,11 +255,11 @@ public class UpdateChecker {
      * artifact has a jar-packaging.
      *
      * @param repoBaseURL     The base url where the repo can be reached. For Maven Central,
-     *                        this is {@link http://repo1.maven.org/maven/}
+     *                        this is <a href="http://repo1.maven.org/maven/">http://repo1.maven.org/maven/</a>
      * @param mavenGroupID    The groupID of the artifact to be looked up.
      * @param mavenArtifactID The artifactId of the artifact to be looked up.
      * @param mavenClassifier The classifier of the artifact to be looked up.
-     * @return The {@link UpdateINfo} of the latest version of the artifact
+     * @return The {@link UpdateInfo} of the latest version of the artifact
      * available at the specified repository.
      * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
      *                       will never be the case unless you don't modify it manually).
@@ -276,11 +276,11 @@ public class UpdateChecker {
      * specified maven repo for the specified artifact.
      *
      * @param repoBaseURL     The base url where the repo can be reached. For Maven Central,
-     *                        this is {@link http://repo1.maven.org/maven/}
+     *                        this is <a href="http://repo1.maven.org/maven/">http://repo1.maven.org/maven/</a>
      * @param mavenGroupID    The groupID of the artifact to be looked up.
      * @param mavenArtifactID The artifactId of the artifact to be looked up.
      * @param mavenClassifier The classifier of the artifact to be looked up.
-     * @return The {@link UpdateINfo} of the latest version of the artifact
+     * @return The {@link UpdateInfo} of the latest version of the artifact
      * available at the specified repository.
      * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
      *                       will never be the case unless you don't modify it manually).
@@ -351,7 +351,7 @@ public class UpdateChecker {
      * artifact.
      *
      * @param repoBaseURL     The base url where the repo can be reached. For Maven Central,
-     *                        this is {@link http://repo1.maven.org/maven/}
+     *                        this is <a href="http://repo1.maven.org/maven/">http://repo1.maven.org/maven/</a>
      * @param mavenGroupID    The groupID of the artifact to be looked up.
      * @param mavenArtifactID The artifactId of the artifact to be looked up.
      * @return A JDOM {@link Document} representation of mavens
