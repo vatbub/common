@@ -21,26 +21,20 @@ package view.motd;
  */
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndImage;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-
 import common.Common;
 import logging.FOKLogger;
+
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A class that represents a message of the day
@@ -106,6 +100,7 @@ public class MOTD {
 	 * @param image
 	 *            the message icon to set
 	 */
+    @SuppressWarnings({"unused"})
 	public void setImage(SyndImage image) {
 		this.image = image;
 	}
@@ -121,6 +116,7 @@ public class MOTD {
 	 * @param entry
 	 *            the rss entry that corresponds to this message of the day
 	 */
+    @SuppressWarnings({"unused"})
 	public void setEntry(SyndEntry entry) {
 		this.entry = entry;
 	}
@@ -136,6 +132,7 @@ public class MOTD {
 	 * @param feedTitle
 	 *            the feedTitle to set
 	 */
+	@SuppressWarnings({"unused"})
 	public void setFeedTitle(String feedTitle) {
 		this.feedTitle = feedTitle;
 	}
@@ -181,7 +178,7 @@ public class MOTD {
 	 *             you.
 	 */
 	public boolean isMarkedAsRead() throws IOException, ClassNotFoundException {
-		List<SyndEntry> entryList = new ArrayList<SyndEntry>();
+		List<SyndEntry> entryList = new ArrayList<>();
 
 		for (File file : getSerializedMOTFiles()) {
 			FileInputStream fileIn = new FileInputStream(file);
@@ -220,7 +217,7 @@ public class MOTD {
 	 */
 	private static List<Integer> getUsedIndexes() {
 		File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
-		List<Integer> res = new ArrayList<Integer>();
+		List<Integer> res = new ArrayList<>();
 
 		for (File file : folder.listFiles()) {
 			if (file.isFile() && file.getName().matches(getRegexToMatchSerializedMOTs())) {
@@ -239,7 +236,7 @@ public class MOTD {
 	public static List<File> getSerializedMOTFiles() {
 		File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
 		folder.mkdirs();
-		List<File> res = new ArrayList<File>();
+		List<File> res = new ArrayList<>();
 
 		for (File file : folder.listFiles()) {
 			if (file.isFile() && file.getName().matches(getRegexToMatchSerializedMOTs())) {
