@@ -35,3 +35,5 @@ To add this artifact as a maven dependency, add the following repositories and d
 ## Build the latest release
 Repeat the steps mentioned above but switch to the `release` branch by running `git checkout release` prior to runing `mvn install`.
 
+##Docs
+[Maven Site](http://vatbubmvnsites.s3-website-us-west-2.amazonaws.com/common/0.0.21-SNAPSHOT/site/common/), [JavaDoc](http://vatbubmvnsites.s3-website-us-west-2.amazonaws.com/common/0.0.21-SNAPSHOT/site/common/apidocs/index.html)
