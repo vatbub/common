@@ -45,7 +45,7 @@ public class CustomGroup extends Group {
 
     /**
      * Gets the rectangle at the specified coordinates if there is one. The coordinates may even point in the middle of a rectangle to be found. Searches from the background to the foreground which means that rectangles behind other rectangles will be preferred.
-     * <br\>
+     * <br/>
      * <b>Only finds Rectangles, no other shapes</b>
      *
      * @param x The x-coordinate of the point to look for.
