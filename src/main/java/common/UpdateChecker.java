@@ -691,7 +691,7 @@ public class UpdateChecker {
 
                 // run firstRun runnable
                 if (executeOnFirstStart != null) {
-                    Platform.runLater(executeOnFirstStart);
+                    executeOnFirstStart.run();
                 }
             }
         }
