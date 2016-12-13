@@ -1,7 +1,3 @@
-/**
- * Sample Skeleton for 'MOTDDialog.fxml' Controller Class
- */
-
 package view.motd;
 
 /*-
@@ -25,22 +21,7 @@ package view.motd;
  */
 
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-
-import javax.swing.event.HyperlinkEvent.EventType;
-
-import org.codefx.libfx.control.webview.WebViewHyperlinkListener;
-import org.codefx.libfx.control.webview.WebViews;
 import com.rometools.rome.feed.synd.SyndContent;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +33,18 @@ import javafx.scene.image.Image;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import logging.FOKLogger;
+import org.codefx.libfx.control.webview.WebViewHyperlinkListener;
+import org.codefx.libfx.control.webview.WebViews;
 import view.updateAvailableDialog.UpdateAvailableDialog;
+
+import javax.swing.event.HyperlinkEvent.EventType;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 /**
  * A default javaFx dialog to present a {@link MOTD} to the user using a WebView
@@ -63,6 +55,7 @@ import view.updateAvailableDialog.UpdateAvailableDialog;
  * @since 0.0.15
  *
  */
+@SuppressWarnings({"unused"})
 public class MOTDDialog {
 
 	private static Stage stage;
@@ -71,12 +64,13 @@ public class MOTDDialog {
 	private static MOTD motd;
 	private static String css;
 	public static final String defaultCss = "body {font: 14px/24px \"Source Sans Pro\", sans-serif; background: rgba(0,0,0,0.05);}\n	a {text-decoration: none; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;}\n	a:hover, a:focus {color: #443f3f; text-decoration: none; outline: 0; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;}\n	img {max-width: 100%; height: auto;}\n	strong {font-weight: 600;}\n	h1 { font: 52px/1.1 \"Raleway\", sans-serif;}\n	h2 { font: 42px/1.1 \"Raleway\", sans-serif;}\n	h3 { font: 32px/1.1 \"Raleway\", sans-serif;}\n	h4 { font: 25px/1.1 \"Raleway\", sans-serif;}\n	h5 { font: 20px/1.1 \"Raleway\", sans-serif;}\n	h6 { font: 18px/1\n	.1 \"Raleway\", sans-serif;}\n	h1, h2, h3, h4, h5, h6 {color: #443f3f; font-weight: 600; margin: 10px 0 24px;}\n	table {width: 100%;}\n	th,td {border: 1px solid #333; padding: 1px; text-align: center;}\n	blockquote {border-left: 3px solid #d65050; background-color: #333; color: #fff; font-size: 16px; font-style: italic; line-height: 23px; margin-bottom: 30px; padding: 30px 35px; position: relative;}";
+	@SuppressWarnings("FieldCanBeLocal")
 	private static Scene scene;
 
-	@Deprecated
 	/**
 	 * Only exists for the FXMLLoader
 	 */
+	@Deprecated
 	public MOTDDialog() {
 
 	}
@@ -196,30 +190,22 @@ public class MOTDDialog {
 		
 		// adapt the webView height to its content
 
-		rssWebView.prefHeightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-            	stage.setHeight((double) number2 + closeButton.prefHeightProperty().doubleValue()+85);
+		rssWebView.prefHeightProperty().addListener((observableValue, number, number2) -> stage.setHeight((double) number2 + closeButton.prefHeightProperty().doubleValue()+85));
+		
+		rssWebView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != Worker.State.SUCCEEDED) {
+                 return;
+            }
+
+            Object result = rssWebView.getEngine().executeScript("document.getElementById('motdContent').offsetHeight");
+            if (result instanceof Integer) {
+                Integer i = (Integer) result;
+                double height = new Double(i);
+                height = height + 20;
+                rssWebView.setPrefHeight(height);
+                rssWebView.getPrefHeight();
             }
         });
-		
-		rssWebView.getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-		    @Override
-		    public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-		        if (newValue != Worker.State.SUCCEEDED) {
-		             return;
-		        }
-		        
-		        Object result = rssWebView.getEngine().executeScript("document.getElementById('motdContent').offsetHeight");
-                if (result instanceof Integer) {
-                    Integer i = (Integer) result;
-                    double height = new Double(i);
-                    height = height + 20;
-                    rssWebView.setPrefHeight(height);
-                    rssWebView.getPrefHeight();
-                }
-		    }
-		});
 
 		// Get the motd content
 		String content = "<head><style>" + css + "</style></head><body><div class=\"motdContent\" id=\"motdContent\">";

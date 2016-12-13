@@ -1,8 +1,3 @@
-/**
- * Sample Skeleton for "AlertDialog.fxml" Controller Class
- * You can copy and paste this code into your favorite IDE
- **/
-
 package view.updateAvailableDialog;
 
 /*-
@@ -26,10 +21,6 @@ package view.updateAvailableDialog;
  */
 
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import common.Common;
 import common.UpdateChecker;
 import common.UpdateInfo;
@@ -46,6 +37,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+@SuppressWarnings("unused")
 public class UpdateAvailableDialog implements UpdateProgressDialog {
 
 	private static Stage stage;
@@ -123,20 +119,17 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 		okButton.setDisable(true);
 		cancelButton.setText(bundle.getString("button.cancel.cancelDownload"));
 
-		downloadThread = new Thread() {
-			@Override
-			public void run() {
-				try {
-					boolean res = UpdateChecker.downloadAndInstallUpdate(updateInfo, t);
-					if (res) {
-						t.hide();
-					}
-				} catch (IllegalStateException | IOException e) {
-					showErrorMessage(e.getLocalizedMessage());
-					e.printStackTrace();
-				}
-			}
-		};
+		downloadThread = new Thread(() -> {
+            try {
+                boolean res = UpdateChecker.downloadAndInstallUpdate(updateInfo, t);
+                if (res) {
+                    t.hide();
+                }
+            } catch (IllegalStateException | IOException e) {
+                showErrorMessage(e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        });
 		downloadThread.start();
 	}
 
@@ -202,119 +195,67 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
 	}
 
 	public void hide() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				stage.hide();
-			}
-
-		});
+		Platform.runLater(() -> stage.hide());
 	}
 
 	@Override
 	public void preparePhaseStarted() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				updateProgressAnimation.setVisible(true);
-				updateProgressText.setVisible(true);
-				updateProgressText.setText(bundle.getString("progress.preparing"));
-			}
-
-		});
+		Platform.runLater(() -> {
+            updateProgressAnimation.setVisible(true);
+            updateProgressText.setVisible(true);
+            updateProgressText.setText(bundle.getString("progress.preparing"));
+        });
 	}
 
 	@Override
 	public void downloadStarted() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				updateProgressText.setText(bundle.getString("progress.downloading"));
-				updateProgressBar.setVisible(true);
-				updateProgressBar.setProgress(-1);
-			}
-
-		});
+		Platform.runLater(() -> {
+            updateProgressText.setText(bundle.getString("progress.downloading"));
+            updateProgressBar.setVisible(true);
+            updateProgressBar.setProgress(-1);
+        });
 	}
 
 	@Override
 	public void installStarted() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				updateProgressText.setText(bundle.getString("progress.installing"));
-			}
-
-		});
+		Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.installing")));
 	}
 
 	@Override
 	public void launchStarted() {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				updateProgressText.setText(bundle.getString("progress.launching"));
-			}
-
-		});
+		Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.launching")));
 	}
 
 	public void showErrorMessage(String message) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				detailsLabel.setText("An error occurred:\n" + message);
-				updateProgressAnimation.setVisible(false);
-				updateProgressText.setVisible(false);
-				okButton.setDisable(false);
-				okButton.setText(bundle.getString("button.ok.retry"));
-				updateProgressBar.setVisible(false);
-			}
-
-		});
+		Platform.runLater(() -> {
+            detailsLabel.setText("An error occurred:\n" + message);
+            updateProgressAnimation.setVisible(false);
+            updateProgressText.setVisible(false);
+            okButton.setDisable(false);
+            okButton.setText(bundle.getString("button.ok.retry"));
+            updateProgressBar.setVisible(false);
+        });
 	}
 
 	@Override
 	public void operationCanceled() {
-		Platform.runLater(new Runnable(){
-			@Override
-			public void run() {
-				updateProgressAnimation.setVisible(false);
-				updateProgressText.setVisible(false);
-				okButton.setText(bundle.getString("button.ok"));
-				okButton.setDisable(false);
-				cancelButton.setText(bundle.getString("button.cancel"));
-				updateProgressBar.setVisible(false);
-			}
-			
-		});
+		Platform.runLater(() -> {
+            updateProgressAnimation.setVisible(false);
+            updateProgressText.setVisible(false);
+            okButton.setText(bundle.getString("button.ok"));
+            okButton.setDisable(false);
+            cancelButton.setText(bundle.getString("button.cancel"));
+            updateProgressBar.setVisible(false);
+        });
 	}
 
 	@Override
 	public void cancelRequested() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				updateProgressText.setText(bundle.getString("progress.cancelRequested"));
-			}
-		});
+		Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.cancelRequested")));
 	}
 	
 	@Override
 	public void downloadProgressChanged(double kilobytesDownloaded, double totalFileSizeInKB) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				updateProgressBar.setProgress(kilobytesDownloaded/totalFileSizeInKB);
-			}
-
-		});
+		Platform.runLater(() -> updateProgressBar.setProgress(kilobytesDownloaded/totalFileSizeInKB));
 	}
 }

@@ -23,6 +23,7 @@ package view;
 
 import javafx.scene.control.Label;
 
+@SuppressWarnings("unused")
 public class CustomLabel extends Label {
 
 	private String permText = "";

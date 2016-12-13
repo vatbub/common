@@ -30,6 +30,7 @@ import java.util.Collection;
 /**
  * A normal javafx group that is able to get a child by its coordinates
  */
+@SuppressWarnings("unused")
 public class CustomGroup extends Group {
     public CustomGroup() {
         super();

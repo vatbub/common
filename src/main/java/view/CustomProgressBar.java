@@ -25,6 +25,7 @@ import javafx.animation.*;
 import javafx.scene.control.ProgressBar;
 import javafx.util.Duration;
 
+@SuppressWarnings("unused")
 public class CustomProgressBar extends ProgressBar {
 
 	public CustomProgressBar() {
