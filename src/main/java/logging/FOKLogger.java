@@ -20,11 +20,11 @@ package logging;
  * #L%
  */
 
+import common.Common;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.*;
-
-import common.Common;
 
 /**
  * A frame for all log actions. This class utilizes
@@ -52,7 +52,7 @@ public class FOKLogger {
 	 * console. {@code Level.ALL} will enable all log levels. Default Value:
 	 * {@code Level.ALL}
 	 */
-	private static Level consoleLogLevel = Level.ALL;
+	private static Level consoleLogLevel = Level.INFO;
 
 	/**
 	 * The name scheme for the file name of the log. Use the place holder
