@@ -30,7 +30,6 @@ import org.jdom2.input.SAXBuilder;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -97,6 +96,7 @@ public class UpdateChecker {
      * @return {@code true} if a new release is available and the user did not
      * ignore it.
      */
+    @SuppressWarnings("unused")
     public static UpdateInfo isUpdateAvailable(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
                                                String mavenClassifier) {
         return isUpdateAvailable(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
@@ -118,14 +118,14 @@ public class UpdateChecker {
      * @see Common#getPackaging()
      */
     public static UpdateInfo isUpdateAvailable(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
-                                               String mavenClassifier, String packaging) {
+                                               String mavenClassifier, @SuppressWarnings("SameParameterValue") String packaging) {
         String savedSetting = updatePrefs.getPreference(latestSeenVersionPrefKey, "");
         UpdateInfo res = null;
         try {
             log.getLogger().info("Checking for updates...");
             res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, packaging);
 
-            Version currentVersion = null;
+            Version currentVersion;
 
             try {
                 currentVersion = new Version(Common.getAppVersion());
@@ -134,7 +134,7 @@ public class UpdateChecker {
                 res.showAlert = false;
                 return res;
             }
-            Version savedVersion = null;
+            Version savedVersion;
             try {
                 savedVersion = new Version(savedSetting);
             } catch (IllegalArgumentException e) {
@@ -176,6 +176,7 @@ public class UpdateChecker {
      * @param mavenClassifier The maven classifier of the artifact to update
      * @return {@code true} if a new release is available.
      */
+    @SuppressWarnings("unused")
     public static UpdateInfo isUpdateAvailableCompareAppVersion(URL repoBaseURL, String mavenGroupID,
                                                                 String mavenArtifactID, String mavenClassifier) {
         return isUpdateAvailableCompareAppVersion(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
@@ -195,13 +196,13 @@ public class UpdateChecker {
      * @see Common#getPackaging()
      */
     public static UpdateInfo isUpdateAvailableCompareAppVersion(URL repoBaseURL, String mavenGroupID,
-                                                                String mavenArtifactID, String mavenClassifier, String packaging) {
+                                                                String mavenArtifactID, String mavenClassifier, @SuppressWarnings("SameParameterValue") String packaging) {
         UpdateInfo res = null;
         try {
             log.getLogger().info("Checking for updates...");
             res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, packaging);
 
-            Version currentVersion = null;
+            Version currentVersion;
 
             try {
                 currentVersion = new Version(Common.getAppVersion());
@@ -267,7 +268,7 @@ public class UpdateChecker {
      *                       for any other reason.
      */
     private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
-                                                  String mavenClassifier) throws JDOMException, IOException {
+                                                  @SuppressWarnings("SameParameterValue") String mavenClassifier) throws JDOMException, IOException {
         return getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
     }
 
@@ -298,7 +299,7 @@ public class UpdateChecker {
                 mavenMetadata.getRootElement().getChild("versioning").getChild("latest").getValue());
 
         // get file size
-        String url = "";
+        String url;
         if (!mavenClassifier.equals("")) {
             // classifier specified
             url = repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/') + "/" + mavenArtifactID + "/"
@@ -363,9 +364,8 @@ public class UpdateChecker {
      */
     private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
             throws JDOMException, IOException {
-        Document doc = new SAXBuilder().build(new URL(repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/')
+        return new SAXBuilder().build(new URL(repoBaseURL.toString() + "/" + mavenGroupID.replace('.', '/')
                 + "/" + mavenArtifactID + "/maven-metadata.xml"));
-        return doc;
     }
 
     /**
@@ -387,6 +387,7 @@ public class UpdateChecker {
      * @throws IOException           If the updated artifact cannot be launched.
      * @see #completeUpdate(String[])
      */
+    @SuppressWarnings("unused")
     public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall)
             throws IllegalStateException, IOException {
         return downloadAndInstallUpdate(updateToInstall, null);
@@ -442,8 +443,8 @@ public class UpdateChecker {
      * @see #completeUpdate(String[])
      */
     public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
-                                                   boolean launchUpdateAfterInstall) throws IllegalStateException, IOException {
-        return downloadAndInstallUpdate(updateToInstall, gui, true, true);
+                                                   @SuppressWarnings("SameParameterValue") boolean launchUpdateAfterInstall) throws IllegalStateException, IOException {
+        return downloadAndInstallUpdate(updateToInstall, gui, launchUpdateAfterInstall, true);
     }
 
     /**
@@ -473,7 +474,7 @@ public class UpdateChecker {
      * @see #completeUpdate(String[])
      */
     public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
-                                                   boolean launchUpdateAfterInstall, boolean deleteOldVersion) throws IllegalStateException, IOException {
+                                                   boolean launchUpdateAfterInstall, @SuppressWarnings("SameParameterValue") boolean deleteOldVersion) throws IllegalStateException, IOException {
 
         // Reset cancel state
         cancelDownloadAndLaunch = false;
@@ -484,6 +485,7 @@ public class UpdateChecker {
 
         // Perform Cancel if requested
         if (cancelDownloadAndLaunch) {
+            //noinspection ConstantConditions
             if (gui != null) {
                 gui.operationCanceled();
             }
@@ -557,7 +559,7 @@ public class UpdateChecker {
             java.io.BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
             byte[] data = new byte[1024];
             long downloadedFileSize = 0;
-            int x = 0;
+            int x;
             while ((x = in.read(data, 0, 1024)) >= 0) {
                 downloadedFileSize += x;
 
@@ -568,8 +570,8 @@ public class UpdateChecker {
 
                 // update progress bar
                 if (gui != null) {
-                    gui.downloadProgressChanged((double) (downloadedFileSize / 1024.0),
-                            (double) (completeFileSize / 1024.0));
+                    gui.downloadProgressChanged(downloadedFileSize / 1024.0,
+                            completeFileSize / 1024.0);
                 }
 
                 bout.write(data, 0, x);
@@ -587,8 +589,6 @@ public class UpdateChecker {
             }
             bout.close();
             in.close();
-        } catch (FileNotFoundException e) {
-            log.getLogger().log(Level.SEVERE, "An error occurred", e);
         } catch (IOException e) {
             log.getLogger().log(Level.SEVERE, "An error occurred", e);
         }
@@ -620,8 +620,8 @@ public class UpdateChecker {
         }
 
         if (launchUpdateAfterInstall) {
-            ProcessBuilder pb = null;
-            List<String> startupArgs = new ArrayList<String>();
+            ProcessBuilder pb;
+            List<String> startupArgs = new ArrayList<>();
 
             if (updateToInstall.packaging.equals("jar")) {
                 startupArgs.add("java");
@@ -665,6 +665,7 @@ public class UpdateChecker {
      *
      * @param startupArgs All arguments passed to the {@code main}-method of the app.
      */
+    @SuppressWarnings("unused")
     public static void completeUpdate(String[] startupArgs) {
         completeUpdate(startupArgs, null);
     }
@@ -681,7 +682,7 @@ public class UpdateChecker {
      * @param startupArgs         All arguments passed to the {@code main}-method of the app.
      * @param executeOnFirstStart Executed if the app is started the first time after an update.
      */
-    public static void completeUpdate(String[] startupArgs, Runnable executeOnFirstStart) {
+    public static void completeUpdate(String[] startupArgs, @SuppressWarnings("SameParameterValue") Runnable executeOnFirstStart) {
         for (String arg : startupArgs) {
             if (arg.toLowerCase().matches("deletefile=.*")) {
                 // delete a file
@@ -701,10 +702,12 @@ public class UpdateChecker {
      * Cancels the update completion started using
      * {@link #completeUpdate(String[])}
      */
+    @SuppressWarnings("unused")
     public static void cancelUpdateCompletion() {
         cancelUpdateCompletion = true;
     }
 
+    @SuppressWarnings("unused")
     public static void cancelDownloadAndLaunch() {
         cancelDownloadAndLaunch(null);
     }
