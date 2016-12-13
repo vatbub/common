@@ -43,6 +43,7 @@ import java.util.List;
  * @since 0.0.15
  *
  */
+@SuppressWarnings("ConstantConditions")
 public class MOTD {
 
 	/**
