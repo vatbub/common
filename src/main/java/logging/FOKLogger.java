@@ -65,6 +65,7 @@ public class FOKLogger {
 	/**
 	 * @return the fileLogLevel
 	 */
+    @SuppressWarnings("unused")
 	public static Level getFileLogLevel() {
 		return fileLogLevel;
 	}
@@ -73,6 +74,7 @@ public class FOKLogger {
 	 * @param newFileLogLevel
 	 *            the fileLogLevel to set
 	 */
+    @SuppressWarnings("unused")
 	public static void setFileLogLevel(Level newFileLogLevel) {
 		fileLogLevel = newFileLogLevel;
 
@@ -84,6 +86,7 @@ public class FOKLogger {
 	/**
 	 * @return the consoleLogLevel
 	 */
+    @SuppressWarnings("unused")
 	public static Level getConsoleLogLevel() {
 		return consoleLogLevel;
 	}
@@ -92,6 +95,7 @@ public class FOKLogger {
 	 * @param newConsoleLogLevel
 	 *            the consoleLogLevel to set
 	 */
+    @SuppressWarnings("unused")
 	public static void setConsoleLogLevel(Level newConsoleLogLevel) {
 		consoleLogLevel = newConsoleLogLevel;
 
@@ -103,6 +107,7 @@ public class FOKLogger {
 	/**
 	 * @return the logFileName
 	 */
+	@SuppressWarnings("unused")
 	public static String getLogFileName() {
 		return logFileName;
 	}
@@ -110,6 +115,7 @@ public class FOKLogger {
 	/**
 	 * @return the logFilePath
 	 */
+	@SuppressWarnings("unused")
 	public static String getLogFilePath() {
 		return logFilePath;
 	}
@@ -224,6 +230,7 @@ public class FOKLogger {
 		// Remove all existing parent handlers
 		Logger globalLogger = Logger.getLogger("");
 		Handler[] handlers = globalLogger.getHandlers();
+		//noinspection ForLoopReplaceableByForEach
 		for (int i = 0; i < handlers.length; i++) {
 			globalLogger.removeHandler(handlers[i]);
 		}
