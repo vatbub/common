@@ -1701,10 +1701,12 @@ public class DesktopFile {
         return res;
     }
 
+    @SuppressWarnings("unused")
     public void saveForUser(String fileName) {
         this.save("~/.local/share/applications", fileName);
     }
 
+    @SuppressWarnings("unused")
     public void saveSystemWide(String fileName) {
         this.save("/usr/share/applications", fileName);
     }
