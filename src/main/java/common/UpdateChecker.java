@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -53,21 +54,21 @@ public class UpdateChecker {
     private static FOKLogger log = new FOKLogger(UpdateChecker.class.getName());
 
     private static boolean cancelUpdateCompletion = false;
-    private static String fileToDelete;
+    private static String oldFile;
     private static Thread deleteFileThread = new Thread() {
         @Override
         public void run() {
-            log.getLogger().info("Attempting to delete file " + fileToDelete + " ...");
+            log.getLogger().info("Attempting to delete file " + oldFile + " ...");
             do {
                 if (cancelUpdateCompletion) {
                     // cancel requested
-                    log.getLogger().info("Update completion cancelled. The file " + fileToDelete + " was not deleted.");
+                    log.getLogger().info("Update completion cancelled. The file " + oldFile + " was not deleted.");
                     break;
                 }
-            } while (!new File(fileToDelete).delete());
+            } while (!new File(oldFile).delete());
 
             // If we arrive here, we successfully deleted the file
-            log.getLogger().info("Successfully deleted file " + fileToDelete);
+            log.getLogger().info("Successfully deleted file " + oldFile);
         }
     };
 
@@ -630,11 +631,16 @@ public class UpdateChecker {
 
             startupArgs.add(destFolder + File.separator + destFilename);
 
+            String decodedPath = Common.getPathAndNameOfCurrentJar();
+
             if (deleteOldVersion) {
-                String decodedPath = Common.getPathAndNameOfCurrentJar();
                 log.getLogger().info("The following file will be deleted once the update completes: " + decodedPath);
                 startupArgs.add("deleteFile=" + decodedPath);
             }
+
+            // add the version info of this file to the startup args
+            startupArgs.add("oldVersion=" + Common.getAppVersion());
+            startupArgs.add("oldFile=" + decodedPath);
 
             log.getLogger()
                     .info("Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
@@ -682,20 +688,46 @@ public class UpdateChecker {
      * @param startupArgs         All arguments passed to the {@code main}-method of the app.
      * @param executeOnFirstStart Executed if the app is started the first time after an update.
      */
-    public static void completeUpdate(String[] startupArgs, @SuppressWarnings("SameParameterValue") Runnable executeOnFirstStart) {
-        for (String arg : startupArgs) {
-            if (arg.toLowerCase().matches("deletefile=.*")) {
-                // delete a file
-                fileToDelete = arg.substring(arg.toLowerCase().indexOf('=') + 1);
-                deleteFileThread.setName("deleteFileThread");
-                deleteFileThread.start();
+    public static void completeUpdate(String[] startupArgs, @SuppressWarnings("SameParameterValue") CompleteUpdateRunnable executeOnFirstStart) {
+        boolean updateToComplete = false;
+        boolean deleteOldFile = false;
+        File fileToDelete = null;
+        Version oldVersion = null;
 
-                // run firstRun runnable
-                if (executeOnFirstStart != null) {
-                    executeOnFirstStart.run();
+        // read all the args
+        for (String arg : startupArgs) {
+            if (arg.toLowerCase().matches("oldfile=.*")) {
+                updateToComplete = true;
+                // get the info about the old file
+                oldFile = arg.substring(arg.toLowerCase().indexOf('=') + 1);
+                fileToDelete = new File(oldFile);
+            } else if (arg.toLowerCase().matches("deletefile.*")) {
+                deleteOldFile = true;
+                updateToComplete = true;
+                if (arg.contains("=")) {
+                    // read the file to delete from this arg for backwards compatibility
+                    oldFile = arg.substring(arg.toLowerCase().indexOf('=') + 1);
+                    fileToDelete = new File(oldFile);
                 }
+            } else if (arg.toLowerCase().matches("oldversion=.*")) {
+                // get the old version number
+                oldVersion = new Version(arg.substring(arg.toLowerCase().indexOf('=') + 1));
+                updateToComplete = true;
             }
         }
+
+        if (updateToComplete) {
+            if (deleteOldFile) {
+                deleteFileThread.setName("deleteFileThread");
+                deleteFileThread.start();
+            }
+
+            // run firstRun runnable
+            if (executeOnFirstStart != null) {
+                executeOnFirstStart.run(oldVersion, fileToDelete);
+            }
+        }
+
     }
 
     /**
@@ -719,6 +751,17 @@ public class UpdateChecker {
         if (gui != null) {
             gui.cancelRequested();
         }
+    }
+
+    public interface CompleteUpdateRunnable {
+        /**
+         * Called after the completion of an update
+         *
+         * @param oldVersion The version number that was previously installed. Might be {@code null} if the version number is unknown.
+         * @param oldFile    The {@code File} where the old version was saved. Be careful, the file might be already deleted from the disc. Might be {@code null} if the old file is not known.
+         */
+        @SuppressWarnings({"unused"})
+        void run(@Nullable Version oldVersion, @Nullable File oldFile);
     }
 
 }
