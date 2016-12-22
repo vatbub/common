@@ -49,20 +49,6 @@
 	<inceptionYear>2016</inceptionYear>
 	<url>https://github.com/vatbub/common</url>
 
-	<developers>
-		<developer>
-			<id>fkammel</id>
-			<name>Frederik Kammel</name>
-			<email>vatbub123@googlemail.com</email>
-			<url>https://fokprojects.mo-mar.de/</url>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>Europe/Berlin</timezone>
-		</developer>
-	</developers>
-
 	<scm>
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
 		<url>https://github.com/vatbub/common</url>
