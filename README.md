@@ -21,13 +21,16 @@ To add this artifact as a maven dependency, add the following repositories and d
 	<dependency>
 		<groupId>com.github.vatbub</groupId>
 		<artifactId>common</artifactId>
-		<version>0.0.18</version>
+		<version>0.0.21</version>
 	</dependency>
 	...
 </dependencies>
 	...
 ```
   
+##Usage
+Have a look at the [getting started page](https://github.com/vatbub/common/wiki/Getting-started) in the wiki to learn how to use this lib.
+
 ## Build the current snapshot
 1. Clone this repository
 2. Run `mvn install`
