@@ -43,7 +43,7 @@ public class FOKLogger {
     private static Handler consoleHandler;
     private static boolean handlersInitialized;
 
-    private static Map<String, FOKLogger> loggerMap = new HashMap();
+    private static Map<String, FOKLogger> loggerMap = new HashMap<>();
 
     /**
      * Log messages must have the specified log level or higher to be saved in
