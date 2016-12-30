@@ -42,7 +42,6 @@ public class Common {
     private static String mockPackaging = "";
 
     private static String buildNumberManifestEntry = "Custom-Implementation-Build";
-    private static FOKLogger log;
 
     /**
      * Time when the app was launched. A simple call of the {@link Date}
@@ -182,9 +181,6 @@ public class Common {
      */
     public static void setAppName(String appName) {
         Common.appName = appName;
-
-        // Initialize the logger
-        log = new FOKLogger(Common.class.getName());
     }
 
     /**
@@ -195,7 +191,7 @@ public class Common {
      * @param version The version string to be used as the mock app version
      */
     public static void setMockAppVersion(String version) {
-        log.getLogger().info("Now using mock app version " + version);
+        FOKLogger.info(Common.class.getName(), "Now using mock app version " + version);
         mockAppVersion = version;
     }
 
@@ -225,7 +221,7 @@ public class Common {
      * @param buildNumber The build number to be used as the mock build number
      */
     public static void setMockBuildNumber(String buildNumber) {
-        log.getLogger().info("Now using mock build number " + buildNumber);
+        FOKLogger.info(Common.class.getName(), "Now using mock build number " + buildNumber);
         mockBuildNumber = buildNumber;
     }
 
@@ -248,7 +244,7 @@ public class Common {
     }
 
     public static void setMockPackaging(String packaging) {
-        log.getLogger().info("Now using mock packaging " + packaging);
+        FOKLogger.info(Common.class.getName(), "Now using mock packaging " + packaging);
         mockPackaging = packaging;
     }
 
@@ -339,7 +335,7 @@ public class Common {
         try {
             return URLDecoder.decode(path, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            log.getLogger().log(Level.SEVERE, "An error occurred", e); // $COVERAGE-IGNORE$
+            FOKLogger.log(Common.class.getName(), Level.SEVERE, "An error occurred", e); // $COVERAGE-IGNORE$
             return null;
         }
     }

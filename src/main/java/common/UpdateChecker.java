@@ -51,24 +51,23 @@ public class UpdateChecker {
     private static String latestSeenVersionPrefKey = "updates.latestVersionOnWebsite";
     private static Prefs updatePrefs = new Prefs(UpdateChecker.class.getName());
     private static boolean cancelDownloadAndLaunch;
-    private static FOKLogger log = new FOKLogger(UpdateChecker.class.getName());
 
     private static boolean cancelUpdateCompletion = false;
     private static String oldFile;
     private static Thread deleteFileThread = new Thread() {
         @Override
         public void run() {
-            log.getLogger().info("Attempting to delete file " + oldFile + " ...");
+            FOKLogger.info(UpdateChecker.class.getName(), "Attempting to delete file " + oldFile + " ...");
             do {
                 if (cancelUpdateCompletion) {
                     // cancel requested
-                    log.getLogger().info("Update completion cancelled. The file " + oldFile + " was not deleted.");
+                    FOKLogger.info(UpdateChecker.class.getName(), "Update completion cancelled. The file " + oldFile + " was not deleted.");
                     break;
                 }
             } while (!new File(oldFile).delete());
 
             // If we arrive here, we successfully deleted the file
-            log.getLogger().info("Successfully deleted file " + oldFile);
+            FOKLogger.info(UpdateChecker.class.getName(), "Successfully deleted file " + oldFile);
         }
     };
 
@@ -79,7 +78,7 @@ public class UpdateChecker {
      * @param ver The version to ignore
      */
     public static void ignoreUpdate(Version ver) {
-        log.getLogger().info("User ignores all updates up to (and including) version " + ver.toString());
+        FOKLogger.info(UpdateChecker.class.getName(), "User ignores all updates up to (and including) version " + ver.toString());
         updatePrefs.setPreference(latestSeenVersionPrefKey, ver.toString());
     }
 
@@ -123,7 +122,7 @@ public class UpdateChecker {
         String savedSetting = updatePrefs.getPreference(latestSeenVersionPrefKey, "");
         UpdateInfo res = null;
         try {
-            log.getLogger().info("Checking for updates...");
+            FOKLogger.info(UpdateChecker.class.getName(), "Checking for updates...");
             res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, packaging);
 
             Version currentVersion;
@@ -131,7 +130,7 @@ public class UpdateChecker {
             try {
                 currentVersion = new Version(Common.getAppVersion());
             } catch (IllegalArgumentException e) {
-                log.getLogger().log(Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
                 res.showAlert = false;
                 return res;
             }
@@ -146,20 +145,20 @@ public class UpdateChecker {
 
             if (res.toVersion.compareTo(savedVersion) == 1) {
                 // new update found
-                log.getLogger().info("Update available!");
-                log.getLogger().info("Version after update: " + res.toVersion.toString());
-                log.getLogger().info("Filesize:             " + res.fileSizeInMB + "MB");
+                FOKLogger.info(UpdateChecker.class.getName(), "Update available!");
+                FOKLogger.info(UpdateChecker.class.getName(), "Version after update: " + res.toVersion.toString());
+                FOKLogger.info(UpdateChecker.class.getName(), "Filesize:             " + res.fileSizeInMB + "MB");
                 res.showAlert = true;
             } else if (res.toVersion.compareTo(currentVersion) == 1) {
                 // found update that is ignored
-                log.getLogger().info("Update available (Update was ignored by the user)!");
-                log.getLogger().info("Version after update: " + res.toVersion.toString());
-                log.getLogger().info("Filesize:             " + res.fileSizeInMB + "MB");
+                FOKLogger.info(UpdateChecker.class.getName(), "Update available (Update was ignored by the user)!");
+                FOKLogger.info(UpdateChecker.class.getName(), "Version after update: " + res.toVersion.toString());
+                FOKLogger.info(UpdateChecker.class.getName(), "Filesize:             " + res.fileSizeInMB + "MB");
             } else {
-                log.getLogger().info("No update found.");
+                FOKLogger.info(UpdateChecker.class.getName(), "No update found.");
             }
         } catch (JDOMException | IOException e) {
-            log.getLogger().log(Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
         }
 
         return res;
@@ -200,7 +199,7 @@ public class UpdateChecker {
                                                                 String mavenArtifactID, String mavenClassifier, @SuppressWarnings("SameParameterValue") String packaging) {
         UpdateInfo res = null;
         try {
-            log.getLogger().info("Checking for updates...");
+            FOKLogger.info(UpdateChecker.class.getName(), "Checking for updates...");
             res = getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, packaging);
 
             Version currentVersion;
@@ -208,7 +207,7 @@ public class UpdateChecker {
             try {
                 currentVersion = new Version(Common.getAppVersion());
             } catch (IllegalArgumentException e) {
-                log.getLogger().log(Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
                 res.showAlert = false;
                 return res;
             }
@@ -216,15 +215,15 @@ public class UpdateChecker {
             if (res.toVersion.compareTo(currentVersion) == 1) {
                 // new update found
                 updatePrefs.setPreference(latestSeenVersionPrefKey, res.toVersion.toString());
-                log.getLogger().info("Update available!");
-                log.getLogger().info("Version after update: " + res.toVersion.toString());
-                log.getLogger().info("Filesize:             " + res.fileSizeInMB + "MB");
+                FOKLogger.info(UpdateChecker.class.getName(), "Update available!");
+                FOKLogger.info(UpdateChecker.class.getName(), "Version after update: " + res.toVersion.toString());
+                FOKLogger.info(UpdateChecker.class.getName(), "Filesize:             " + res.fileSizeInMB + "MB");
                 res.showAlert = true;
             } else {
-                log.getLogger().info("No update found.");
+                FOKLogger.info(UpdateChecker.class.getName(), "No update found.");
             }
         } catch (JDOMException | IOException e) {
-            log.getLogger().log(Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
         }
 
         return res;
@@ -332,7 +331,7 @@ public class UpdateChecker {
                     res.fileSizeInMB = -1;
                 }
             } catch (Exception e) {
-                log.getLogger().log(Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
                 res.fileSizeInMB = -1;
             }
         }
@@ -547,8 +546,8 @@ public class UpdateChecker {
             gui.downloadStarted();
         }
 
-        log.getLogger().info("Downloading artifact from " + artifactURL.toString() + "...");
-        log.getLogger().info("Downloading to: " + outputFile.getAbsolutePath());
+        FOKLogger.info(UpdateChecker.class.getName(), "Downloading artifact from " + artifactURL.toString() + "...");
+        FOKLogger.info(UpdateChecker.class.getName(), "Downloading to: " + outputFile.getAbsolutePath());
         // FileUtils.copyURLToFile(artifactURL, outputFile);
 
         try {
@@ -591,7 +590,7 @@ public class UpdateChecker {
             bout.close();
             in.close();
         } catch (IOException e) {
-            log.getLogger().log(Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
         }
 
         // Perform Cancel if requested
@@ -634,7 +633,7 @@ public class UpdateChecker {
             String decodedPath = Common.getPathAndNameOfCurrentJar();
 
             if (deleteOldVersion) {
-                log.getLogger().info("The following file will be deleted once the update completes: " + decodedPath);
+                FOKLogger.info(UpdateChecker.class.getName(), "The following file will be deleted once the update completes: " + decodedPath);
                 startupArgs.add("deleteFile=" + decodedPath);
             }
 
@@ -642,15 +641,15 @@ public class UpdateChecker {
             startupArgs.add("oldVersion=" + Common.getAppVersion());
             startupArgs.add("oldFile=" + decodedPath);
 
-            log.getLogger()
-                    .info("Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
+            FOKLogger
+                    .info(UpdateChecker.class.getName(), "Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
 
             pb = new ProcessBuilder(startupArgs);// .inheritIO();
             pb.start();
 
 			/*
              * // Wait for process to end try { process.waitFor(); } catch
-			 * (InterruptedException e) { log.getLogger().log(Level.SEVERE,
+			 * (InterruptedException e) { FOKLogger.log(Level.SEVERE,
 			 * "An error occurred", e); }
 			 */
             Platform.exit();
@@ -746,7 +745,7 @@ public class UpdateChecker {
 
     public static void cancelDownloadAndLaunch(UpdateProgressDialog gui) {
         cancelDownloadAndLaunch = true;
-        log.getLogger().info("Requested to cancel the current operation, Cancel in progress...");
+        FOKLogger.info(UpdateChecker.class.getName(), "Requested to cancel the current operation, Cancel in progress...");
 
         if (gui != null) {
             gui.cancelRequested();

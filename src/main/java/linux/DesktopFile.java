@@ -42,8 +42,6 @@ public class DesktopFile {
 
     public static final String specificationVersion = "1.0";
 
-    private static FOKLogger log = new FOKLogger(DesktopFile.class.getName());
-
     // Required
     private DesktopFile.Type type;
     private String name;
@@ -1724,7 +1722,7 @@ public class DesktopFile {
         try (PrintWriter out = new PrintWriter(path + File.separator + fileName)) {
             out.println(this.toString());
         } catch (Exception e) {
-            log.getLogger().log(Level.SEVERE, "Could not save the desktop file", e);
+            FOKLogger.log(DesktopFile.class.getName(), Level.SEVERE, "Could not save the desktop file", e);
         }
     }
 

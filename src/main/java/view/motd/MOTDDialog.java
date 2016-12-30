@@ -60,7 +60,6 @@ public class MOTDDialog {
 
 	private static Stage stage;
 	private ResourceBundle bundle = ResourceBundle.getBundle("view.motd.MOTDDialog");
-	FOKLogger log = new FOKLogger(MOTDDialog.class.getName());
 	private static MOTD motd;
 	private static String css;
 	public static final String defaultCss = "body {font: 14px/24px \"Source Sans Pro\", sans-serif; background: rgba(0,0,0,0.05);}\n	a {text-decoration: none; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;}\n	a:hover, a:focus {color: #443f3f; text-decoration: none; outline: 0; -webkit-transition: all 0.3s ease-in-out; -moz-transition: all 0.3s ease-in-out; -ms-transition: all 0.3s ease-in-out; -o-transition: all 0.3s ease-in-out; transition: all 0.3s ease-in-out;}\n	img {max-width: 100%; height: auto;}\n	strong {font-weight: 600;}\n	h1 { font: 52px/1.1 \"Raleway\", sans-serif;}\n	h2 { font: 42px/1.1 \"Raleway\", sans-serif;}\n	h3 { font: 32px/1.1 \"Raleway\", sans-serif;}\n	h4 { font: 25px/1.1 \"Raleway\", sans-serif;}\n	h5 { font: 20px/1.1 \"Raleway\", sans-serif;}\n	h6 { font: 18px/1\n	.1 \"Raleway\", sans-serif;}\n	h1, h2, h3, h4, h5, h6 {color: #443f3f; font-weight: 600; margin: 10px 0 24px;}\n	table {width: 100%;}\n	th,td {border: 1px solid #333; padding: 1px; text-align: center;}\n	blockquote {border-left: 3px solid #d65050; background-color: #333; color: #fff; font-size: 16px; font-style: italic; line-height: 23px; margin-bottom: 30px; padding: 30px 35px; position: relative;}";
@@ -136,7 +135,7 @@ public class MOTDDialog {
 			Desktop.getDesktop().browse(new URI(motd.getEntry().getUri()));
 			hide();
 		} catch (IOException | URISyntaxException e) {
-			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
 		}
 	}
 
@@ -164,7 +163,7 @@ public class MOTDDialog {
 			stage.setScene(scene);
 			stage.show();
 		} catch (IOException e) {
-			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
 		}
 	}
 
@@ -177,7 +176,7 @@ public class MOTDDialog {
 			motd.markAsRead();
 			stage.hide();
 		} catch (ClassNotFoundException | IOException e) {
-			log.getLogger().log(Level.SEVERE, "An error occurred", e);
+			FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
 		}
 	}
 
@@ -224,7 +223,7 @@ public class MOTDDialog {
 			openWebpageButton.setText(bundle.getString("readMoreLink"));
 		}
 
-		log.getLogger().finest("MOTD content:\n" + content);
+		FOKLogger.finest(MOTDDialog.class.getName(), "MOTD content:\n" + content);
 
 		rssWebView.getEngine().loadContent(content);
 
@@ -237,12 +236,12 @@ public class MOTDDialog {
 				 * clicks on the link with his mouse so only react on clicks.
 				 */
 				if (event.getEventType() == EventType.ACTIVATED) {
-					log.getLogger().info("User clicked on hyperlink in MOTD");
-					log.getLogger().fine(WebViews.hyperlinkEventToString(event));
+					FOKLogger.info(MOTDDialog.class.getName(), "User clicked on hyperlink in MOTD");
+					FOKLogger.fine(MOTDDialog.class.getName(), WebViews.hyperlinkEventToString(event));
 					Desktop.getDesktop().browse(new URI(event.getURL().toString()));
 				}
 			} catch (URISyntaxException | IOException e) {
-				log.getLogger().log(Level.SEVERE, "An error occurred", e);
+				FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
 			}
 
 			// return true to prevent the WebView from browsing the url behind

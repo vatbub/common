@@ -21,23 +21,18 @@ package common;
  */
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import logging.FOKLogger;
+
+import java.io.*;
 import java.net.URL;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.Properties;
-
-import logging.FOKLogger;
+import java.util.logging.Level;
 
 public class Config {
 
 	private Properties props = new Properties();
 	private boolean remoteConfigEnabled;
-	private static FOKLogger log = new FOKLogger(Config.class.getName());
 
 	/**
 	 * Creates a new {@code Config}-Instance from the specified
@@ -161,7 +156,7 @@ public class Config {
 	 *             If the specified file cannot be read.
 	 */
 	private void readConfigFromFile(File file) throws FileNotFoundException, IOException {
-		log.getLogger().info("Reading config from local file...");
+		FOKLogger.info(Config.class.getName(), "Reading config from local file...");
 		props.load(new FileReader(file));
 	}
 
@@ -196,14 +191,14 @@ public class Config {
 	}
 
 	private void getRemoteConfig(URL remoteConfig, boolean cacheRemoteConfig, String cacheFileName) throws IOException {
-		log.getLogger().info("Trying to read remote config...");
+		FOKLogger.info(Config.class.getName(), "Trying to read remote config...");
 		props.load(remoteConfig.openStream());
 		remoteConfigEnabled = true;
-		log.getLogger().info("Import of remote config successful.");
+		FOKLogger.info(Config.class.getName(), "Import of remote config successful.");
 
 		if (cacheRemoteConfig) {
 			// Update the offline cache
-			log.getLogger().info("Caching remote config for offline use...");
+			FOKLogger.info(Config.class.getName(), "Caching remote config for offline use...");
 			File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
 			f.getParentFile().mkdirs();
 			FileOutputStream out = new FileOutputStream(f);
@@ -217,10 +212,10 @@ public class Config {
 		File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
 		if (f.exists()) {
 			// Offline cache exists
-			log.getLogger().info("Reading cached config...");
+			FOKLogger.info(Config.class.getName(), "Reading cached config...");
 			this.readConfigFromFile(f);
 		} else {
-			log.getLogger().info("Reading fallbackConfig...");
+			FOKLogger.info(Config.class.getName(), "Reading fallbackConfig...");
 			this.readConfigFromFile(fallbackConfig);
 			remoteConfigEnabled = false;
 		}
@@ -238,7 +233,7 @@ public class Config {
 				try {
 					getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
 				} catch (IOException e) {
-					log.getLogger().log(Level.SEVERE, "An error occurred", e);
+					FOKLogger.log(Config.class.getName(), Level.SEVERE, "An error occurred", e);
 				}
 			}
 		};

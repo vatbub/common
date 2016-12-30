@@ -21,14 +21,14 @@ package common;
  */
 
 
+import logging.FOKLogger;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
-
-import logging.FOKLogger;
 
 /**
  * All custom internet functions
@@ -37,9 +37,6 @@ import logging.FOKLogger;
  *
  */
 public class Internet {
-
-	private static FOKLogger log = new FOKLogger(Internet.class.getName());
-
 	/**
 	 * Sends an event to the IFTTT Maker Channel. See
 	 * <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
@@ -172,7 +169,7 @@ public class Internet {
 			return response;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			log.getLogger().log(Level.SEVERE, "An error occured!", e);
+			FOKLogger.log(Internet.class.getName(), Level.SEVERE, "An error occured!", e);
 			return "";
 		}
 

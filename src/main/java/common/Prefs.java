@@ -36,7 +36,6 @@ import java.util.logging.Level;
 public class Prefs {
     private Properties props = new Properties();
     private File f;
-    private static FOKLogger log = new FOKLogger(Prefs.class.getName());
 
     /**
      * Loads or creates the preference file for the specified class
@@ -54,7 +53,7 @@ public class Prefs {
             }
 
         } catch (IOException e) {
-            log.getLogger().log(Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(Prefs.class.getName(), Level.SEVERE, "An error occurred", e);
         }
     }
 
@@ -85,7 +84,7 @@ public class Prefs {
      */
     public void savePreferences() {
         try {
-            log.getLogger().info("Saving preference file as: " + f.getAbsolutePath());
+            FOKLogger.info(Prefs.class.getName(), "Saving preference file as: " + f.getAbsolutePath());
             f.getParentFile().mkdirs();
             FileOutputStream out = new FileOutputStream(f);
             props.store(out, "This is a preference file of the app " + Common.getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");

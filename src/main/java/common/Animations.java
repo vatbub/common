@@ -28,7 +28,6 @@ import logging.FOKLogger;
 
 public class Animations {
 
-	private static FOKLogger log = new FOKLogger(Animations.class.getName());
 	private static final Duration defaultDuration = Duration.millis(300);
 
 	public static void disableControl(Node c, boolean noAnimation) {
@@ -46,7 +45,7 @@ public class Animations {
 	}
 
 	private static void disableControl(Node c, Duration dur) {
-		log.getLogger().info("Disabling control " + c.toString() + ", dur = " + dur.toMillis());
+		FOKLogger.info(Animations.class.getName(), "Disabling control " + c.toString() + ", dur = " + dur.toMillis());
 		doFadeTransition(c, dur, 0.0);
 
 		c.setDisable(true);
@@ -68,7 +67,7 @@ public class Animations {
 	}
 
 	private static void enableControl(Node c, Duration dur) {
-		log.getLogger().info("Enabling control " + c.toString() + ", dur = " + dur.toMillis());
+		FOKLogger.info(Animations.class.getName(), "Enabling control " + c.toString() + ", dur = " + dur.toMillis());
 		c.setVisible(true);
 		doFadeTransition(c, dur, 1.0);
 
