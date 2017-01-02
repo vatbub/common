@@ -439,4 +439,23 @@ public class FOKLogger {
     public static void finest(String className, Supplier<String> msgSupplier) {
         log(className, Level.FINEST, msgSupplier);
     }
+
+    //log uncaught exceptions
+    private static Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> {
+        FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable);
+    });
+
+    /**
+     * Once called, all uncaught exceptions will be written to the log too
+     */
+    public static void enableLoggingOfUncaughtExceptions(){
+        Thread.setDefaultUncaughtExceptionHandler(logUncaughtException);
+    }
+
+    /**
+     * Once called, no uncaught exception will be written to the log anymore
+     */
+    public static void disableLoggingOfUncaughtExceptions(){
+        Thread.setDefaultUncaughtExceptionHandler(null);
+    }
 }
