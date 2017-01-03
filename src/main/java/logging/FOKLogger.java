@@ -83,8 +83,9 @@ public class FOKLogger {
         fileLogLevel = newFileLogLevel;
 
         // set the handlers Log Levels
-        fileHandler.setLevel(fileLogLevel);
-        consoleHandler.setLevel(consoleLogLevel);
+        if (handlersInitialized) {
+            fileHandler.setLevel(fileLogLevel);
+        }
     }
 
     /**
@@ -103,8 +104,9 @@ public class FOKLogger {
         consoleLogLevel = newConsoleLogLevel;
 
         // set the handlers Log Levels
-        fileHandler.setLevel(fileLogLevel);
-        consoleHandler.setLevel(consoleLogLevel);
+        if (handlersInitialized) {
+            consoleHandler.setLevel(consoleLogLevel);
+        }
     }
 
     /**
@@ -448,14 +450,14 @@ public class FOKLogger {
     /**
      * Once called, all uncaught exceptions will be written to the log too
      */
-    public static void enableLoggingOfUncaughtExceptions(){
+    public static void enableLoggingOfUncaughtExceptions() {
         Thread.setDefaultUncaughtExceptionHandler(logUncaughtException);
     }
 
     /**
      * Once called, no uncaught exception will be written to the log anymore
      */
-    public static void disableLoggingOfUncaughtExceptions(){
+    public static void disableLoggingOfUncaughtExceptions() {
         Thread.setDefaultUncaughtExceptionHandler(null);
     }
 }
