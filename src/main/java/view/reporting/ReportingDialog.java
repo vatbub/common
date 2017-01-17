@@ -23,7 +23,6 @@ package view.reporting;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.Region;
 import common.AWSS3Utils;
 import common.Common;
 import javafx.fxml.FXML;
@@ -163,7 +162,7 @@ public class ReportingDialog {
                 AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
                 if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                     // create bucket
-                    s3Client.createBucket(s3BucketName, Region.EU_Frankfurt);
+                    s3Client.createBucket(s3BucketName);
                 }
 
                 if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())) {
