@@ -111,9 +111,6 @@ public class ReportingDialog {
         stage = new Stage();
         Parent root;
         try {
-            root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("/view/reporting/ReportingDialog.fxml"));
-            scene = new Scene(root);
-
             String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
             if (e!=null){
                 // set the details value
@@ -122,7 +119,9 @@ public class ReportingDialog {
             }
             FOKLogger.info(ReportingDialog.class.getName(), "Final reporting window url is " + finalURLString);
             finalURL = new URL(finalURLString);
-            this.windowTitle = windowTitle;
+
+            root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("/view/reporting/ReportingDialog.fxml"));
+            scene = new Scene(root);
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
