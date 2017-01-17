@@ -21,7 +21,6 @@ package view.reporting;
  */
 
 
-import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,12 +35,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.html.HTMLTextAreaElement;
 import view.updateAvailableDialog.UpdateAvailableDialog;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 
 /**
@@ -114,7 +113,12 @@ public class ReportingDialog {
             root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("/view/reporting/ReportingDialog.fxml"));
             scene = new Scene(root);
 
-            String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName;
+            String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
+            if (e!=null){
+                // set the details value
+                String details = "\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------";
+                finalURLString = finalURLString + "?details=" + URLEncoder.encode(details, "UTF-8");
+            }
             FOKLogger.info(ReportingDialog.class.getName(), "Final reporting window url is " + finalURLString);
             finalURL = new URL(finalURLString);
             this.windowTitle = windowTitle;
@@ -136,25 +140,12 @@ public class ReportingDialog {
         // set the window title
         if (this.windowTitle != null) {
             stage.setTitle(windowTitle);
-        }
-
-        webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.windowTitle == null) {
+        } else {
+            // bind the window title to the web page title
+            webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
                 stage.setTitle(getWebPageTitle(webView.getEngine()));
-            }
-
-            if (newValue == Worker.State.SUCCEEDED && e != null) {
-                // add the stacktrace as details
-                if (webView.getEngine().getDocument().getElementById("details") instanceof HTMLTextAreaElement) {
-                    // element found
-                    HTMLTextAreaElement details = (HTMLTextAreaElement) webView.getEngine().getDocument().getElementById("details");
-                    details.setValue("\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------");
-                } else {
-                    // no details element found
-                    FOKLogger.severe(ReportingDialog.class.getName(), "When trying to fill the details section of the issue, the details element was not found on the webpage");
-                }
-            }
-        });
+            });
+        }
 
         webView.getEngine().load(finalURL.toString());
     }
