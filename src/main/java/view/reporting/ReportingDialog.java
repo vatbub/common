@@ -112,12 +112,12 @@ public class ReportingDialog {
         Parent root;
         try {
             String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
-            if (e!=null){
+            if (e != null) {
                 // set the details value
                 String details = "\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------";
                 finalURLString = finalURLString + "?details=" + URLEncoder.encode(details, "UTF-8");
             }
-            ReportingDialog.windowTitle =windowTitle;
+            ReportingDialog.windowTitle = windowTitle;
             FOKLogger.info(ReportingDialog.class.getName(), "Final reporting window url is " + finalURLString);
             finalURL = new URL(finalURLString);
 
@@ -144,7 +144,11 @@ public class ReportingDialog {
         } else {
             // bind the window title to the web page title
             webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-                stage.setTitle(getWebPageTitle(webView.getEngine()));
+                try {
+                    stage.setTitle(getWebPageTitle(webView.getEngine()));
+                } catch (NullPointerException e) {
+                    // do nothing
+                }
             });
         }
 
