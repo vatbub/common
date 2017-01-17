@@ -158,26 +158,32 @@ public class ReportingDialog {
             String details = "";
 
             if (includeLatestLogFile) {
-                // upload the logs to s3
-                AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
-                if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
-                    // create bucket
-                    s3Client.createBucket(s3BucketName);
-                }
-
-                if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())) {
-                    // Create folder
-                    AWSS3Utils.createFolder(s3Client, s3BucketName, Common.getAppName());
-                }
-
-                // Upload the log file
                 String awsFileName = Common.getAppName() + "/" + FOKLogger.getLogFileName();
-                s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
+                // write the aws key to the details to find the log file again
+                details = details + "\n\n------------------------------\nLog file aws key:" + awsFileName + "\n------------------------------";
 
-                if (includeLatestLogFile) {
-                    // write the aws key to the details to find the log file again
-                    details = details + "\n\n------------------------------\nLog file aws key:" + awsFileName + "\n------------------------------";
-                }
+                // upload the logs to s3
+                Thread awsUploadThread = new Thread(() -> {
+                    AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
+                    if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
+                        // create bucket
+                        FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
+                        s3Client.createBucket(s3BucketName);
+                    }
+
+                    if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())) {
+                        FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 folder " + Common.getAppName());
+                        // Create folder
+                        AWSS3Utils.createFolder(s3Client, s3BucketName, Common.getAppName());
+                    }
+
+                    // Upload the log file
+                    FOKLogger.info(ReportingDialog.class.getName(), "Uploading log file to aws: " + awsFileName);
+                    s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
+                    FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
+                });
+                awsUploadThread.setName("awsUploadThread");
+                awsUploadThread.start();
             }
 
             String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
