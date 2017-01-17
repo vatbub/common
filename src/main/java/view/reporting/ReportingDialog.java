@@ -52,6 +52,7 @@ import java.util.logging.Level;
  * @author frede
  * @since 0.0.22
  */
+@SuppressWarnings({"SameParameterValue", "ConstantConditions"})
 public class ReportingDialog {
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
@@ -105,6 +106,7 @@ public class ReportingDialog {
         show(gitReportsBaseURL, userName, repoName, null, includeLatestLogFile);
     }
 
+    @SuppressWarnings("unused")
     public void show(URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
         show(gitReportsBaseURL, userName, repoName, e, false);
     }
@@ -123,6 +125,7 @@ public class ReportingDialog {
         show(windowTitle, userName, repoName, null, includeLatestLogFile);
     }
 
+    @SuppressWarnings("unused")
     public void show(String windowTitle, String userName, String repoName, Throwable e) {
         show(windowTitle, userName, repoName, e, false);
     }
