@@ -21,6 +21,7 @@ package view.reporting;
  */
 
 
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -135,24 +136,27 @@ public class ReportingDialog {
         // set the window title
         if (this.windowTitle != null) {
             stage.setTitle(windowTitle);
-        } else {
-            // bind the window title to the web page title
-            webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-                stage.setTitle(getWebPageTitle(webView.getEngine()));
-            });
         }
 
-        if (e != null) {
-            // add the stacktrace as details
-            if (webView.getEngine().getDocument().getElementById("details") instanceof HTMLTextAreaElement) {
-                // element found
-                HTMLTextAreaElement details = (HTMLTextAreaElement) webView.getEngine().getDocument().getElementById("details");
-                details.setValue("\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------");
-            }else {
-                // no details element found
-                FOKLogger.severe(ReportingDialog.class.getName(), "When trying to fill the details section of the issue, the details element was not found on the webpage");
+        webView.getEngine().getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.windowTitle == null) {
+                stage.setTitle(getWebPageTitle(webView.getEngine()));
             }
-        }
+
+            if (newValue == Worker.State.SUCCEEDED && e != null) {
+                // add the stacktrace as details
+                if (webView.getEngine().getDocument().getElementById("details") instanceof HTMLTextAreaElement) {
+                    // element found
+                    HTMLTextAreaElement details = (HTMLTextAreaElement) webView.getEngine().getDocument().getElementById("details");
+                    details.setValue("\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------");
+                } else {
+                    // no details element found
+                    FOKLogger.severe(ReportingDialog.class.getName(), "When trying to fill the details section of the issue, the details element was not found on the webpage");
+                }
+            }
+        });
+
+        webView.getEngine().load(finalURL.toString());
     }
 
     private String getWebPageTitle(WebEngine webEngine) {
