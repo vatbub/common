@@ -426,6 +426,10 @@ public class Common {
     }
 
     public static BasicAWSCredentials getAWSCredentials(){
+        if (getAwsAccessKey()==null || getAwsSecretAccessKey()==null){
+            throw new NullPointerException();
+        }
+
         return new BasicAWSCredentials(getAwsAccessKey(), getAwsSecretAccessKey());
     }
 }
