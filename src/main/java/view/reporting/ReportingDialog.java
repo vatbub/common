@@ -161,7 +161,7 @@ public class ReportingDialog {
             if (includeLatestLogFile) {
                 // upload the logs to s3
                 AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
-                if (!s3Client.doesBucketExist(s3BucketName)) {
+                if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                     // create bucket
                     s3Client.createBucket(s3BucketName, Region.EU_Frankfurt);
                 }
