@@ -38,34 +38,71 @@ import java.util.logging.*;
  */
 public class FOKLogger {
 
-    Logger log;
     private static Handler fileHandler;
     private static Handler consoleHandler;
     private static boolean handlersInitialized;
-
     private static Map<String, FOKLogger> loggerMap = new HashMap<>();
-
     /**
      * Log messages must have the specified log level or higher to be saved in
      * the log file. {@code Level.ALL} will enable all log levels. Default
      * Value: {@code Level.ALL}
      */
     private static Level fileLogLevel = Level.ALL;
-
     /**
      * Log messages must have the specified log level or higher to appear on the
      * console. {@code Level.ALL} will enable all log levels. Default Value:
      * {@code Level.ALL}
      */
     private static Level consoleLogLevel = Level.INFO;
-
     /**
      * The name scheme for the file name of the log. Use the place holder
      * {@code DateTime} for the current date and time.
      */
     private static String logFileName;
-
     private static String logFilePath;
+    //log uncaught exceptions
+    private static Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> {
+        FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable);
+    });
+    Logger log;
+
+    /**
+     * Creates a new {@link java.util.logging.Logger} instance and attaches
+     * automatically a {@link FileHandler} and a {@link ConsoleHandler}.<br>
+     * <b>Constructor will soon be declared private!!! Use {@link FOKLogger#getLoggerByClassName(String)} instead</b>
+     *
+     * @param className The name of the calling class. It is recommended to use the
+     *                  fully qualified class name that you can get with
+     *                  {@code (YourClassName).class.getName()}.
+     */
+    @Deprecated
+    public FOKLogger(String className) {
+        this(className, Common.getAppDataPath() + "Logs", "log_" + Common.getAppName() + "_DateTime.xml");
+    }
+
+    /**
+     * Creates a new {@link java.util.logging.Logger} instance and attaches
+     * automatically a {@link FileHandler} and a {@link ConsoleHandler}.
+     *
+     * @param className      The name of the calling class. It is recommended to use the
+     *                       fully qualified class name that you can get with
+     *                       {@code (YourClassName).class.getName()}.
+     * @param newLogFilePath The file where the log file shall be saved in
+     * @param newLogFileName The name of the log file
+     */
+    public FOKLogger(String className, String newLogFilePath, String newLogFileName) {
+        logFilePath = newLogFilePath;
+        logFileName = newLogFileName;
+        loggerMap.put(className, this);
+
+        // initialize the handlers
+        if (!handlersInitialized) {
+            FOKLogger.initLogHandlers();
+        }
+
+        log = Logger.getLogger(className);
+        log.setLevel(Level.ALL);
+    }
 
     /**
      * @return the fileLogLevel
@@ -129,44 +166,6 @@ public class FOKLogger {
         return logFilePath + File.separator + logFileName.replace("DateTime", Common.getLaunchTimeStamp());
     }
 
-    /**
-     * Creates a new {@link java.util.logging.Logger} instance and attaches
-     * automatically a {@link FileHandler} and a {@link ConsoleHandler}.<br>
-     * <b>Constructor will soon be declared private!!! Use {@link FOKLogger#getLoggerByClassName(String)} instead</b>
-     *
-     * @param className The name of the calling class. It is recommended to use the
-     *                  fully qualified class name that you can get with
-     *                  {@code (YourClassName).class.getName()}.
-     */
-    @Deprecated
-    public FOKLogger(String className) {
-        this(className, Common.getAppDataPath() + "Logs", "log_" + Common.getAppName() + "_DateTime.xml");
-    }
-
-    /**
-     * Creates a new {@link java.util.logging.Logger} instance and attaches
-     * automatically a {@link FileHandler} and a {@link ConsoleHandler}.
-     *
-     * @param className      The name of the calling class. It is recommended to use the
-     *                       fully qualified class name that you can get with
-     *                       {@code (YourClassName).class.getName()}.
-     * @param newLogFilePath The file where the log file shall be saved in
-     * @param newLogFileName The name of the log file
-     */
-    public FOKLogger(String className, String newLogFilePath, String newLogFileName) {
-        logFilePath = newLogFilePath;
-        logFileName = newLogFileName;
-        loggerMap.put(className, this);
-
-        // initialize the handlers
-        if (!handlersInitialized) {
-            FOKLogger.initLogHandlers();
-        }
-
-        log = Logger.getLogger(className);
-        log.setLevel(Level.ALL);
-    }
-
     public static void initLogHandlers() {
 
         handlersInitialized = true;
@@ -204,11 +203,11 @@ public class FOKLogger {
                 }
 
                 @Override
-                public void close() throws SecurityException {
+                public void flush() {
                 }
 
                 @Override
-                public void flush() {
+                public void close() throws SecurityException {
                 }
             };
         } catch (IOException e) {
@@ -241,15 +240,6 @@ public class FOKLogger {
 
         globalLogger.addHandler(fileHandler);
         globalLogger.addHandler(consoleHandler);
-    }
-
-    /**
-     * Returns the actual Logger object by {@link java.util.logging.Logger}
-     *
-     * @return The actual Logger object by {@link java.util.logging.Logger}
-     */
-    public Logger getLogger() {
-        return log;
     }
 
     public static FOKLogger getLoggerByClassName(String className) {
@@ -442,11 +432,6 @@ public class FOKLogger {
         log(className, Level.FINEST, msgSupplier);
     }
 
-    //log uncaught exceptions
-    private static Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> {
-        FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable);
-    });
-
     /**
      * Once called, all uncaught exceptions will be written to the log too
      */
@@ -459,5 +444,14 @@ public class FOKLogger {
      */
     public static void disableLoggingOfUncaughtExceptions() {
         Thread.setDefaultUncaughtExceptionHandler(null);
+    }
+
+    /**
+     * Returns the actual Logger object by {@link java.util.logging.Logger}
+     *
+     * @return The actual Logger object by {@link java.util.logging.Logger}
+     */
+    public Logger getLogger() {
+        return log;
     }
 }

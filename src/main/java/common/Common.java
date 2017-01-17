@@ -36,9 +36,9 @@ import java.util.logging.Level;
 @SuppressWarnings("unused")
 public class Common {
 
-    private static String appName;
     public static final String UNKNOWN_APP_VERSION = "unknown version";
     public static final String UNKNOWN_BUILD_NUMBER = "unknown build number";
+    private static String appName;
     private static String mockAppVersion = "";
     private static String mockBuildNumber = "";
     private static String mockPackaging = "";
@@ -186,6 +186,16 @@ public class Common {
     }
 
     /**
+     * Returns the current value to be used as a mock app version.
+     *
+     * @return The current mock app version value or "" if no mock app version
+     * is in use.
+     */
+    public static String getMockAppVersion() {
+        return mockAppVersion;
+    }
+
+    /**
      * Enables a mock app version. If a mock app version is set,
      * {@link #getAppVersion()} will not return the mock app version instead of
      * the actual version.
@@ -198,21 +208,21 @@ public class Common {
     }
 
     /**
-     * Returns the current value to be used as a mock app version.
-     *
-     * @return The current mock app version value or "" if no mock app version
-     * is in use.
-     */
-    public static String getMockAppVersion() {
-        return mockAppVersion;
-    }
-
-    /**
      * Clears a mock app version set using {@link #setMockAppVersion(String)}
      * and replaces it with the actual app version.
      */
     public static void clearMockAppVersion() {
         setMockAppVersion("");
+    }
+
+    /**
+     * Returns the current value to be used as a mock build number.
+     *
+     * @return The current mock build number value or "" if no mock build number
+     * is in use.
+     */
+    public static String getMockBuildNumber() {
+        return mockBuildNumber;
     }
 
     /**
@@ -228,16 +238,6 @@ public class Common {
     }
 
     /**
-     * Returns the current value to be used as a mock build number.
-     *
-     * @return The current mock build number value or "" if no mock build number
-     * is in use.
-     */
-    public static String getMockBuildNumber() {
-        return mockBuildNumber;
-    }
-
-    /**
      * Clears a mock build number set using {@link #setMockBuildNumber(String)}
      * and replaces it with the actual build number.
      */
@@ -245,13 +245,13 @@ public class Common {
         setMockBuildNumber("");
     }
 
+    public static String getMockPackaging() {
+        return mockPackaging;
+    }
+
     public static void setMockPackaging(String packaging) {
         FOKLogger.info(Common.class.getName(), "Now using mock packaging " + packaging);
         mockPackaging = packaging;
-    }
-
-    public static String getMockPackaging() {
-        return mockPackaging;
     }
 
     public static void clearMockPackaging() {
@@ -413,20 +413,20 @@ public class Common {
         return awsAccessKey;
     }
 
-    public static String getAwsSecretAccessKey() {
-        return awsSecretAccessKey;
-    }
-
     public static void setAwsAccessKey(String awsAccessKey) {
         Common.awsAccessKey = awsAccessKey;
+    }
+
+    public static String getAwsSecretAccessKey() {
+        return awsSecretAccessKey;
     }
 
     public static void setAwsSecretAccessKey(String awsSecretAccessKey) {
         Common.awsSecretAccessKey = awsSecretAccessKey;
     }
 
-    public static BasicAWSCredentials getAWSCredentials(){
-        if (getAwsAccessKey()==null || getAwsSecretAccessKey()==null){
+    public static BasicAWSCredentials getAWSCredentials() {
+        if (getAwsAccessKey() == null || getAwsSecretAccessKey() == null) {
             throw new NullPointerException();
         }
 

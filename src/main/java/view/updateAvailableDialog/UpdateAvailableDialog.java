@@ -44,82 +44,72 @@ import java.util.ResourceBundle;
 @SuppressWarnings("unused")
 public class UpdateAvailableDialog implements UpdateProgressDialog {
 
-	private static Stage stage;
-	private ResourceBundle bundle = ResourceBundle.getBundle("view.updateAvailableDialog.AlertDialog");
-	private static String messageText;
-	private static UpdateInfo updateInfo;
-	private static Thread downloadThread = new Thread();
-
-	/**
-	 * Constructor stub necessary for FXML, please use
-	 * {@link #UpdateAvailableDialog(UpdateInfo update)}.
-	 */
-	@Deprecated
-	public UpdateAvailableDialog() {
-
-	}
-
-	/**
-	 * Constructs a new UpdateAvailableDialog and presents the specified update
-	 * info to the user.
-	 * 
-	 * @param update
-	 *            The info about the update do install.
-	 */
-	public UpdateAvailableDialog(UpdateInfo update) {
-		show(update);
-	}
-
-	@FXML // ResourceBundle that was given to the FXMLLoader
-	private ResourceBundle resources;
-
-	@FXML // URL location of the FXML file that was given to the FXMLLoader
-	private URL location;
-	
+    private static Stage stage;
+    private static String messageText;
+    private static UpdateInfo updateInfo;
+    private static Thread downloadThread = new Thread();
+    private ResourceBundle bundle = ResourceBundle.getBundle("view.updateAvailableDialog.AlertDialog");
+    @FXML // ResourceBundle that was given to the FXMLLoader
+    private ResourceBundle resources;
+    @FXML // URL location of the FXML file that was given to the FXMLLoader
+    private URL location;
     @FXML // fx:id="updateProgressBar"
     private ProgressBar updateProgressBar; // Value injected by FXMLLoader
+    @FXML // fx:id="cancelButton"
+    private Button cancelButton; // Value injected by FXMLLoader
+    @FXML // fx:id="detailsLabel"
+    private Label detailsLabel; // Value injected by FXMLLoader
+    @FXML // fx:id="messageLabel"
+    private Label messageLabel; // Value injected by FXMLLoader
+    @FXML // fx:id="okButton"
+    private Button okButton; // Value injected by FXMLLoader
+    @FXML // fx:id="updateProgressAnimation"
+    private ProgressIndicator updateProgressAnimation; // Value injected by
+    @FXML // fx:id="updateProgressText"
+    private Label updateProgressText; // Value injected by FXMLLoader
 
-	@FXML // fx:id="cancelButton"
-	private Button cancelButton; // Value injected by FXMLLoader
+    /**
+     * Constructor stub necessary for FXML, please use
+     * {@link #UpdateAvailableDialog(UpdateInfo update)}.
+     */
+    @Deprecated
+    public UpdateAvailableDialog() {
 
-	@FXML // fx:id="detailsLabel"
-	private Label detailsLabel; // Value injected by FXMLLoader
+    }
+    // FXMLLoader
 
-	@FXML // fx:id="messageLabel"
-	private Label messageLabel; // Value injected by FXMLLoader
+    /**
+     * Constructs a new UpdateAvailableDialog and presents the specified update
+     * info to the user.
+     *
+     * @param update The info about the update do install.
+     */
+    public UpdateAvailableDialog(UpdateInfo update) {
+        show(update);
+    }
 
-	@FXML // fx:id="okButton"
-	private Button okButton; // Value injected by FXMLLoader
+    // Handler for Button[fx:id="cancelButton"] onAction
+    @FXML
+    void ignoreButtonOnAction(ActionEvent event) {
+        if (!downloadThread.isAlive()) {
+            // ignore this update
+            this.hide();
+            UpdateChecker.ignoreUpdate(updateInfo.toVersion);
+        } else {
+            // Cancel download
+            UpdateChecker.cancelDownloadAndLaunch(this);
+        }
+    }
 
-	@FXML // fx:id="updateProgressAnimation"
-	private ProgressIndicator updateProgressAnimation; // Value injected by
-														// FXMLLoader
+    // Handler for Button[fx:id="okButton"] onAction
+    @FXML
+    void okButtonOnAction(ActionEvent event) {
+        UpdateAvailableDialog t = this;
 
-	@FXML // fx:id="updateProgressText"
-	private Label updateProgressText; // Value injected by FXMLLoader
+        okButton.setDisable(true);
+        cancelButton.setText(bundle.getString("button.cancel.cancelDownload"));
 
-	// Handler for Button[fx:id="cancelButton"] onAction
-	@FXML
-	void ignoreButtonOnAction(ActionEvent event) {
-		if (!downloadThread.isAlive()) {
-			// ignore this update
-			this.hide();
-			UpdateChecker.ignoreUpdate(updateInfo.toVersion);
-		} else {
-			// Cancel download
-			UpdateChecker.cancelDownloadAndLaunch(this);
-		}
-	}
-
-	// Handler for Button[fx:id="okButton"] onAction
-	@FXML
-	void okButtonOnAction(ActionEvent event) {
-		UpdateAvailableDialog t = this;
-
-		okButton.setDisable(true);
-		cancelButton.setText(bundle.getString("button.cancel.cancelDownload"));
-
-		downloadThread = new Thread(() -> {
+        downloadThread = new Thread(() -> {
             try {
                 boolean res = UpdateChecker.downloadAndInstallUpdate(updateInfo, t);
                 if (res) {
@@ -130,116 +120,116 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
                 e.printStackTrace();
             }
         });
-		downloadThread.start();
-	}
+        downloadThread.start();
+    }
 
-	@FXML // This method is called by the FXMLLoader when initialization is
-			// complete
-	void initialize() {
-		 assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-	        assert detailsLabel != null : "fx:id=\"detailsLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-	        assert messageLabel != null : "fx:id=\"messageLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-	        assert okButton != null : "fx:id=\"okButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-	        assert updateProgressAnimation != null : "fx:id=\"updateProgressAnimation\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-	        assert updateProgressBar != null : "fx:id=\"updateProgressBar\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-	        assert updateProgressText != null : "fx:id=\"updateProgressText\" was not injected: check your FXML file 'AlertDialog.fxml'.";
-		// Initialize your logic here: all @FXML variables will have been
-		// injected
-		if (updateInfo.showAlert) {
-			// an update is available, show its info
-			detailsLabel.setText(messageText);
-		} else {
-			// No update is available, show a corresponding message
-			detailsLabel.setText("");
-			messageLabel.setText(bundle.getString("label.noUpdate"));
-			okButton.setDisable(true);
-			cancelButton.setDisable(true);
+    @FXML
+        // This method is called by the FXMLLoader when initialization is
+        // complete
+    void initialize() {
+        assert cancelButton != null : "fx:id=\"cancelButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        assert detailsLabel != null : "fx:id=\"detailsLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        assert messageLabel != null : "fx:id=\"messageLabel\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        assert okButton != null : "fx:id=\"okButton\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        assert updateProgressAnimation != null : "fx:id=\"updateProgressAnimation\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        assert updateProgressBar != null : "fx:id=\"updateProgressBar\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        assert updateProgressText != null : "fx:id=\"updateProgressText\" was not injected: check your FXML file 'AlertDialog.fxml'.";
+        // Initialize your logic here: all @FXML variables will have been
+        // injected
+        if (updateInfo.showAlert) {
+            // an update is available, show its info
+            detailsLabel.setText(messageText);
+        } else {
+            // No update is available, show a corresponding message
+            detailsLabel.setText("");
+            messageLabel.setText(bundle.getString("label.noUpdate"));
+            okButton.setDisable(true);
+            cancelButton.setDisable(true);
 
-		}
-		updateProgressAnimation.setVisible(false);
-		updateProgressText.setVisible(false);
-	}
+        }
+        updateProgressAnimation.setVisible(false);
+        updateProgressText.setVisible(false);
+    }
 
-	private void show(UpdateInfo update) {
-		stage = new Stage();
-		Parent root;
-		try {
+    private void show(UpdateInfo update) {
+        stage = new Stage();
+        Parent root;
+        try {
 
-			if (update != null) {
-				if (update.fileSizeInMB != -1) {
-					messageText = "Filesize: " + (Math.round(update.fileSizeInMB * 100)) / 100.0
-							+ " MB, Version to download: " + update.toVersion.toString();
-				} else {
-					// File sie unknown, see Javadoc of UpdateInfo
-					messageText = "Filesize: unknown, Version to download: " + update.toVersion.toString();
-				}
-			}
-			updateInfo = update;
+            if (update != null) {
+                if (update.fileSizeInMB != -1) {
+                    messageText = "Filesize: " + (Math.round(update.fileSizeInMB * 100)) / 100.0
+                            + " MB, Version to download: " + update.toVersion.toString();
+                } else {
+                    // File sie unknown, see Javadoc of UpdateInfo
+                    messageText = "Filesize: unknown, Version to download: " + update.toVersion.toString();
+                }
+            }
+            updateInfo = update;
 
-			root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("AlertDialog.fxml"), bundle);
-			Scene scene = new Scene(root);
-			// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("AlertDialog.fxml"), bundle);
+            Scene scene = new Scene(root);
+            // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
-			// Set the window title and put the app name in it
-			stage.setTitle(bundle.getString("window.Title").replace("{appName}", Common.getAppName()));
+            // Set the window title and put the app name in it
+            stage.setTitle(bundle.getString("window.Title").replace("{appName}", Common.getAppName()));
 
-			stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
-			stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
+            stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
+            stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
 
-			stage.setScene(scene);
-			stage.show();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
-	public void hide() {
-		Platform.runLater(() -> stage.hide());
-	}
+    public void hide() {
+        Platform.runLater(() -> stage.hide());
+    }
 
-	@Override
-	public void preparePhaseStarted() {
-		Platform.runLater(() -> {
+    @Override
+    public void preparePhaseStarted() {
+        Platform.runLater(() -> {
             updateProgressAnimation.setVisible(true);
             updateProgressText.setVisible(true);
             updateProgressText.setText(bundle.getString("progress.preparing"));
         });
-	}
+    }
 
-	@Override
-	public void downloadStarted() {
-		Platform.runLater(() -> {
+    @Override
+    public void downloadStarted() {
+        Platform.runLater(() -> {
             updateProgressText.setText(bundle.getString("progress.downloading"));
             updateProgressBar.setVisible(true);
             updateProgressBar.setProgress(-1);
         });
-	}
+    }
 
-	@Override
-	public void installStarted() {
-		Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.installing")));
-	}
+    @Override
+    public void downloadProgressChanged(double kilobytesDownloaded, double totalFileSizeInKB) {
+        Platform.runLater(() -> updateProgressBar.setProgress(kilobytesDownloaded / totalFileSizeInKB));
+    }
 
-	@Override
-	public void launchStarted() {
-		Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.launching")));
-	}
+    @Override
+    public void installStarted() {
+        Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.installing")));
+    }
 
-	public void showErrorMessage(String message) {
-		Platform.runLater(() -> {
-            detailsLabel.setText("An error occurred:\n" + message);
-            updateProgressAnimation.setVisible(false);
-            updateProgressText.setVisible(false);
-            okButton.setDisable(false);
-            okButton.setText(bundle.getString("button.ok.retry"));
-            updateProgressBar.setVisible(false);
-        });
-	}
+    @Override
+    public void launchStarted() {
+        Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.launching")));
+    }
 
-	@Override
-	public void operationCanceled() {
-		Platform.runLater(() -> {
+    @Override
+    public void cancelRequested() {
+        Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.cancelRequested")));
+    }
+
+    @Override
+    public void operationCanceled() {
+        Platform.runLater(() -> {
             updateProgressAnimation.setVisible(false);
             updateProgressText.setVisible(false);
             okButton.setText(bundle.getString("button.ok"));
@@ -247,15 +237,16 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
             cancelButton.setText(bundle.getString("button.cancel"));
             updateProgressBar.setVisible(false);
         });
-	}
+    }
 
-	@Override
-	public void cancelRequested() {
-		Platform.runLater(() -> updateProgressText.setText(bundle.getString("progress.cancelRequested")));
-	}
-	
-	@Override
-	public void downloadProgressChanged(double kilobytesDownloaded, double totalFileSizeInKB) {
-		Platform.runLater(() -> updateProgressBar.setProgress(kilobytesDownloaded/totalFileSizeInKB));
-	}
+    public void showErrorMessage(String message) {
+        Platform.runLater(() -> {
+            detailsLabel.setText("An error occurred:\n" + message);
+            updateProgressAnimation.setVisible(false);
+            updateProgressText.setVisible(false);
+            okButton.setDisable(false);
+            okButton.setText(bundle.getString("button.ok.retry"));
+            updateProgressBar.setVisible(false);
+        });
+    }
 }

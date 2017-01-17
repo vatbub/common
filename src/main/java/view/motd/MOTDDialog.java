@@ -221,7 +221,7 @@ public class MOTDDialog {
         WebViewHyperlinkListener eventPrintingListener = event -> {
             try {
                 /*
-				 * This listener is always called when the user enters, exits or
+                 * This listener is always called when the user enters, exits or
 				 * clicks on the link with his mouse so only react on clicks.
 				 */
                 if (event.getEventType() == EventType.ACTIVATED) {
