@@ -151,7 +151,7 @@ public class FOKLogger {
      */
     @SuppressWarnings("unused")
     public static String getLogFileName() {
-        return logFileName;
+        return logFileName.replace("DateTime", Common.getLaunchTimeStamp());
     }
 
     /**
