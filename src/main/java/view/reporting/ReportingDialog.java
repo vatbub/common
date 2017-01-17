@@ -21,6 +21,7 @@ package view.reporting;
  */
 
 
+import common.StringCommon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,6 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import view.updateAvailableDialog.UpdateAvailableDialog;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,10 +55,8 @@ import java.util.logging.Level;
 public class ReportingDialog {
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
-    private static Scene scene;
     private static String windowTitle;
     private static URL finalURL;
-    private static Throwable e;
 
 
     static {
@@ -77,52 +77,97 @@ public class ReportingDialog {
 
     }
 
+    @SuppressWarnings("unused")
     public void show(String userName, String repoName) {
+        show(userName, repoName, false);
+    }
+
+    public void show(String userName, String repoName, boolean includeLatestLogFile) {
         String windowTitle = null;
-        show(windowTitle, userName, repoName, null);
+        show(windowTitle, userName, repoName, null, includeLatestLogFile);
     }
 
+    @SuppressWarnings("unused")
     public void show(String userName, String repoName, Throwable e) {
-        show(defaultGitReportsURL, userName, repoName, e);
+        show(userName, repoName, e, false);
     }
 
+    public void show(String userName, String repoName, Throwable e, boolean includeLatestLogFile) {
+        show(defaultGitReportsURL, userName, repoName, e, includeLatestLogFile);
+    }
+
+    @SuppressWarnings("unused")
     public void show(URL gitReportsBaseURL, String userName, String repoName) {
-        show(gitReportsBaseURL, userName, repoName, null);
+        show(gitReportsBaseURL, userName, repoName, false);
+    }
+
+    public void show(URL gitReportsBaseURL, String userName, String repoName, boolean includeLatestLogFile) {
+        show(gitReportsBaseURL, userName, repoName, null, includeLatestLogFile);
     }
 
     public void show(URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
-        String windowTitle = null;
-        show(windowTitle, gitReportsBaseURL, userName, repoName, e);
+        show(gitReportsBaseURL, userName, repoName, e, false);
     }
 
+    public void show(URL gitReportsBaseURL, String userName, String repoName, Throwable e, boolean includeLatestLogFile) {
+        String windowTitle = null;
+        show(windowTitle, gitReportsBaseURL, userName, repoName, e, includeLatestLogFile);
+    }
+
+    @SuppressWarnings("unused")
     public void show(String windowTitle, String userName, String repoName) {
-        show(windowTitle, userName, repoName, null);
+        show(windowTitle, userName, repoName, false);
+    }
+
+    public void show(String windowTitle, String userName, String repoName, boolean includeLatestLogFile) {
+        show(windowTitle, userName, repoName, null, includeLatestLogFile);
     }
 
     public void show(String windowTitle, String userName, String repoName, Throwable e) {
-        show(windowTitle, defaultGitReportsURL, userName, repoName, e);
+        show(windowTitle, userName, repoName, e, false);
     }
 
+    public void show(String windowTitle, String userName, String repoName, Throwable e, boolean includeLatestLogFile) {
+        show(windowTitle, defaultGitReportsURL, userName, repoName, e, includeLatestLogFile);
+    }
+
+    @SuppressWarnings("unused")
     public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName) {
-        show(windowTitle, gitReportsBaseURL, userName, repoName, null);
+        show(windowTitle, gitReportsBaseURL, userName, repoName, false);
     }
 
+    public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName, boolean includeLatestLogFile) {
+        show(windowTitle, gitReportsBaseURL, userName, repoName, null, includeLatestLogFile);
+    }
+
+    @SuppressWarnings("unused")
     public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
+        show(windowTitle, gitReportsBaseURL, userName, repoName, e, false);
+    }
+
+    public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName, Throwable e, boolean includeLatestLogFile) {
         stage = new Stage();
         Parent root;
         try {
             String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
+            String details="";
             if (e != null) {
                 // set the details value
-                String details = "\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------";
-                finalURLString = finalURLString + "?details=" + URLEncoder.encode(details, "UTF-8");
+                details = details + "\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------";
             }
+
+            if (includeLatestLogFile){
+                String logs = StringCommon.fromFile(new File(FOKLogger.getLogFilePathAndName()));
+                details = details + "\n\n------------------------------\nLog is:\n" + logs + "\n------------------------------";
+            }
+
+            finalURLString = finalURLString + "?details=" + URLEncoder.encode(details, "UTF-8");
             ReportingDialog.windowTitle = windowTitle;
             FOKLogger.info(ReportingDialog.class.getName(), "Final reporting window url is " + finalURLString);
             finalURL = new URL(finalURLString);
 
             root = FXMLLoader.load(UpdateAvailableDialog.class.getResource("/view/reporting/ReportingDialog.fxml"));
-            scene = new Scene(root);
+            Scene scene = new Scene(root);
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
