@@ -91,7 +91,8 @@ public class ReportingDialog {
     }
 
     public void show(URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
-
+        String windowTitle = null;
+        show(windowTitle, gitReportsBaseURL, userName, repoName, e);
     }
 
     public void show(String windowTitle, String userName, String repoName) {
