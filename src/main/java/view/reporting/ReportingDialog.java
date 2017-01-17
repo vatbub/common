@@ -117,6 +117,7 @@ public class ReportingDialog {
                 String details = "\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------";
                 finalURLString = finalURLString + "?details=" + URLEncoder.encode(details, "UTF-8");
             }
+            ReportingDialog.windowTitle =windowTitle;
             FOKLogger.info(ReportingDialog.class.getName(), "Final reporting window url is " + finalURLString);
             finalURL = new URL(finalURLString);
 
@@ -138,7 +139,7 @@ public class ReportingDialog {
         webView.prefHeightProperty().addListener((observableValue, number, number2) -> stage.setHeight((double) number2 + 85));
 
         // set the window title
-        if (this.windowTitle != null) {
+        if (windowTitle != null) {
             stage.setTitle(windowTitle);
         } else {
             // bind the window title to the web page title
