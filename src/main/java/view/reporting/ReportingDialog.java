@@ -21,7 +21,11 @@ package view.reporting;
  */
 
 
-import common.StringCommon;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.Region;
+import common.AWSS3Utils;
+import common.Common;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -58,6 +62,7 @@ public class ReportingDialog {
     private static Stage stage;
     private static String windowTitle;
     private static URL finalURL;
+    private static final String s3BucketName = "vatbubissuelogs";
 
 
     static {
@@ -152,16 +157,36 @@ public class ReportingDialog {
         stage = new Stage();
         Parent root;
         try {
-            String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
             String details="";
+
+            if (includeLatestLogFile){
+                // upload the logs to s3
+                AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
+                if (!s3Client.doesBucketExist(s3BucketName)){
+                    // create bucket
+                    s3Client.createBucket(s3BucketName, Region.EU_Frankfurt);
+                }
+
+                if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())){
+                    // Create folder
+                    AWSS3Utils.createFolder(s3Client, s3BucketName, Common.getAppName());
+                }
+
+                // Upload the log file
+                String awsFileName = Common.getAppName() + "/" + FOKLogger.getLogFileName();
+                s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
+
+                if (includeLatestLogFile){
+                    // write the aws key to the details to find the log file again
+                    details = details + "\n\n------------------------------\nLog file aws key:" + awsFileName + "\n------------------------------";
+                }
+            }
+
+            String finalURLString = gitReportsBaseURL.toString() + "/issue/" + userName + "/" + repoName + "/";
+
             if (e != null) {
                 // set the details value
                 details = details + "\n\n------------------------------\nStacktrace is:\n" + ExceptionUtils.getFullStackTrace(e) + "\n------------------------------";
-            }
-
-            if (includeLatestLogFile){
-                String logs = StringCommon.fromFile(new File(FOKLogger.getLogFilePathAndName()));
-                details = details + "\n\n------------------------------\nLog is:\n" + logs + "\n------------------------------";
             }
 
             finalURLString = finalURLString + "?details=" + URLEncoder.encode(details, "UTF-8");

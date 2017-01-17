@@ -21,6 +21,7 @@ package common;
  */
 
 
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.jcabi.manifests.Manifests;
 import logging.FOKLogger;
 import org.apache.commons.lang.SystemUtils;
@@ -32,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 
+@SuppressWarnings("unused")
 public class Common {
 
     private static String appName;
@@ -40,6 +42,8 @@ public class Common {
     private static String mockAppVersion = "";
     private static String mockBuildNumber = "";
     private static String mockPackaging = "";
+    private static String awsAccessKey;
+    private static String awsSecretAccessKey;
 
     private static String buildNumberManifestEntry = "Custom-Implementation-Build";
 
@@ -61,8 +65,7 @@ public class Common {
     public static String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");// dd/MM/yyyy
         Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
+        return sdfDate.format(now);
     }
 
     /**
@@ -73,8 +76,7 @@ public class Common {
      */
     public static String getLaunchTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");// dd/MM/yyyy
-        String strDate = sdfDate.format(launchDate);
-        return strDate;
+        return sdfDate.format(launchDate);
     }
 
     /**
@@ -389,7 +391,7 @@ public class Common {
      * @return A set of locales supported by the specified resource bundle
      */
     public static List<Locale> getLanguagesSupportedByResourceBundle(String resourceBaseName) {
-        List<Locale> locales = new ArrayList<Locale>();
+        List<Locale> locales = new ArrayList<>();
 
         for (Locale locale : Locale.getAvailableLocales()) {
             try {
@@ -407,4 +409,23 @@ public class Common {
         return Collections.unmodifiableList(locales);
     }
 
+    public static String getAwsAccessKey() {
+        return awsAccessKey;
+    }
+
+    public static String getAwsSecretAccessKey() {
+        return awsSecretAccessKey;
+    }
+
+    public static void setAwsAccessKey(String awsAccessKey) {
+        Common.awsAccessKey = awsAccessKey;
+    }
+
+    public static void setAwsSecretAccessKey(String awsSecretAccessKey) {
+        Common.awsSecretAccessKey = awsSecretAccessKey;
+    }
+
+    public static BasicAWSCredentials getAWSCredentials(){
+        return new BasicAWSCredentials(getAwsAccessKey(), getAwsSecretAccessKey());
+    }
 }
