@@ -176,12 +176,6 @@ public class ReportingDialog {
                             s3Client.createBucket(s3BucketName);
                         }
 
-                        if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())) {
-                            FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 folder " + Common.getAppName());
-                            // Create folder
-                            AWSS3Utils.createFolder(s3Client, s3BucketName, Common.getAppName());
-                        }
-
                         // Upload the log file
                         FOKLogger.info(ReportingDialog.class.getName(), "Uploading log file to aws: " + awsFileName);
                         s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
