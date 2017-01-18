@@ -21,6 +21,8 @@ package view.reporting;
  */
 
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import common.AWSS3Utils;
@@ -57,7 +59,7 @@ import java.util.logging.Level;
  */
 @SuppressWarnings({"SameParameterValue", "ConstantConditions"})
 public class ReportingDialog {
-    private static final String s3BucketName = "vatbubissuelogs";
+    private static final String s3BucketName = "vatbubissuelogs2";
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
     private static String windowTitle;
@@ -164,23 +166,29 @@ public class ReportingDialog {
 
                 // upload the logs to s3
                 Thread awsUploadThread = new Thread(() -> {
-                    AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
-                    if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
-                        // create bucket
-                        FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
-                        s3Client.createBucket(s3BucketName);
-                    }
+                    try {
+                        AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
+                        if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
+                            // create bucket
+                            FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
+                            s3Client.createBucket(s3BucketName);
+                        }
 
-                    if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())) {
-                        FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 folder " + Common.getAppName());
-                        // Create folder
-                        AWSS3Utils.createFolder(s3Client, s3BucketName, Common.getAppName());
-                    }
+                        if (!AWSS3Utils.keyExists(s3Client, s3BucketName, Common.getAppName())) {
+                            FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 folder " + Common.getAppName());
+                            // Create folder
+                            AWSS3Utils.createFolder(s3Client, s3BucketName, Common.getAppName());
+                        }
 
-                    // Upload the log file
-                    FOKLogger.info(ReportingDialog.class.getName(), "Uploading log file to aws: " + awsFileName);
-                    s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
-                    FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
+                        // Upload the log file
+                        FOKLogger.info(ReportingDialog.class.getName(), "Uploading log file to aws: " + awsFileName);
+                        s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
+                        FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
+                    } catch (AmazonServiceException ase) {
+                        FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
+                    } catch (AmazonClientException ace) {
+                        FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
+                    }
                 });
                 awsUploadThread.setName("awsUploadThread");
                 awsUploadThread.start();
