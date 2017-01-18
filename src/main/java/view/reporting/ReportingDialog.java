@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Control;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -154,6 +155,7 @@ public class ReportingDialog {
     }
 
     public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName, Throwable e, boolean includeLatestLogFile) {
+        FOKLogger.info(ReportingDialog.class.getName(), "Showing the ReportingDialog...");
         stage = new Stage();
         Parent root;
         try {
@@ -162,7 +164,7 @@ public class ReportingDialog {
             if (includeLatestLogFile) {
                 String awsFileName = Common.getAppName() + "/" + FOKLogger.getLogFileName();
                 // write the aws key to the details to find the log file again
-                details = details + "\n\n------------------------------\nLog file aws key:" + awsFileName + "\n------------------------------";
+                details = details + "\n\n------------------------------\nLog file aws key: " + awsFileName + "\n------------------------------";
 
                 // upload the logs to s3
                 Thread awsUploadThread = new Thread(() -> {
@@ -236,6 +238,18 @@ public class ReportingDialog {
                 }
             });
         }
+
+        webView.getEngine().getLoadWorker().progressProperty().addListener((observable, oldValue, newValue) -> {
+            progressBar.setProgress(newValue.doubleValue());
+            if (newValue.doubleValue() == 1.0) {
+                progressBar.setVisible(false);
+                progressBar.setPrefHeight(0);
+            } else {
+                progressBar.setVisible(true);
+                // reset to use computed value
+                progressBar.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            }
+        });
 
         webView.getEngine().load(finalURL.toString());
     }
