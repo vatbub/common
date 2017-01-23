@@ -31,6 +31,8 @@ public class GitHubIssue {
     private String title;
     private String body;
     private String logLocation;
+    private String toRepo_Owner;
+    private String toRepo_RepoName;
 
     public String getBody() {
         return body;
@@ -70,5 +72,21 @@ public class GitHubIssue {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getToRepo_Owner() {
+        return toRepo_Owner;
+    }
+
+    public void setToRepo_Owner(String toRepo_Owner) {
+        this.toRepo_Owner = toRepo_Owner;
+    }
+
+    public String getToRepo_RepoName() {
+        return toRepo_RepoName;
+    }
+
+    public void setToRepo_RepoName(String toRepo_RepoName) {
+        this.toRepo_RepoName = toRepo_RepoName;
     }
 }
