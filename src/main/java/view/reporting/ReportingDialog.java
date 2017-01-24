@@ -262,6 +262,7 @@ public class ReportingDialog {
                 // request header
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("Content-Encoding", "UTF-8");
                 connection.setRequestProperty("Content-Length", Integer.toString(query.length()));
                 connection.setDoOutput(true);
                 connection.getOutputStream().write(query.getBytes("UTF8"));
