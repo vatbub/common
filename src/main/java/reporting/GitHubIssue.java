@@ -33,6 +33,7 @@ public class GitHubIssue {
     private String logLocation;
     private String toRepo_Owner;
     private String toRepo_RepoName;
+    private Throwable throwable;
 
     public String getBody() {
         return body;
@@ -88,5 +89,13 @@ public class GitHubIssue {
 
     public void setToRepo_RepoName(String toRepo_RepoName) {
         this.toRepo_RepoName = toRepo_RepoName;
+    }
+
+    public Throwable getThrowable() {
+        return throwable;
+    }
+
+    public void setThrowable(Throwable throwable) {
+        this.throwable = throwable;
     }
 }
