@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import common.AWSS3Utils;
 import common.Common;
 import common.Internet;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -218,7 +219,7 @@ public class ReportingDialog {
         Thread issueUploadThread = new Thread(() -> {
             if (uploadLogsCheckbox.isSelected()) {
                 // upload the logs to aws
-                ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingLogs"));
+                Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingLogs")));
 
                 String awsFileName = Common.getAppName() + "/" + FOKLogger.getLogFileName();
                 gitHubIssue.setLogLocation(awsFileName);
@@ -244,7 +245,7 @@ public class ReportingDialog {
             }
 
             // post the issue
-            ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingIssue"));
+            Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingIssue")));
             gitHubIssue.setBody(message.getText());
             gitHubIssue.setTitle(title.getText());
             gitHubIssue.setReporterEmail(mail.getText());
