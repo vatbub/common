@@ -73,6 +73,7 @@ public class ReportingDialog {
     private static URL logInfoURL = null;
     private static URL defaultLogInfoURL;
     private static URL gitReportsBaseURL;
+    private static GitHubIssue gitHubIssue;
 
     static {
         try {
@@ -84,7 +85,6 @@ public class ReportingDialog {
         }
     }
 
-    private GitHubIssue gitHubIssue = new GitHubIssue();
     @FXML
     private AnchorPane anchorPane;
 
@@ -160,6 +160,7 @@ public class ReportingDialog {
         stage = new Stage();
         Parent root;
         try {
+            gitHubIssue = new GitHubIssue();
             gitHubIssue.setThrowable(e);
             gitHubIssue.setToRepo_Owner(userName);
             gitHubIssue.setToRepo_RepoName(repoName);
