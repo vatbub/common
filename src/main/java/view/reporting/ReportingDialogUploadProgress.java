@@ -51,7 +51,7 @@ public class ReportingDialogUploadProgress {
 
             root = FXMLLoader.load(ReportingDialogUploadProgress.class.getResource("/view/reporting/ReportingDialogUploadProgress.fxml"));
             Scene scene = new Scene(root);
-            scene.setUserAgentStylesheet(ReportingDialogUploadProgress.class.getResource("/view/reporting/ReportingDialog.css").toString());
+            scene.getStylesheets().add(ReportingDialogUploadProgress.class.getResource("/view/reporting/ReportingDialog.css").toExternalForm());
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);

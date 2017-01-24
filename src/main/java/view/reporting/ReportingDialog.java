@@ -168,7 +168,7 @@ public class ReportingDialog {
 
             root = FXMLLoader.load(ReportingDialog.class.getResource("/view/reporting/ReportingDialog.fxml"), bundle);
             Scene scene = new Scene(root);
-            scene.setUserAgentStylesheet(ReportingDialog.class.getResource("/view/reporting/ReportingDialog.css").toString());
+            scene.getStylesheets().add(this.getClass().getResource("/view/reporting/ReportingDialog.css").toExternalForm());
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
