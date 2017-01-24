@@ -113,6 +113,7 @@ public class ReportingDialog {
 
     }
 
+    @SuppressWarnings("unused")
     public ReportingDialog(URL logInfoURL) {
         ReportingDialog.logInfoURL = logInfoURL;
     }
@@ -125,29 +126,30 @@ public class ReportingDialog {
 
     @SuppressWarnings("unused")
     public void show(String userName, String repoName, Throwable e) {
-        show(userName, repoName, e);
+        show(defaultGitReportsURL, userName, repoName, e);
     }
 
     @SuppressWarnings("unused")
     public void show(URL gitReportsBaseURL, String userName, String repoName) {
-        show(gitReportsBaseURL, userName, repoName);
+        String windowTitle = null;
+        show(windowTitle, gitReportsBaseURL, userName, repoName);
     }
 
-    @SuppressWarnings("unused")
     public void show(URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
-        show(gitReportsBaseURL, userName, repoName, e);
+        String windowTitle = null;
+        show(windowTitle, gitReportsBaseURL, userName, repoName, e);
     }
 
     @SuppressWarnings("unused")
     public void show(String windowTitle, String userName, String repoName) {
-        show(windowTitle, userName, repoName);
+        show(windowTitle, defaultGitReportsURL, userName, repoName);
     }
 
     public void show(String windowTitle, String userName, String repoName, Throwable e) {
-        show(windowTitle, userName, repoName, e);
+        show(windowTitle, defaultGitReportsURL, userName, repoName, e);
     }
 
-    @SuppressWarnings("unused")
+
     public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName) {
         show(windowTitle, gitReportsBaseURL, userName, repoName, null);
     }
