@@ -76,7 +76,7 @@ public class ReportingDialog {
 
     static {
         try {
-            defaultGitReportsURL = new URL("https://gitreports.com/");
+            defaultGitReportsURL = new URL("https://vatbubgitreports.herokuapp.com/");
             defaultLogInfoURL = new URL("https://github.com/vatbub/zorkClone/wiki/Getting-the-logs");
         } catch (MalformedURLException e) {
             // will not happen
@@ -262,23 +262,32 @@ public class ReportingDialog {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setRequestProperty("Content-Length", Integer.toString(query.length()));
+                connection.setDoOutput(true);
                 connection.getOutputStream().write(query.getBytes("UTF8"));
                 connection.getOutputStream().flush();
                 connection.getOutputStream().close();
 
-                ReportingDialogUploadProgress.hide();
-                stage.hide();
+                Platform.runLater(() -> {
+                    ReportingDialogUploadProgress.hide();
 
-                // check the server response
-                int responseCode = connection.getResponseCode();
-                if (responseCode >= 400) {
-                    // something went wrong
-                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Something went wrong when trying to upload the issue: " + responseCode + " " + Internet.getReasonForHTTPCode(responseCode));
-                    new Alert(Alert.AlertType.ERROR, "Something went wrong when trying to upload the issue: " + responseCode + " " + Internet.getReasonForHTTPCode(responseCode)).show();
-                } else {
-                    // everything worked
-                    new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("thanks")).show();
-                }
+                    stage.hide();
+
+                    // check the server response
+                    int responseCode = 0;
+                    try {
+                        responseCode = connection.getResponseCode();
+                    } catch (IOException e) {
+                        FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+                    }
+                    if (responseCode >= 400) {
+                        // something went wrong
+                        FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Something went wrong when trying to upload the issue: " + responseCode + " " + Internet.getReasonForHTTPCode(responseCode));
+                        new Alert(Alert.AlertType.ERROR, "Something went wrong when trying to upload the issue: " + responseCode + " " + Internet.getReasonForHTTPCode(responseCode)).show();
+                    } else {
+                        // everything worked
+                        new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("thanks")).show();
+                    }
+                });
             } catch (IOException e) {
                 FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
             }
