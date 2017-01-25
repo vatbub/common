@@ -47,8 +47,10 @@ import logging.FOKLogger;
 import reporting.GitHubIssue;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -276,11 +278,27 @@ public class ReportingDialog {
 
                     // check the server response
                     int responseCode = 0;
+                    StringBuilder responseBody = new StringBuilder();
                     try {
                         responseCode = connection.getResponseCode();
+                        BufferedReader br;
+                        if (200 <= connection.getResponseCode() && connection.getResponseCode() <= 299) {
+                            br = new BufferedReader(new InputStreamReader((connection.getInputStream())));
+                        } else {
+                            br = new BufferedReader(new InputStreamReader((connection.getErrorStream())));
+                        }
+
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            responseBody.append(line);
+                        }
                     } catch (IOException e) {
                         FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
                     }
+
+                    FOKLogger.info(ReportingDialog.class.getName(), "Submitted GitHub issue, response code from VatbubGitReports-Server: " + responseCode);
+                    FOKLogger.info(ReportingDialog.class.getName(), "Response from Server:\n" + responseBody);
+
                     if (responseCode >= 400) {
                         // something went wrong
                         FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Something went wrong when trying to upload the issue: " + responseCode + " " + Internet.getReasonForHTTPCode(responseCode));
