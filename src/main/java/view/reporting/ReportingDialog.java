@@ -44,6 +44,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import logging.FOKLogger;
+import org.eclipse.egit.github.core.Issue;
 import reporting.GitHubIssue;
 
 import java.awt.*;
@@ -56,6 +57,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 
@@ -296,6 +298,8 @@ public class ReportingDialog {
                         FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
                     }
 
+                    Issue returnedIssue = gson.fromJson(responseBody.toString(), Issue.class);
+
                     FOKLogger.info(ReportingDialog.class.getName(), "Submitted GitHub issue, response code from VatbubGitReports-Server: " + responseCode);
                     FOKLogger.info(ReportingDialog.class.getName(), "Response from Server:\n" + responseBody);
 
@@ -305,7 +309,15 @@ public class ReportingDialog {
                         new Alert(Alert.AlertType.ERROR, "Something went wrong when trying to upload the issue: " + responseCode + " " + Internet.getReasonForHTTPCode(responseCode)).show();
                     } else {
                         // everything worked
-                        new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("thanks")).show();
+                        ButtonType viewIssueOnlineButton = new ButtonType(bundle.getString("viewIssue"), ButtonBar.ButtonData.HELP);
+                        Optional<ButtonType> result = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("thanks")).showAndWait();
+                        if (result.get() == viewIssueOnlineButton) {
+                            try {
+                                Desktop.getDesktop().browse(new URL(returnedIssue.getUrl()).toURI());
+                            } catch (IOException | URISyntaxException e) {
+                                FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+                            }
+                        }
                     }
                 });
             } catch (IOException e) {
