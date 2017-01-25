@@ -34,6 +34,7 @@ public class GitHubIssue {
     private String toRepo_Owner;
     private String toRepo_RepoName;
     private Throwable throwable;
+    private String url;
 
     public String getBody() {
         return body;
@@ -97,5 +98,13 @@ public class GitHubIssue {
 
     public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
