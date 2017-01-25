@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 /**
  * A dialog that can show an exception
  */
+@SuppressWarnings("unused")
 public class ExceptionAlert extends Alert {
     private static ResourceBundle bundle = ResourceBundle.getBundle("view.ExceptionAlert");
 
