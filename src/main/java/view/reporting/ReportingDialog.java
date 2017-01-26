@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import common.AWSS3Utils;
 import common.Common;
-import common.Internet;
+import common.internet.Internet;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
