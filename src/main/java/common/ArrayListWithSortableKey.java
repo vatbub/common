@@ -21,6 +21,8 @@ package common;
  */
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -77,7 +79,7 @@ public class ArrayListWithSortableKey<E extends Comparable<E>> extends ArrayList
 	}
 
 	@Override
-	public int compareTo(ArrayListWithSortableKey<E> that) {
+	public int compareTo(@NotNull ArrayListWithSortableKey<E> that) {
 		return this.get(this.getSortKey()).compareTo(that.get(that.getSortKey()));
 	}
 }

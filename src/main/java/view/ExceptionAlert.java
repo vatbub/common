@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
  */
 @SuppressWarnings("unused")
 public class ExceptionAlert extends Alert {
-    private static ResourceBundle bundle = ResourceBundle.getBundle("view.ExceptionAlert");
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("view.ExceptionAlert");
 
     public ExceptionAlert(Throwable e) {
         this(e, bundle.getString("defaultErrorText"));

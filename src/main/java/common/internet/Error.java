@@ -26,8 +26,8 @@ package common.internet;
  */
 @SuppressWarnings("unused")
 public class Error {
-    String error;
-    String stacktrace;
+    final String error;
+    final String stacktrace;
 
     public Error(String error) {
         this(error, "");

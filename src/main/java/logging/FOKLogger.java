@@ -36,12 +36,15 @@ import java.util.logging.*;
  *
  * @author Frederik Kammel
  */
+@SuppressWarnings("unused")
 public class FOKLogger {
 
+    private static final Map<String, FOKLogger> loggerMap = new HashMap<>();
+    //log uncaught exceptions
+    private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable));
     private static Handler fileHandler;
     private static Handler consoleHandler;
     private static boolean handlersInitialized;
-    private static Map<String, FOKLogger> loggerMap = new HashMap<>();
     /**
      * Log messages must have the specified log level or higher to be saved in
      * the log file. {@code Level.ALL} will enable all log levels. Default
@@ -60,11 +63,7 @@ public class FOKLogger {
      */
     private static String logFileName;
     private static String logFilePath;
-    //log uncaught exceptions
-    private static Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> {
-        FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable);
-    });
-    Logger log;
+    final Logger log;
 
     /**
      * Creates a new {@link java.util.logging.Logger} instance and attaches

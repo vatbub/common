@@ -32,6 +32,7 @@ import logging.FOKLogger;
 import java.io.IOException;
 import java.util.logging.Level;
 
+@SuppressWarnings("unused")
 public class ReportingDialogUploadProgress {
     private static ReportingDialogUploadProgress currentInstance;
     private static Stage stage;

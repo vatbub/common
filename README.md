@@ -9,7 +9,7 @@ This repository holds the Maven Artifact `fokprojects.common` which currently co
   - Logging (using `java.util.logging`)
   - Comparing version numbers
   - A basic dialog to notify the user of an update
-  - Read config files and remote configs (in developement)
+  - Read config files and remote configs (in development)
   
 Learn how to use all of this functionality, go to the [wiki](../../wiki).
   
@@ -36,7 +36,7 @@ Have a look at the [getting started page](https://github.com/vatbub/common/wiki/
 2. Run `mvn install`
 
 ## Build the latest release
-Repeat the steps mentioned above but switch to the `release` branch by running `git checkout release` prior to runing `mvn install`.
+Repeat the steps mentioned above but switch to the `release` branch by running `git checkout release` prior to running `mvn install`.
 
 ##Docs
 [Maven Site](http://vatbubmvnsites.s3-website-us-west-2.amazonaws.com/common/0.0.21-SNAPSHOT/site/common/), [JavaDoc](http://vatbubmvnsites.s3-website-us-west-2.amazonaws.com/common/0.0.21-SNAPSHOT/site/common/apidocs/index.html)

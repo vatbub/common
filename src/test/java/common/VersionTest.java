@@ -84,12 +84,6 @@ public class VersionTest {
 	}
 
 	@Test
-	public void compareToNullTest() {
-		String olderVersion = "0.0.1-SNAPSHOT";
-		assert new Version(olderVersion).compareTo(null) == 1;
-	}
-
-	@Test
 	public void illegalVersionFormatTest() {
 		String olderVersion = "lkjzughvihkgv";
 		try {
@@ -111,11 +105,10 @@ public class VersionTest {
 
 	@Test
 	public void versionNullTest() {
-		String olderVersion = null;
 		try {
 			// this is an illegal version format so an exception should be
 			// thrown
-			new Version(olderVersion);
+			new Version(null);
 
 			// No exception occurred
 			assert false;
@@ -163,6 +156,7 @@ public class VersionTest {
 		assert v1.toString().equals(versionString1 + "-" + buildNumber);
 	}
 
+	@SuppressWarnings({"EqualsBetweenInconvertibleTypes", "EqualsWithItself", "ObjectEqualsNull"})
 	@Test
 	public void equalTest() {
 		Version v1 = new Version("0.0.1");

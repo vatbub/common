@@ -72,7 +72,7 @@ public class Internet {
      * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on
      *                                <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
      * @param eventName               The name of the event to trigger.
-     * @param Details1                You can send up to three additional fields to the MAker
+     * @param Details1                You can send up to three additional fields to the Maker
      *                                channel which you can use then as IFTTT ingredients. See
      *                                <a href=
      *                                "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
@@ -94,7 +94,7 @@ public class Internet {
      * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on
      *                                <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
      * @param eventName               The name of the event to trigger.
-     * @param Details1                You can send up to three additional fields to the MAker
+     * @param Details1                You can send up to three additional fields to the Maker
      *                                channel which you can use then as IFTTT ingredients. See
      *                                <a href=
      *                                "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
@@ -117,7 +117,7 @@ public class Internet {
      * @param IFTTTMakerChannelApiKey Your Maker API Key. Get your one on
      *                                <a href="https://ifttt.com/maker">https://ifttt.com/maker</a>
      * @param eventName               The name of the event to trigger.
-     * @param Details1                You can send up to three additional fields to the MAker
+     * @param Details1                You can send up to three additional fields to the Maker
      *                                channel which you can use then as IFTTT ingredients. See
      *                                <a href=
      *                                "https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
@@ -161,19 +161,20 @@ public class Internet {
             return response;
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
-            FOKLogger.log(Internet.class.getName(), Level.SEVERE, "An error occured!", e);
+            FOKLogger.log(Internet.class.getName(), Level.SEVERE, "An error occurred!", e);
             return "";
         }
 
     }
 
     /**
-     * Sends a GET request to url and retreives the server response
+     * Sends a GET request to url and retrieves the server response
      *
      * @param url The url to call.
      * @return The server response
      * @throws IOException No Internet connection
      */
+    @SuppressWarnings("UnusedReturnValue")
     public static String webread(URL url) throws IOException {
         StringBuilder result = new StringBuilder();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

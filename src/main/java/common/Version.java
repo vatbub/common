@@ -21,29 +21,50 @@ package common;
  */
 
 
+import org.jetbrains.annotations.NotNull;
+
 // Code taken from http://stackoverflow.com/questions/198431/how-do-you-compare-two-version-strings-in-java
 public class Version implements Comparable<Version> {
 
-	private String version;
+    private static final String snapshotSuffix = "-SNAPSHOT";
+    private String version;
 	private String buildNumber;
 	private String timestamp;
-	private static String snapshotSuffix = "-SNAPSHOT";
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public Version(String version) {
+        this(version, null);
+    }
 
-	public void setBuildNumber(String buildNumber) {
-		this.buildNumber = buildNumber;
-	}
+    public Version(String version, String buildNumber) {
+        this(version, buildNumber, null);
+    }
+
+    public Version(String version, String buildNumber, String timestamp) {
+        setBuildNumber(buildNumber);
+        setTimestamp(timestamp);
+
+        if (version == null)
+            throw new IllegalArgumentException("Version can not be null");
+        if (!version.matches("[0-9]+(\\.[0-9]+)*(" + snapshotSuffix + ")?"))
+            throw new IllegalArgumentException("Invalid version format");
+        setVersion(version);
+    }
 
 	public String getVersion() {
 		return this.version;
 	}
 
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
 	public String getBuildNumber() {
 		return this.buildNumber;
 	}
+
+    public void setBuildNumber(String buildNumber) {
+        this.buildNumber = buildNumber;
+    }
 
 	/**
 	 * @return the timestamp
@@ -61,29 +82,18 @@ public class Version implements Comparable<Version> {
 	}
 
 	/**
-	 * Converts this Version to a {@link String} representation. Removes the
-	 * -SNAPSHOT-Annotation if this version is a snapshot.
-	 * 
-	 * @return A {@link String} representation of this version.
-	 */
-	@Override
-	public final String toString() {
-		return toString(this.isSnapshot());
-	}
-
-	/**
 	 * Converts this Version to a {@link String} representation.
-	 * 
-	 * @param removeSnapshotAnnotaion
-	 *            If {@code true}, the -SNAPSHOT-Annotation will be removed for
+     *
+     * @param removeSnapshotAnnotation
+     *            If {@code true}, the -SNAPSHOT-Annotation will be removed for
 	 *            snapshot versions.
 	 * @return A {@link String} representation of this version.
 	 */
-	public final String toString(boolean removeSnapshotAnnotaion) {
-		String res = getVersion();
+    public final String toString(boolean removeSnapshotAnnotation) {
+        String res = getVersion();
 
-		if (removeSnapshotAnnotaion) {
-			res = res.replace(snapshotSuffix, "");
+        if (removeSnapshotAnnotation) {
+            res = res.replace(snapshotSuffix, "");
 		}
 
 		if (getTimestamp() != null && !getTimestamp().equals("")) {
@@ -97,34 +107,13 @@ public class Version implements Comparable<Version> {
 		return res;
 	}
 
-	public Version(String version) {
-		this(version, null);
-	}
-
-	public Version(String version, String buildNumber) {
-		this(version, buildNumber, null);
-	}
-
-	public Version(String version, String buildNumber, String timestamp) {
-		setBuildNumber(buildNumber);
-		setTimestamp(timestamp);
-
-		if (version == null)
-			throw new IllegalArgumentException("Version can not be null");
-		if (!version.matches("[0-9]+(\\.[0-9]+)*(" + snapshotSuffix + ")?"))
-			throw new IllegalArgumentException("Invalid version format");
-		setVersion(version);
-	}
-
 	public boolean isSnapshot() {
 		return (this.getVersion().endsWith(snapshotSuffix));
 	}
 
 	@Override
-	public int compareTo(Version that) {
-		if (that == null)
-			return 1;
-		String[] thisParts = this.getVersion().replace(snapshotSuffix, "").split("\\.");
+    public int compareTo(@NotNull Version that) {
+        String[] thisParts = this.getVersion().replace(snapshotSuffix, "").split("\\.");
 		boolean thisIsSnapshot = this.isSnapshot();
 		String[] thatParts = that.getVersion().replace(snapshotSuffix, "").split("\\.");
 		boolean thatIsSnapshot = that.isSnapshot();
@@ -167,25 +156,31 @@ public class Version implements Comparable<Version> {
 				return -1;
 			}
 		}
-		
+
 		// We only arrive here if everything is equal so versions are equal too
 		return 0;
 	}
 
 	@Override
 	public boolean equals(Object that) {
-		if (this == that)
-			return true;
-		if (that == null)
-			return false;
-		if (this.getClass() != that.getClass())
-			return false;
-		return this.compareTo((Version) that) == 0;
-	}
-	
-	@Override
+        return (this == that) || ((that != null) && (this.getClass() == that.getClass()) && (this.compareTo((Version) that) == 0));
+    }
+
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
+    @Override
 	public Version clone(){
 		return new Version(this.getVersion(), this.getBuildNumber(), this.getTimestamp());
 	}
+
+    /**
+     * Converts this Version to a {@link String} representation. Removes the
+     * -SNAPSHOT-Annotation if this version is a snapshot.
+     *
+     * @return A {@link String} representation of this version.
+     */
+    @Override
+    public final String toString() {
+        return toString(this.isSnapshot());
+    }
 
 }

@@ -48,7 +48,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
     private static String messageText;
     private static UpdateInfo updateInfo;
     private static Thread downloadThread = new Thread();
-    private ResourceBundle bundle = ResourceBundle.getBundle("view.updateAvailableDialog.AlertDialog");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("view.updateAvailableDialog.AlertDialog");
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
     @FXML // URL location of the FXML file that was given to the FXMLLoader

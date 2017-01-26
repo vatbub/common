@@ -21,24 +21,21 @@ package view.motd;
  */
 
 
+import com.rometools.rome.io.FeedException;
+import common.Common;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.rometools.rome.io.FeedException;
-
-import common.Common;
-
 public class MOTDTest {
 
-	private static MOTD motd;
-	private static URL testFeedURL;
 	private static final String appName = "fokprojectUnitTests";
+    private static URL testFeedURL;
 
 	@Before
 	public void prepare() throws MalformedURLException {
@@ -48,17 +45,17 @@ public class MOTDTest {
 
 	@Test
 	public void getMOTDTest() throws IllegalArgumentException, FeedException, IOException, ClassNotFoundException {
-		motd = MOTD.getLatestMOTD(testFeedURL);
+        MOTD motd = MOTD.getLatestMOTD(testFeedURL);
 
-		assert motd.isMarkedAsRead() == false;
-		assert motd.getEntry() != null;
+        assert !motd.isMarkedAsRead();
+        assert motd.getEntry() != null;
 		assert motd.getFeedTitle() != null;
 		assert motd.getImage() != null;
 
 		// mark as read
 		motd.markAsRead();
-		assert motd.isMarkedAsRead() == true;
-	}
+        assert motd.isMarkedAsRead();
+    }
 
 	@After
 	public void cleanUp() {

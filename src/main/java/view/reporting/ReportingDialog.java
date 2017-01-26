@@ -69,10 +69,12 @@ import java.util.logging.Level;
 @SuppressWarnings({"SameParameterValue", "ConstantConditions"})
 public class ReportingDialog {
     private static final String s3BucketName = "vatbubissuelogs2";
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("view.reporting.ReportingDialog");
+    @SuppressWarnings("CanBeFinal")
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
-    private static ResourceBundle bundle = ResourceBundle.getBundle("view.reporting.ReportingDialog");
     private static URL logInfoURL = null;
+    @SuppressWarnings("CanBeFinal")
     private static URL defaultLogInfoURL;
     private static URL gitReportsBaseURL;
     private static GitHubIssue gitHubIssue;

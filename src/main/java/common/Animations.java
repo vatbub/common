@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.util.Duration;
 import logging.FOKLogger;
 
+@SuppressWarnings("unused")
 public class Animations {
 
 	private static final Duration defaultDuration = Duration.millis(300);

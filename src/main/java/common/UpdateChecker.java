@@ -48,13 +48,13 @@ import java.util.logging.Level;
  */
 public class UpdateChecker {
 
-    private static String latestSeenVersionPrefKey = "updates.latestVersionOnWebsite";
-    private static Prefs updatePrefs = new Prefs(UpdateChecker.class.getName());
+    private static final String latestSeenVersionPrefKey = "updates.latestVersionOnWebsite";
+    private static final Prefs updatePrefs = new Prefs(UpdateChecker.class.getName());
     private static boolean cancelDownloadAndLaunch;
 
     private static boolean cancelUpdateCompletion = false;
     private static String oldFile;
-    private static Thread deleteFileThread = new Thread() {
+    private static final Thread deleteFileThread = new Thread() {
         @Override
         public void run() {
             FOKLogger.info(UpdateChecker.class.getName(), "Attempting to delete file " + oldFile + " ...");
@@ -230,7 +230,7 @@ public class UpdateChecker {
     }
 
     /**
-     * Retreives the {@link UpdateInfo} for the latest version available on the
+     * Retrieves the {@link UpdateInfo} for the latest version available on the
      * specified maven repo for the specified artifact.
      *
      * @param repoBaseURL     The base url where the repo can be reached. For Maven Central,
@@ -239,9 +239,9 @@ public class UpdateChecker {
      * @param mavenArtifactID The artifactId of the artifact to be looked up.
      * @return The {@link UpdateInfo} of the latest version of the artifact
      * available at the specified repository.
-     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
+     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (Which
      *                       will never be the case unless you don't modify it manually).
-     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retreived
+     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retrieved
      *                       for any other reason.
      */
     @SuppressWarnings("unused")
@@ -251,7 +251,7 @@ public class UpdateChecker {
     }
 
     /**
-     * Retreives the {@link UpdateInfo} for the latest version available on the
+     * Retrieves the {@link UpdateInfo} for the latest version available on the
      * specified maven repo for the specified artifact. Assumes that the
      * artifact has a jar-packaging.
      *
@@ -262,9 +262,9 @@ public class UpdateChecker {
      * @param mavenClassifier The classifier of the artifact to be looked up.
      * @return The {@link UpdateInfo} of the latest version of the artifact
      * available at the specified repository.
-     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
+     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (Which
      *                       will never be the case unless you don't modify it manually).
-     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retreived
+     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retrieved
      *                       for any other reason.
      */
     private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
@@ -273,7 +273,7 @@ public class UpdateChecker {
     }
 
     /**
-     * Retreives the {@link UpdateInfo} for the latest version available on the
+     * Retrieves the {@link UpdateInfo} for the latest version available on the
      * specified maven repo for the specified artifact.
      *
      * @param repoBaseURL     The base url where the repo can be reached. For Maven Central,
@@ -283,9 +283,9 @@ public class UpdateChecker {
      * @param mavenClassifier The classifier of the artifact to be looked up.
      * @return The {@link UpdateInfo} of the latest version of the artifact
      * available at the specified repository.
-     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
+     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (Which
      *                       will never be the case unless you don't modify it manually).
-     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retreived
+     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retrieved
      *                       for any other reason.
      */
     private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
@@ -357,9 +357,9 @@ public class UpdateChecker {
      * @param mavenArtifactID The artifactId of the artifact to be looked up.
      * @return A JDOM {@link Document} representation of mavens
      * {@code maven-metadata.xml}
-     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (WHich
+     * @throws JDOMException If mavens {@code maven-metadata.xml} is not parseable (Which
      *                       will never be the case unless you don't modify it manually).
-     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retreived
+     * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retrieved
      *                       for any other reason.
      */
     private static Document getMavenMetadata(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
@@ -381,7 +381,7 @@ public class UpdateChecker {
      * @param updateToInstall The {@link UpdateInfo}-object that contains the information
      *                        about the update to download
      * @return {@code true} if the download finished successfully, {@code false}
-     * if the download was canelled using
+     * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
      * @throws IllegalStateException if maven fails to download or copy the new artifact.
      * @throws IOException           If the updated artifact cannot be launched.
@@ -408,7 +408,7 @@ public class UpdateChecker {
      * @param gui             The reference to an {@link UpdateProgressDialog} that displays
      *                        the current update status.
      * @return {@code true} if the download finished successfully, {@code false}
-     * if the download was canelled using
+     * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
      * @throws IllegalStateException if maven fails to download or copy the new artifact.
      * @throws IOException           If the updated artifact cannot be launched.
@@ -436,7 +436,7 @@ public class UpdateChecker {
      * @param launchUpdateAfterInstall If {@code true}, the downloaded file will be launched after
      *                                 the download succeeds.
      * @return {@code true} if the download finished successfully, {@code false}
-     * if the download was canelled using
+     * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
      * @throws IllegalStateException if maven fails to download or copy the new artifact.
      * @throws IOException           If the updated artifact cannot be launched.
@@ -467,7 +467,7 @@ public class UpdateChecker {
      *                                 {@link #completeUpdate(String[])} in your applications main
      *                                 method.
      * @return {@code true} if the download finished successfully, {@code false}
-     * if the download was canelled using
+     * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
      * @throws IllegalStateException if maven fails to download or copy the new artifact.
      * @throws IOException           If the updated artifact cannot be launched.
@@ -663,7 +663,7 @@ public class UpdateChecker {
      * Completes the update after the updated version of the app is launched.
      * Especially deletes the old application file if commanded.<br>
      * <br>
-     * <b>Note:</b> The old file is deleted in a seperate thread. This way, the
+     * <b>Note:</b> The old file is deleted in a separate thread. This way, the
      * file is deleted, as soon as it is unlocked by the os. If you wish to
      * cancel the delete thread (e. g. because the user exits the app), call
      * {@link #cancelUpdateCompletion()}
@@ -679,7 +679,7 @@ public class UpdateChecker {
      * Completes the update after the updated version of the app is launched.
      * Especially deletes the old application file if commanded.<br>
      * <br>
-     * <b>Note:</b> The old file is deleted in a seperate thread. This way, the
+     * <b>Note:</b> The old file is deleted in a separate thread. This way, the
      * file is deleted, as soon as it is unlocked by the os. If you wish to
      * cancel the delete thread (e. g. because the user exits the app), call
      * {@link #cancelUpdateCompletion()}

@@ -38,22 +38,20 @@ public class Common {
 
     public static final String UNKNOWN_APP_VERSION = "unknown version";
     public static final String UNKNOWN_BUILD_NUMBER = "unknown build number";
-    private static String appName;
-    private static String mockAppVersion = "";
-    private static String mockBuildNumber = "";
-    private static String mockPackaging = "";
-    private static String awsAccessKey;
-    private static String awsSecretAccessKey;
-
-    private static String buildNumberManifestEntry = "Custom-Implementation-Build";
-
     /**
      * Time when the app was launched. A simple call of the {@link Date}
      * -constructor will get the current timestamp. As this variable is
      * initialized when the app is launched, this represents the time when the
      * app was launched.
      */
-    private static Date launchDate = new Date();
+    private static final Date launchDate = new Date();
+    private static String appName;
+    private static String mockAppVersion = "";
+    private static String mockBuildNumber = "";
+    private static String mockPackaging = "";
+    private static String awsAccessKey;
+    private static String awsSecretAccessKey;
+    private static String buildNumberManifestEntry = "Custom-Implementation-Build";
 
     // General
 
@@ -105,7 +103,7 @@ public class Common {
     public static String getAppDataPath() {
         if (appName == null) {
             throw new NullPointerException(
-                    "Cannot retreive AppDataPath. No appName specified. Use setAppName(String appName) to set one.");
+                    "Cannot retrieve AppDataPath. No appName specified. Use setAppName(String appName) to set one.");
         }
 
         String workingDirectory;
@@ -328,9 +326,9 @@ public class Common {
     }
 
     /**
-     * Returns the Path and name of the jar file this app was launcehd from.
+     * Returns the Path and name of the jar file this app was launched from.
      *
-     * @return The Path and name of the jar file this app was launcehd from.
+     * @return The Path and name of the jar file this app was launched from.
      */
     public static String getPathAndNameOfCurrentJar() {
         String path = UpdateChecker.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -351,6 +349,7 @@ public class Common {
      * @return The file extension of this program or {@code null} if the
      * packaging cannot be determined.
      */
+    @SuppressWarnings("ConstantConditions")
     public static String getPackaging() {
         if (!Common.getMockPackaging().equals("")) {
             // return the mock packaging

@@ -63,7 +63,7 @@ public class MOTDDialog {
     private static String css;
     @SuppressWarnings("FieldCanBeLocal")
     private static Scene scene;
-    private ResourceBundle bundle = ResourceBundle.getBundle("view.motd.MOTDDialog");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("view.motd.MOTDDialog");
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
     @FXML // URL location of the FXML file that was given to the FXMLLoader
@@ -85,7 +85,7 @@ public class MOTDDialog {
 
     /**
      * Creates a new {@code MOTDDialog} with the default settings. The window
-     * title will be the feed title retreived using {@link MOTD#getFeedTitle()}
+     * title will be the feed title retrieved using {@link MOTD#getFeedTitle()}
      *
      * @param motd The {@link MOTD} to display
      */

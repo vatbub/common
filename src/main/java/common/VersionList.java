@@ -47,18 +47,18 @@ public class VersionList extends ArrayList<Version> {
 	 * Removes all snapshots from this list
 	 */
 	public void removeSnapshots(){
-		VersionList versToRemove = new VersionList();
-		
-		// collect Versions to be removed
+        VersionList versionToRemove = new VersionList();
+
+        // collect Versions to be removed
 		for (Version ver:this){
 			if (ver.isSnapshot()){
-				versToRemove.add(ver);
-			}
+                versionToRemove.add(ver);
+            }
 		}
 		
 		// remove them
-		this.removeAll(versToRemove);
-	}
+        this.removeAll(versionToRemove);
+    }
 
 	/**
 	 * Checks if this list contains a snapshot version.
@@ -95,8 +95,9 @@ public class VersionList extends ArrayList<Version> {
 
 		return false;
 	}
-	
-	@Override
+
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
+    @Override
 	public VersionList clone(){
 		VersionList res = new VersionList();
 		for (Version ver:this){

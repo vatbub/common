@@ -74,7 +74,7 @@ public class MOTD {
     private SyndEntry entry;
 
     /**
-     * Creates a new messaeg of the day instance
+     * Creates a new message of the day instance
      *
      * @param image The feed icon
      * @param entry The rss entry that corresponds to this message of the day
@@ -183,7 +183,7 @@ public class MOTD {
      * @throws IOException              thrown if there is a problem reading the stream of the URL.
      */
     public static MOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
-        FOKLogger.info(MOTD.class.getName(), "Retreiving latest MOTD from url " + feedUrl.toString());
+        FOKLogger.info(MOTD.class.getName(), "Retrieving latest MOTD from url " + feedUrl.toString());
         SyndFeed feed = (new SyndFeedInput()).build(new XmlReader(feedUrl));
         return new MOTD(feed.getImage(), feed.getTitle(), feed.getEntries().get(0));
     }

@@ -28,13 +28,14 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
 /**
  * Various utilities to interact with AWS S3
  */
+@SuppressWarnings("unused")
 public class AWSS3Utils {
     public static boolean keyExists(AmazonS3 s3Client, String bucketName, String key) {
         if (!doesBucketExist(s3Client, bucketName)) {
             return false;
         }
 
-        // bucket exists, try to retreive the object
+        // bucket exists, try to retrieve the object
         try {
             s3Client.getObjectMetadata(bucketName, key);
             // worked
@@ -44,6 +45,7 @@ public class AWSS3Utils {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean doesBucketExist(AmazonS3 s3Client, String bucketName) {
         try {
             /*
@@ -55,13 +57,8 @@ public class AWSS3Utils {
             */
             s3Client.listObjects(new ListObjectsRequest("s3-bucket", null, null, null, 0));
         } catch (AmazonServiceException ase) {
-            if(ase.getStatusCode()==403){
-                // bucket exists but we have no permission to write in it
-                return true;
-            }else {
-                // Bucket does not exist
-                return false;
-            }
+            // bucket exists but we have no permission to write in it
+            return ase.getStatusCode() == 403;
         }
 
         // bucket exists and we have the permission to write in it

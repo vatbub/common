@@ -27,6 +27,7 @@ package common;
  * @author frede
  *
  */
+@SuppressWarnings("unused")
 public interface HidableUpdateProgressDialog extends UpdateProgressDialog {
-	public void hide();
+	void hide();
 }

@@ -23,22 +23,23 @@ package common;
 
 /**
  * This interface is used to communicate with a gui while downloading and
- * installing an update. Unfortunately, Maven does not provide any progess (in
+ * installing an update. Unfortunately, Maven does not provide any progress (in
  * percent) during the download.
  * 
  * @author frede
  *
  */
+@SuppressWarnings("unused")
 public interface UpdateProgressDialog {
 	/**
 	 * Invoked when the preparation phase started.
 	 */
-	public void preparePhaseStarted();
+    void preparePhaseStarted();
 
 	/**
 	 * Invoked once the download is started.
 	 */
-	public void downloadStarted();
+    void downloadStarted();
 
 	/**
 	 * Invoked when the download progress changes
@@ -49,33 +50,33 @@ public interface UpdateProgressDialog {
 	 * @param totalFileSizeInKB
 	 *            Specifies the total file size to download in kilobytes.
 	 */
-	public void downloadProgressChanged(double kilobytesDownloaded, double totalFileSizeInKB);
+    void downloadProgressChanged(double kilobytesDownloaded, double totalFileSizeInKB);
 
 	/**
 	 * Invoked once the artifact is copied to its destination.
 	 */
-	public void installStarted();
+    void installStarted();
 
 	/**
 	 * Invoked once the updated artifact is launched.
 	 */
-	public void launchStarted();
+    void launchStarted();
 
 	/**
 	 * Invoked when the user requested to cancel the operation an the request
 	 * was received.
 	 */
-	public void cancelRequested();
+    void cancelRequested();
 
 	/**
 	 * Invoked when the user requested to cancel the current operation on the
 	 * operation was cancelled.
 	 */
-	public void operationCanceled();
-	
-	/**
+    void operationCanceled();
+
+    /**
 	 * Invoked when any error happens
 	 * @param message The message to display
 	 */
-	public void showErrorMessage(String message);
+    void showErrorMessage(String message);
 }

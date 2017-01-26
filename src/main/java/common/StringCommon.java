@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class StringCommon {
 
     public static String replaceLast(String text, String regex, String replacement) {

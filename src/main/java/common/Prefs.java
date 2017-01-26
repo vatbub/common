@@ -34,8 +34,8 @@ import java.util.logging.Level;
  * A wrapper for {@code java.util.Properties} to save preferences. The preferences are saved in the applications AppData folder, make sure to call {@link Common#setAppName(String)} prior to using this class or else you will get a {@code NullPointerException}
  */
 public class Prefs {
-    private Properties props = new Properties();
-    private File f;
+    private final Properties props = new Properties();
+    private final File f;
 
     /**
      * Loads or creates the preference file for the specified class
