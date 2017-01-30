@@ -17,6 +17,10 @@
  * limitations under the License.
  * #L%
  */
+ * {
+    -text-area-background: inherit;
+ }
+
 #rich-blue {
     -fx-background-color:
         #000000,
@@ -27,8 +31,10 @@
     -fx-text-fill: white;
 }
 
-.text-field.error {
-  -fx-border-color: red;
-  -fx-border-radius: 5;
-  -fx-border-width: 3;
+.error {
+  -fx-background-color: -text-area-background;
+}
+
+.text-area .content {
+    -fx-background-color: -text-area-background;
 }

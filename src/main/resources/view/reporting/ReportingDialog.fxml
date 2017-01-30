@@ -66,12 +66,12 @@
                        <Insets bottom="2.5" top="2.5"/>
                    </GridPane.margin>
                </TextField>
-               <TextField fx:id="title" GridPane.rowIndex="7">
+               <TextField fx:id="title" onKeyReleased="#titleKeyReleased" GridPane.rowIndex="7">
                    <GridPane.margin>
                        <Insets bottom="2.5" top="2.5"/>
                    </GridPane.margin>
                </TextField>
-               <TextArea fx:id="message" GridPane.rowIndex="9">
+               <TextArea fx:id="message" onKeyReleased="#messageKeyReleased" GridPane.rowIndex="9">
                    <GridPane.margin>
                        <Insets bottom="2.5" top="2.5"/>
                    </GridPane.margin>

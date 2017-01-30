@@ -41,6 +41,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import logging.FOKLogger;
@@ -70,6 +71,14 @@ import java.util.logging.Level;
 public class ReportingDialog {
     private static final String s3BucketName = "vatbubissuelogs2";
     private static final ResourceBundle bundle = ResourceBundle.getBundle("view.reporting.ReportingDialog");
+    /**
+     * The color in which a required text box appears in case it is not filled in
+     */
+    private static final String errorColor = "#dd4444";
+    /**
+     * The default color of a text box
+     */
+    private static final String defaultColor = "inherit";
     @SuppressWarnings("CanBeFinal")
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
@@ -89,6 +98,7 @@ public class ReportingDialog {
         }
     }
 
+    private boolean submitButtonWasPressed;
     @FXML
     private AnchorPane anchorPane;
 
@@ -207,10 +217,32 @@ public class ReportingDialog {
     }
 
     @FXML
+    void titleKeyReleased(InputEvent event) {
+        if (submitButtonWasPressed) {
+            validate(title);
+        }
+    }
+
+    @FXML
+    void messageKeyReleased(InputEvent event) {
+        if (submitButtonWasPressed) {
+            validate(message);
+        }
+    }
+
+    @FXML
     void sendButtonOnAction(ActionEvent event) {
-        if (validate(message) || validate(title)) {
+        submitButtonWasPressed = true;
+        boolean validationErrors = false;
+        if (validate(message)) {
+            validationErrors = true;
+        }
+        if (validate(title)) {
+            validationErrors = true;
+        }
+        if (validationErrors) {
             // something is not ok
-            new Alert(Alert.AlertType.ERROR, "Please fill out all required fields").show();
+            new Alert(Alert.AlertType.ERROR, bundle.getString("error")).show();
             return;
         }
 
@@ -329,10 +361,12 @@ public class ReportingDialog {
         ObservableList<String> styleClass = tf.getStyleClass();
         if (res) {
             if (!styleClass.contains("error")) {
+                tf.setStyle("-text-area-background: " + errorColor + ";");
                 styleClass.add("error");
             }
         } else {
             // remove all occurrences:
+            tf.setStyle("-text-area-background: " + defaultColor + ";");
             styleClass.removeAll(Collections.singleton("error"));
         }
 
