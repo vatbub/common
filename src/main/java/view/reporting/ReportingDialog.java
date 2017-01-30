@@ -198,6 +198,18 @@ public class ReportingDialog {
     @FXML
     void initialize() {
         anchorPane.prefHeightProperty().addListener((observableValue, number, number2) -> stage.setHeight((double) number2 + 85));
+
+        // check log upload if an exception is submitted
+        if (gitHubIssue.getThrowable() != null) {
+            uploadLogsCheckbox.setSelected(true);
+        }
+    }
+
+    @FXML
+    void uploadLogsCheckboxOnACtion(ActionEvent event) {
+        if (gitHubIssue.getThrowable() != null && !uploadLogsCheckbox.isSelected()) {
+            (new Alert(Alert.AlertType.WARNING, bundle.getString("uploadLogsExceptionInfo"), ButtonType.OK)).show();
+        }
     }
 
     @FXML
