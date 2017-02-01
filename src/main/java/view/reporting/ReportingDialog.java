@@ -86,19 +86,23 @@ public class ReportingDialog {
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
     private static URL logInfoURL;
+    private static URL privacyInfoURL;
     private static Scene screenshotScene;
     @SuppressWarnings("CanBeFinal")
     private static URL defaultLogInfoURL;
+    @SuppressWarnings("CanBeFinal")
+    private static URL defaultPrivacyURL;
     private static URL gitReportsBaseURL;
     private static GitHubIssue gitHubIssue;
 
     static {
         try {
             defaultGitReportsURL = new URL("https://vatbubgitreports.herokuapp.com/");
-            defaultLogInfoURL = new URL("https://github.com/vatbub/zorkClone/wiki/Getting-the-logs");
+            defaultLogInfoURL = new URL("https://github.com/vatbub/common/wiki/Log-and-screenshot-info-and-privacy-policy-for-submitting-issues#logs");
+            defaultPrivacyURL = new URL("https://github.com/vatbub/common/wiki/Log-and-screenshot-info-and-privacy-policy-for-submitting-issues#privacy-policy");
         } catch (MalformedURLException e) {
             // will not happen
-            e.printStackTrace();
+            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred due to a typo in a constant", e);
         }
     }
 
@@ -133,62 +137,145 @@ public class ReportingDialog {
     @FXML
     private CheckBox uploadScreenshot;
 
+    /**
+     * Creates a new {@code ReportingDialog} but keeps previous settings. Keep in mind that this class is <i>*NOT*</i> thread safe.
+     */
     @SuppressWarnings("unused")
     public ReportingDialog() {
     }
 
+    /**
+     * Creates a new {@code ReportingDialog} with the specified settings. Screenshot submission will be disabled. Keep in mind that this class is <i>*NOT*</i> thread safe.
+     *
+     * @param logInfoURL The url that is opened in the browser if the user clicks the {@code Get more info}-button next to the {@code uploadLogs}-Checkbox
+     * @param privacyURL The url that is opened in the browser if the user clicks the {@code Privace statement}-button.
+     */
     @SuppressWarnings("unused")
-    public ReportingDialog(URL logInfoURL) {
-        this(logInfoURL, null);
+    public ReportingDialog(URL logInfoURL, URL privacyURL) {
+        this(logInfoURL, privacyURL, null);
     }
 
+    /**
+     * Creates a new {@code ReportingDialog} but keeps previous settings. The possibility to attach a screenshot to the issue is offered to the user. If the user selects that option, a screenshot from the specified {@code Scene} is taken and attached to the issue.
+     * <br>Keep in mind that this class is <i>*NOT*</i> thread safe.
+     *
+     * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
+     */
     @SuppressWarnings("unused")
     public ReportingDialog(Scene screenshotScene) {
-        this(null, screenshotScene);
+        this(defaultLogInfoURL, defaultPrivacyURL, screenshotScene);
     }
 
+    /**
+     * Creates a new {@code ReportingDialog} with the specified settings. The possibility to attach a screenshot to the issue is offered to the user. If the user selects that option, a screenshot from the specified {@code Scene} is taken and attached to the issue.
+     * <br>Keep in mind that this class is <i>*NOT*</i> thread safe.
+     *
+     * @param logInfoURL      The url that is opened in the browser if the user clicks the {@code Get more info}-button next to the {@code uploadLogs}-Checkbox
+     * @param privacyURL      The url that is opened in the browser if the user clicks the {@code Privace statement}-button.
+     * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
+     */
     @SuppressWarnings("unused")
-    public ReportingDialog(URL logInfoURL, Scene screenshotScene) {
+    public ReportingDialog(URL logInfoURL, URL privacyURL, Scene screenshotScene) {
         ReportingDialog.logInfoURL = logInfoURL;
         ReportingDialog.screenshotScene = screenshotScene;
+        ReportingDialog.privacyInfoURL = privacyURL;
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the {@code vatbubgitreports}-server has write access to it.
+     *
+     * @param userName The repo owner of the repo to send the issue to
+     * @param repoName The name of the repo to send the issue to
+     */
     @SuppressWarnings("unused")
     public void show(String userName, String repoName) {
         String windowTitle = null;
         show(windowTitle, userName, repoName, null);
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the {@code vatbubgitreports}-server has write access to it. A exception is attached to the issue.
+     *
+     * @param userName The repo owner of the repo to send the issue to
+     * @param repoName The name of the repo to send the issue to
+     * @param e        The exception to attach to the issue
+     */
     @SuppressWarnings("unused")
     public void show(String userName, String repoName, Throwable e) {
         show(defaultGitReportsURL, userName, repoName, e);
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the specified {@code vatbubgitreports}-server has write access to it.
+     *
+     * @param gitReportsBaseURL The url of the {@code vatbubgitreports}-server to use to submit the issue
+     * @param userName          The repo owner of the repo to send the issue to
+     * @param repoName          The name of the repo to send the issue to
+     */
     @SuppressWarnings("unused")
     public void show(URL gitReportsBaseURL, String userName, String repoName) {
         String windowTitle = null;
         show(windowTitle, gitReportsBaseURL, userName, repoName);
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the specified {@code vatbubgitreports}-server has write access to it. A exception is attached to the issue.
+     *
+     * @param gitReportsBaseURL The url of the {@code vatbubgitreports}-server to use to submit the issue
+     * @param userName          The repo owner of the repo to send the issue to
+     * @param repoName          The name of the repo to send the issue to
+     * @param e                 The exception to attach to the issue
+     */
     public void show(URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
         String windowTitle = null;
         show(windowTitle, gitReportsBaseURL, userName, repoName, e);
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the {@code vatbubgitreports}-server has write access to it.
+     *
+     * @param windowTitle The title of the window
+     * @param userName    The repo owner of the repo to send the issue to
+     * @param repoName    The name of the repo to send the issue to
+     */
     @SuppressWarnings("unused")
     public void show(String windowTitle, String userName, String repoName) {
         show(windowTitle, defaultGitReportsURL, userName, repoName);
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the {@code vatbubgitreports}-server has write access to it. A exception is attached to the issue.
+     *
+     * @param windowTitle The title of the window
+     * @param userName    The repo owner of the repo to send the issue to
+     * @param repoName    The name of the repo to send the issue to
+     * @param e           The exception to attach to the issue
+     */
     public void show(String windowTitle, String userName, String repoName, Throwable e) {
         show(windowTitle, defaultGitReportsURL, userName, repoName, e);
     }
 
-
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the specified {@code vatbubgitreports}-server has write access to it.
+     *
+     * @param windowTitle       The title of the window
+     * @param gitReportsBaseURL The url of the {@code vatbubgitreports}-server to use to submit the issue
+     * @param userName          The repo owner of the repo to send the issue to
+     * @param repoName          The name of the repo to send the issue to
+     */
     public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName) {
         show(windowTitle, gitReportsBaseURL, userName, repoName, null);
     }
 
+    /**
+     * Shows the dialog and submits the issue to the specified repository if the specified {@code vatbubgitreports}-server has write access to it. A exception is attached to the issue.
+     *
+     * @param windowTitle       The title of the window
+     * @param gitReportsBaseURL The url of the {@code vatbubgitreports}-server to use to submit the issue
+     * @param userName          The repo owner of the repo to send the issue to
+     * @param repoName          The name of the repo to send the issue to
+     * @param e                 The exception to attach to the issue
+     */
     public void show(String windowTitle, URL gitReportsBaseURL, String userName, String repoName, Throwable e) {
         FOKLogger.info(ReportingDialog.class.getName(), "Showing the ReportingDialog...");
         stage = new Stage();
@@ -243,15 +330,8 @@ public class ReportingDialog {
 
     @FXML
     void logInfoButtonOnAction(ActionEvent event) {
-        URL finalURL;
-        if (logInfoURL == null) {
-            finalURL = defaultLogInfoURL;
-        } else {
-            finalURL = logInfoURL;
-        }
-
         try {
-            Desktop.getDesktop().browse(finalURL.toURI());
+            Desktop.getDesktop().browse(logInfoURL.toURI());
         } catch (IOException | URISyntaxException e) {
             FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
         }
@@ -259,7 +339,11 @@ public class ReportingDialog {
 
     @FXML
     void screenshotInfoButtonOnAction(ActionEvent event) {
-        // TODO Link to a privacy policy
+        try {
+            Desktop.getDesktop().browse(privacyInfoURL.toURI());
+        } catch (IOException | URISyntaxException e) {
+            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+        }
     }
 
     @FXML
