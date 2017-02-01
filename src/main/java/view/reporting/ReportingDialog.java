@@ -135,7 +135,6 @@ public class ReportingDialog {
 
     @SuppressWarnings("unused")
     public ReportingDialog() {
-        this(null, null);
     }
 
     @SuppressWarnings("unused")
@@ -300,6 +299,14 @@ public class ReportingDialog {
         // show the progress dialog
         ReportingDialogUploadProgress.show();
 
+        // take a screenshot
+        WritableImage imageTemp = null;
+        if (uploadScreenshot.isSelected()) {
+            imageTemp = screenshotScene.snapshot(null);
+        }
+        final WritableImage image = imageTemp;
+
+
         Thread issueUploadThread = new Thread(() -> {
             if (uploadLogsCheckbox.isSelected()) {
                 // upload the logs to aws
@@ -329,9 +336,6 @@ public class ReportingDialog {
             }
 
             if (uploadScreenshot.isSelected()) {
-                // take a screenshot
-                WritableImage image = screenshotScene.snapshot(null);
-
                 try {
                     // save it to the disk
                     File screenshotFile = new File(Common.getAndCreateAppDataPath() + "screenshotForIssueUpload.png");
