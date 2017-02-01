@@ -32,6 +32,7 @@ import common.Common;
 import common.internet.Internet;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,12 +42,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import logging.FOKLogger;
 import reporting.GitHubIssue;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -83,6 +86,7 @@ public class ReportingDialog {
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
     private static URL logInfoURL = null;
+    private static Scene screenshotScene;
     @SuppressWarnings("CanBeFinal")
     private static URL defaultLogInfoURL;
     private static URL gitReportsBaseURL;
@@ -123,14 +127,25 @@ public class ReportingDialog {
     @FXML
     private Button sendButton;
 
+    @FXML
+    private Button screenshotInfoButton;
+
+    @FXML
+    private CheckBox uploadScreenshot;
+
     @SuppressWarnings("unused")
     public ReportingDialog() {
 
     }
 
-    @SuppressWarnings("unused")
     public ReportingDialog(URL logInfoURL) {
+        this(logInfoURL, null);
+    }
+
+    @SuppressWarnings("unused")
+    public ReportingDialog(URL logInfoURL, Scene screenshotScene) {
         ReportingDialog.logInfoURL = logInfoURL;
+        ReportingDialog.screenshotScene = screenshotScene;
     }
 
     @SuppressWarnings("unused")
@@ -198,10 +213,19 @@ public class ReportingDialog {
     @FXML
     void initialize() {
         anchorPane.prefHeightProperty().addListener((observableValue, number, number2) -> stage.setHeight((double) number2 + 85));
+        // disable screenshot upload if no screenshotScene was given
+        if (screenshotScene == null) {
+            uploadScreenshot.setDisable(true);
+            screenshotInfoButton.setDisable(true);
+        }
 
         // check log upload if an exception is submitted
         if (gitHubIssue.getThrowable() != null) {
             uploadLogsCheckbox.setSelected(true);
+
+            if (screenshotScene != null) {
+                uploadScreenshot.setSelected(true);
+            }
         }
     }
 
@@ -226,6 +250,11 @@ public class ReportingDialog {
         } catch (IOException | URISyntaxException e) {
             FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
         }
+    }
+
+    @FXML
+    void screenshotInfoButtonOnAction(ActionEvent event) {
+        // TODO Link to a privacy policy
     }
 
     @FXML
@@ -270,7 +299,7 @@ public class ReportingDialog {
                 // upload the logs to aws
                 Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingLogs")));
 
-                String awsFileName = Common.getAppName() + "/" + FOKLogger.getLogFileName();
+                String awsFileName = Common.getAppName() + "/logs/" + FOKLogger.getLogFileName();
                 gitHubIssue.setLogLocation(awsFileName);
 
                 // upload the logs to s3
@@ -290,6 +319,42 @@ public class ReportingDialog {
                     FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
                 } catch (AmazonClientException ace) {
                     FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
+                }
+            }
+
+            if (uploadScreenshot.isSelected()) {
+                // take a screenshot
+                WritableImage image = screenshotScene.snapshot(null);
+
+                try {
+                    // save it to the disk
+                    File screenshotFile = new File(Common.getAndCreateAppDataPath() + "screenshotForIssueUpload.png");
+                    ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", screenshotFile);
+
+                    // upload the screenshot to aws
+                    Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingScreenshot")));
+
+                    String awsFileName = Common.getAppName() + "/screenshots/" + FOKLogger.getLogFileName();
+                    gitHubIssue.setScreenshotLocation(awsFileName);
+
+                    // upload the logs to s3
+                    AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
+                    if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
+                        // create bucket
+                        FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
+                        s3Client.createBucket(s3BucketName);
+                    }
+
+                    // Upload the screenshot file
+                    FOKLogger.info(ReportingDialog.class.getName(), "Uploading screenshot to aws: " + awsFileName);
+                    s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, screenshotFile));
+                    FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
+                } catch (AmazonServiceException ase) {
+                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
+                } catch (AmazonClientException ace) {
+                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
+                } catch (IOException e) {
+                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Could not write temporary screenshot file, screenshot will not be uploaded", e);
                 }
             }
 
