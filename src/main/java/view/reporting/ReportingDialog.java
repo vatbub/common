@@ -85,7 +85,7 @@ public class ReportingDialog {
     @SuppressWarnings("CanBeFinal")
     private static URL defaultGitReportsURL = null;
     private static Stage stage;
-    private static URL logInfoURL = null;
+    private static URL logInfoURL;
     private static Scene screenshotScene;
     @SuppressWarnings("CanBeFinal")
     private static URL defaultLogInfoURL;
@@ -135,11 +135,17 @@ public class ReportingDialog {
 
     @SuppressWarnings("unused")
     public ReportingDialog() {
-
+        this(null, null);
     }
 
+    @SuppressWarnings("unused")
     public ReportingDialog(URL logInfoURL) {
         this(logInfoURL, null);
+    }
+
+    @SuppressWarnings("unused")
+    public ReportingDialog(Scene screenshotScene) {
+        this(null, screenshotScene);
     }
 
     @SuppressWarnings("unused")
