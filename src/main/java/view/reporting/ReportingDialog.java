@@ -344,7 +344,7 @@ public class ReportingDialog {
                     // upload the screenshot to aws
                     Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingScreenshot")));
 
-                    String awsFileName = Common.getAppName() + "/screenshots/screenshot" + Common.getLaunchTimeStamp() + ".png";
+                    String awsFileName = Common.getAppName() + "/screenshots/screenshot_" + Common.getAppName() + "_" + Common.getLaunchTimeStamp() + ".png";
                     gitHubIssue.setScreenshotLocation(awsFileName);
 
                     // upload the logs to s3
