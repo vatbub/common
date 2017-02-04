@@ -40,3 +40,6 @@ Repeat the steps mentioned above but switch to the `release` branch by running `
 
 ##Docs
 [Maven Site](http://vatbubmvnsites.s3-website-us-west-2.amazonaws.com/common/0.0.21-SNAPSHOT/site/common/), [JavaDoc](http://vatbubmvnsites.s3-website-us-west-2.amazonaws.com/common/0.0.21-SNAPSHOT/site/common/apidocs/index.html)
+
+## Contributing
+Contributions of any kind are very welcome. Just fork and submit a Pull Request and we will be happy to merge. Just keep in mind that we use [Issue driven development](https://github.com/vatbub/defaultRepo/wiki/Issue-driven-development).
