@@ -49,7 +49,8 @@ public class TagArea extends FlowPane {
     public TagArea() {
         this.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         getStyleClass().setAll("tag-area");
-        textField.setMinSize(60, 30);
+        textField.setMinSize(80, 30);
+        textField.setPrefWidth(80);
 
         textField.setOnAction(event -> {
             this.addTag(textField.getText());
