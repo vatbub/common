@@ -6,6 +6,7 @@
 
 **Fixed bugs:**
 
+- Usage of a deprecated constructor of the AWSS3Client [\#13](https://github.com/vatbub/common/issues/13)
 - Color of invalid input fields is not red [\#10](https://github.com/vatbub/common/issues/10)
 
 ## [common-0.0.21](https://github.com/vatbub/common/tree/common-0.0.21) (2016-12-11)
