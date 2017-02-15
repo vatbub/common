@@ -23,7 +23,10 @@ package view.reporting;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -401,7 +404,7 @@ public class ReportingDialog {
 
                 // upload the logs to s3
                 try {
-                    AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
+                    AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(Common.getAWSCredentials())).build();
                     if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                         // create bucket
                         FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
