@@ -48,6 +48,9 @@ public class Prefs {
         reload();
     }
 
+    /**
+     * Reloads this preference file from the hard disk
+     */
     public void reload() {
         try {
             if (f.exists()) {
