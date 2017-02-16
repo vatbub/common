@@ -45,7 +45,10 @@ public class Prefs {
     public Prefs(String className) {
         // Retrieve the user preference node for the package
         f = new File(Common.getAndCreateAppDataPath() + className + ".properties");
+        reload();
+    }
 
+    public void reload() {
         try {
             if (f.exists()) {
                 // Load the properties
