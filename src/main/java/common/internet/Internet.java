@@ -434,6 +434,7 @@ public class Internet {
      *
      * @param url The url to open
      */
+    @SuppressWarnings("unused")
     public void openInDefaultBrowser(URL url) throws IOException {
         Runtime rt = Runtime.getRuntime();
 
@@ -445,9 +446,9 @@ public class Internet {
             String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
                     "netscape", "opera", "links", "lynx"};
 
-            StringBuffer cmd = new StringBuffer();
+            StringBuilder cmd = new StringBuilder();
             for (int i = 0; i < browsers.length; i++)
-                cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
+                cmd.append(i == 0 ? "" : " || ").append(browsers[i]).append(" \"").append(url).append("\" ");
 
             rt.exec(new String[]{"sh", "-c", cmd.toString()});
         }
