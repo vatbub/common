@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.21...HEAD)
 
+**Implemented enhancements:**
+
+- Add a possibility to launch websites in the default browser without using AWT [\#14](https://github.com/vatbub/common/issues/14)
+
 **Fixed bugs:**
 
 - Usage of a deprecated constructor of the AWSS3Client [\#13](https://github.com/vatbub/common/issues/13)
