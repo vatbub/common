@@ -23,6 +23,7 @@ package common.internet;
 
 import common.Common;
 import logging.FOKLogger;
+import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import javax.mail.Message;
@@ -425,6 +426,30 @@ public class Internet {
                 return "Network Authentication Required";
             default:
                 return null;
+        }
+    }
+
+    /**
+     * OPens the specified url in the default browser.
+     *
+     * @param url The url to open
+     */
+    public void openInDefaultBrowser(URL url) throws IOException {
+        Runtime rt = Runtime.getRuntime();
+
+        if (SystemUtils.IS_OS_WINDOWS) {
+            rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        } else if (SystemUtils.IS_OS_MAC) {
+            rt.exec("open" + url);
+        } else {
+            String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
+                    "netscape", "opera", "links", "lynx"};
+
+            StringBuffer cmd = new StringBuffer();
+            for (int i = 0; i < browsers.length; i++)
+                cmd.append((i == 0 ? "" : " || ") + browsers[i] + " \"" + url + "\" ");
+
+            rt.exec(new String[]{"sh", "-c", cmd.toString()});
         }
     }
 }
