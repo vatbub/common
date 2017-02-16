@@ -435,7 +435,7 @@ public class Internet {
      * @param url The url to open
      */
     @SuppressWarnings("unused")
-    public void openInDefaultBrowser(URL url) throws IOException {
+    public static void openInDefaultBrowser(URL url) throws IOException {
         Runtime rt = Runtime.getRuntime();
 
         if (SystemUtils.IS_OS_WINDOWS) {
