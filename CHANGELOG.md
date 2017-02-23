@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Add possibility to reload a Prefs file [\#15](https://github.com/vatbub/common/issues/15)
 - Add a possibility to launch websites in the default browser without using AWT [\#14](https://github.com/vatbub/common/issues/14)
 
 **Fixed bugs:**
