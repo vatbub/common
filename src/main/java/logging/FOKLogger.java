@@ -218,17 +218,6 @@ public class FOKLogger {
         fileHandler.setLevel(fileLogLevel);
         consoleHandler.setLevel(consoleLogLevel);
 
-        // Try to read a config file
-        System.setProperty("java.util.logging.config.file", "logging.properties");
-        try {
-            LogManager.getLogManager().readConfiguration();
-        } catch (Exception e) {
-            System.out.println("Cannot read a config file for logging, thus using the default configuration. Reason: "
-                    + e.getLocalizedMessage());
-        }
-
-        System.out.println("Saving log file \n" + getLogFilePathAndName());
-
         // Remove all existing parent handlers
         Logger globalLogger = Logger.getLogger("");
         Handler[] handlers = globalLogger.getHandlers();
@@ -239,6 +228,8 @@ public class FOKLogger {
 
         globalLogger.addHandler(fileHandler);
         globalLogger.addHandler(consoleHandler);
+
+        FOKLogger.info(FOKLogger.class.getName(), "Saving log file \n" + getLogFilePathAndName());
     }
 
     public static FOKLogger getLoggerByClassName(String className) {
