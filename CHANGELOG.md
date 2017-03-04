@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common-0.0.22...HEAD)
+
+**Implemented enhancements:**
+
+- Don't try to read a logging config as we never use one [\#16](https://github.com/vatbub/common/issues/16)
+
 ## [common-0.0.22](https://github.com/vatbub/common/tree/common-0.0.22) (2017-02-23)
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.21...common-0.0.22)
 
