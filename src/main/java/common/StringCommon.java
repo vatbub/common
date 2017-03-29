@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class StringCommon {
@@ -50,5 +51,46 @@ public class StringCommon {
             line = br.readLine();
         }
         return sb.toString();
+    }
+
+    public static String[] formatMessage(String[] messageToFormat) {
+        ArrayList<String> res = new ArrayList<>(messageToFormat.length + 2);
+        // get the length of the longest line
+        int maxLength = messageToFormat[0].length();
+        for (String line : messageToFormat) {
+            if (line.length() > maxLength)
+                maxLength = line.length();
+        }
+
+        String separator = "";
+        for (int i = 0; i < maxLength + 2; i++) {
+            separator = separator + "#";
+        }
+
+        res.add(separator);
+        for (String line : messageToFormat) {
+            res.add("# " + line + getRequiredSpaces(line) + " #");
+        }
+        res.add(separator);
+
+        return (String[]) res.toArray();
+    }
+
+    /**
+     * Formats a message to be printed on the console
+     *
+     * @param message The line to be formatted
+     * @return The formatted version of {@code message}
+     */
+    private static String getRequiredSpaces(String message) {
+        String res = "";
+        final String reference = "#########################################################################";
+        int requiredSpaces = reference.length() - message.length() - 4;
+
+        for (int i = 0; i < requiredSpaces; i++) {
+            res = res + " ";
+        }
+
+        return res;
     }
 }
