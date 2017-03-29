@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public class StringCommon {
@@ -54,10 +53,10 @@ public class StringCommon {
         return sb.toString();
     }
 
-    public static List<String> formatMessage(List<String> messageToFormat) {
-        ArrayList<String> res = new ArrayList<>(messageToFormat.size() + 2);
+    public static String[] formatMessage(String[] messageToFormat) {
+        ArrayList<String> res = new ArrayList<>(messageToFormat.length + 2);
         // get the length of the longest line
-        int maxLength = messageToFormat.get(0).length();
+        int maxLength = messageToFormat[0].length();
         for (String line : messageToFormat) {
             if (line.length() > maxLength)
                 maxLength = line.length();
@@ -74,7 +73,7 @@ public class StringCommon {
         }
         res.add(separator);
 
-        return res;
+        return (String[]) res.toArray();
     }
 
     /**
