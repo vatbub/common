@@ -64,7 +64,7 @@ public class StringCommon {
         }
 
         String separator = "";
-        for (int i = 0; i < maxLength + 2; i++) {
+        for (int i = 0; i < maxLength + 4; i++) {
             separator = separator + "#";
         }
 
