@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Add the formatting function to common [\#17](https://github.com/vatbub/common/issues/17)
 - Don't try to read a logging config as we never use one [\#16](https://github.com/vatbub/common/issues/16)
 
 ## [common-0.0.22](https://github.com/vatbub/common/tree/common-0.0.22) (2017-02-23)
