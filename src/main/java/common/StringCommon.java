@@ -70,7 +70,7 @@ public class StringCommon {
 
         res.add(separator);
         for (String line : messageToFormat) {
-            res.add("# " + line + getRequiredSpaces(line) + " #");
+            res.add("# " + line + getRequiredSpaces(separator, line) + " #");
         }
         res.add(separator);
 
