@@ -83,9 +83,8 @@ public class StringCommon {
      * @param message The line to be formatted
      * @return The formatted version of {@code message}
      */
-    private static String getRequiredSpaces(String message) {
+    private static String getRequiredSpaces(String reference, String message) {
         String res = "";
-        final String reference = "#########################################################################";
         int requiredSpaces = reference.length() - message.length() - 4;
 
         for (int i = 0; i < requiredSpaces; i++) {
