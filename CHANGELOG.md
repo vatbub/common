@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
-
-[Full Changelog](https://github.com/vatbub/common/compare/common-0.0.22...HEAD)
+## [common-0.0.23](https://github.com/vatbub/common/tree/common-0.0.23) (2017-04-25)
+[Full Changelog](https://github.com/vatbub/common/compare/common-0.0.22...common-0.0.23)
 
 **Implemented enhancements:**
 
