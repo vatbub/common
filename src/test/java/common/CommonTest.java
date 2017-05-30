@@ -68,6 +68,10 @@ public class CommonTest {
 
     @Test
     public void getAppDataPathAsFileTest() {
+        // set app name
+        String appName = "UnitTests";
+
+        Common.setAppName(appName);
         File res = Common.getAndCreateAppDataPathAsFile();
         Assert.assertNotEquals(null, res);
     }
