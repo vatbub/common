@@ -22,6 +22,7 @@ package common;
 
 
 import org.apache.commons.lang.SystemUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -63,6 +64,12 @@ public class CommonTest {
         }
 
         assert res.equals(workingDirectory + File.separator + appName + File.separator);
+    }
+
+    @Test
+    public void getAppDataPathAsFileTest() {
+        File res = Common.getAndCreateAppDataPathAsFile();
+        Assert.assertNotEquals(null, res);
     }
 
     @Test
