@@ -16,19 +16,14 @@ Learn how to use all of this functionality, go to the [wiki](../../wiki).
 To add this artifact as a maven dependency, add the following repositories and dependency to your pom:
 
 ```xml
-<dependencies>
-	...
-	<dependency>
-		<groupId>com.github.vatbub</groupId>
-		<artifactId>common</artifactId>
-		<version>0.0.21</version>
-	</dependency>
-	...
-</dependencies>
-	...
+<dependency>
+	<groupId>com.github.vatbub</groupId>
+	<artifactId>common</artifactId>
+	<version>0.0.24</version>
+</dependency>
 ```
   
-##Usage
+## Usage
 Have a look at the [getting started page](https://github.com/vatbub/common/wiki/Getting-started) in the wiki to learn how to use this lib.
 
 ## Build the current snapshot
