@@ -39,11 +39,11 @@
 	<parent>
 		<groupId>com.github.vatbub</groupId>
 		<artifactId>parentPom</artifactId>
-        <version>0.0.21</version>
+        <version>0.0.22-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>common</artifactId>
-	<version>0.0.24</version>
+	<version>0.0.25-SNAPSHOT</version>
 	<name>FOKProjects Common</name>
 	<description>Common classes for fok projects</description>
 	<inceptionYear>2016</inceptionYear>
@@ -53,7 +53,7 @@
 		<connection>scm:git:git@github.com:vatbub/common.git</connection>
 		<url>https://github.com/vatbub/common</url>
 		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-		<tag>common-0.0.24</tag>
+		<tag>testRelease</tag>
 	</scm>
 
 	<issueManagement>
