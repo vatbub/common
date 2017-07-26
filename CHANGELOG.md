@@ -1,5 +1,8 @@
 # Change Log
 
+## [common-0.0.24](https://github.com/vatbub/common/tree/common-0.0.24) (2017-07-26)
+[Full Changelog](https://github.com/vatbub/common/compare/common-0.0.23...common-0.0.24)
+
 ## [common-0.0.23](https://github.com/vatbub/common/tree/common-0.0.23) (2017-04-25)
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.22...common-0.0.23)
 
