@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common-0.0.24...HEAD)
+
+**Implemented enhancements:**
+
+- Refactor the entire lib [\#19](https://github.com/vatbub/common/issues/19)
+
 ## [common-0.0.24](https://github.com/vatbub/common/tree/common-0.0.24) (2017-07-26)
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.23...common-0.0.24)
 
@@ -9,7 +17,7 @@
 **Implemented enhancements:**
 
 - Add the formatting function to common [\#17](https://github.com/vatbub/common/issues/17)
-- Don't try to read a com.github.vatbub.common.core.logging config as we never use one [\#16](https://github.com/vatbub/common/issues/16)
+- Don't try to read a logging config as we never use one [\#16](https://github.com/vatbub/common/issues/16)
 
 ## [common-0.0.22](https://github.com/vatbub/common/tree/common-0.0.22) (2017-02-23)
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.21...common-0.0.22)
