@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="anchorPane" prefHeight="537.0" prefWidth="631.0"
+            style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/8"
+            fx:controller="com.github.vatbub.common.view.reporting.ReportingDialog">
+   <children>
+       <GridPane layoutX="136.0" layoutY="11.0" prefHeight="159.0" prefWidth="235.0" AnchorPane.bottomAnchor="10.0"
+                 AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+           <columnConstraints>
+               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"/>
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints vgrow="NEVER"/>
+               <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER"/>
+               <RowConstraints minHeight="10.0" vgrow="NEVER"/>
+               <RowConstraints minHeight="10.0" vgrow="NEVER"/>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+               <RowConstraints minHeight="10.0" vgrow="NEVER"/>
+           </rowConstraints>
+           <children>
+               <Label text="%welcomeText" wrapText="true">
+                   <padding>
+                       <Insets bottom="20.0"/>
+                   </padding>
+               </Label>
+               <Label text="%personalIntroduction" GridPane.rowIndex="1">
+                   <GridPane.margin>
+                       <Insets bottom="10.0"/>
+                   </GridPane.margin>
+               </Label>
+               <Label text="%yourName" GridPane.rowIndex="2">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" right="5.0"/>
+                   </GridPane.margin>
+               </Label>
+               <TextField fx:id="name" GridPane.rowIndex="3">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" top="2.5"/>
+                   </GridPane.margin>
+               </TextField>
+               <Label text="%yourMail" GridPane.rowIndex="4">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" right="5.0" top="5.0"/>
+                   </GridPane.margin>
+               </Label>
+               <Label text="%issueTitle" GridPane.rowIndex="6">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" right="5.0" top="5.0"/>
+                   </GridPane.margin>
+               </Label>
+               <Label text="%issueBody" GridPane.rowIndex="8" GridPane.valignment="TOP">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" right="5.0" top="5.0"/>
+                   </GridPane.margin>
+               </Label>
+               <TextField fx:id="mail" GridPane.rowIndex="5">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" top="2.5"/>
+                   </GridPane.margin>
+               </TextField>
+               <TextField fx:id="title" onKeyReleased="#titleKeyReleased" GridPane.rowIndex="7">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" top="2.5"/>
+                   </GridPane.margin>
+               </TextField>
+               <TextArea fx:id="message" onKeyReleased="#messageKeyReleased" GridPane.rowIndex="9">
+                   <GridPane.margin>
+                       <Insets bottom="2.5" top="2.5"/>
+                   </GridPane.margin>
+               </TextArea>
+               <GridPane hgap="5.0" vgap="5.0" GridPane.rowIndex="10">
+                   <columnConstraints>
+                       <ColumnConstraints minWidth="10.0"/>
+                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+                   </columnConstraints>
+                   <rowConstraints>
+                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                   </rowConstraints>
+                   <children>
+                       <CheckBox fx:id="uploadLogsCheckbox" mnemonicParsing="false"
+                                 onAction="#uploadLogsCheckboxOnACtion" text="%uploadLogs">
+                           <GridPane.margin>
+                               <Insets/>
+                           </GridPane.margin>
+                       </CheckBox>
+                       <CheckBox fx:id="uploadScreenshot" mnemonicParsing="false" text="%uploadScreenshot"
+                                 GridPane.rowIndex="1">
+                           <GridPane.margin>
+                               <Insets/>
+                           </GridPane.margin>
+                       </CheckBox>
+                       <HBox spacing="5.0" GridPane.columnIndex="1">
+                           <children>
+                               <Button fx:id="logInfoButton" maxHeight="1.7976931348623157E308"
+                                       maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                                       onAction="#logInfoButtonOnAction" text="%logInfoButton" GridPane.columnIndex="1">
+                                   <GridPane.margin>
+                                       <Insets bottom="5.0" top="2.5"/>
+                                   </GridPane.margin>
+                               </Button>
+                               <Button id="rich-blue" fx:id="sendButton" defaultButton="true"
+                                       maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                       mnemonicParsing="false" onAction="#sendButtonOnAction" text="%sendButton"
+                                       HBox.hgrow="ALWAYS"/>
+                           </children>
+                       </HBox>
+                       <Button fx:id="screenshotInfoButton" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308" mnemonicParsing="false"
+                               onAction="#screenshotInfoButtonOnAction" text="%privacyButton" GridPane.columnIndex="1"
+                               GridPane.rowIndex="1"/>
+                   </children>
+               </GridPane>
+           </children>
+       </GridPane>
+   </children>
+</AnchorPane>
