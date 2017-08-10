@@ -1,130 +1,75 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
         <module>core</module>
         <module>internet</module>
         <module>updater</module>
         <module>view</module>
+        <module>commonAllModules</module>
     </modules>
 
-	<repositories>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>bintray-vatbub-fokprojectsReleases</id>
-			<name>bintray</name>
-			<url>http://dl.bintray.com/vatbub/fokprojectsReleases</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>bintray-vatbub-fokprojectsSnapshots</id>
-			<name>bintray</name>
-			<url>http://dl.bintray.com/vatbub/fokprojectsSnapshots</url>
-		</repository>
-		<repository>
-			<snapshots />
-			<id>snapshots</id>
-			<name>libs-snapshot</name>
-			<url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>bintray-vatbub-fokprojectsSnapshots</id>
-			<name>bintray-plugins</name>
-			<url>http://dl.bintray.com/vatbub/fokprojectsSnapshots</url>
-		</pluginRepository>
-	</pluginRepositories>
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-vatbub-fokprojectsReleases</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/vatbub/fokprojectsReleases</url>
+        </repository>
+        <repository>
+            <snapshots/>
+            <id>snapshots</id>
+            <name>libs-snapshot</name>
+            <url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
+        </repository>
+    </repositories>
 
-	<parent>
-		<groupId>com.github.vatbub</groupId>
-		<artifactId>parentPom</artifactId>
+    <parent>
+        <groupId>com.github.vatbub</groupId>
+        <artifactId>parentPom</artifactId>
         <version>0.0.22-SNAPSHOT</version>
-	</parent>
+    </parent>
 
-	<artifactId>common</artifactId>
-	<version>0.0.25-SNAPSHOT</version>
-	<name>FOKProjects Common</name>
-	<description>Common classes for fok projects</description>
-	<inceptionYear>2016</inceptionYear>
-	<url>https://github.com/vatbub/common</url>
+    <artifactId>common.parent</artifactId>
+    <version>0.0.25-SNAPSHOT</version>
+    <name>FOKProjects Common</name>
+    <description>Common classes for fok projects</description>
+    <inceptionYear>2016</inceptionYear>
+    <url>https://github.com/vatbub/common</url>
 
-	<scm>
-		<connection>scm:git:git@github.com:vatbub/common.git</connection>
-		<url>https://github.com/vatbub/common</url>
-		<developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-		<tag>testRelease</tag>
-	</scm>
+    <scm>
+        <connection>scm:git:git@github.com:vatbub/common.git</connection>
+        <url>https://github.com/vatbub/common</url>
+        <developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
+        <tag>testRelease</tag>
+    </scm>
 
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/vatbub/common/issues</url>
-	</issueManagement>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/vatbub/common/issues</url>
+    </issueManagement>
 
-	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/vatbub/common</url>
-	</ciManagement>
+    <ciManagement>
+        <system>Travis CI</system>
+        <url>https://travis-ci.org/vatbub/common</url>
+    </ciManagement>
 
-	<properties>
-		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-		<gitRepoName>common</gitRepoName>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+        <gitRepoName>common</gitRepoName>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.jcabi</groupId>
-			<artifactId>jcabi-manifests</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom2</artifactId>
-			<version>2.0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.rometools</groupId>
-			<artifactId>rome</artifactId>
-            <version>1.7.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codefx.libfx</groupId>
-			<artifactId>LibFX</artifactId>
-			<version>0.3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.168</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-            <version>2.8.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>javax.mail-api</artifactId>
-            <version>1.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-            <version>1.6.0</version>
-		</dependency>
-	</dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.6</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>

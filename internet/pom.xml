@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>common</artifactId>
+        <artifactId>common.parent</artifactId>
         <groupId>com.github.vatbub</groupId>
         <version>0.0.25-SNAPSHOT</version>
     </parent>
@@ -16,6 +16,11 @@
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.core</artifactId>
             <version>0.0.25-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.0</version>
         </dependency>
     </dependencies>
 </project>

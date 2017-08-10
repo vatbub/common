@@ -11,5 +11,10 @@
 
     <artifactId>common.view.core</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+    </dependencies>
 </project>

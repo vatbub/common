@@ -3,13 +3,13 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>common.view.parent</artifactId>
+        <artifactId>common.parent</artifactId>
         <groupId>com.github.vatbub</groupId>
         <version>0.0.25-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common.view.motd</artifactId>
+    <artifactId>common</artifactId>
 
     <dependencies>
         <dependency>
@@ -18,14 +18,19 @@
             <version>0.0.25-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
-            <version>1.7.4</version>
+            <groupId>com.github.vatbub</groupId>
+            <artifactId>common.internet</artifactId>
+            <version>0.0.25-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.codefx.libfx</groupId>
-            <artifactId>LibFX</artifactId>
-            <version>0.3.0</version>
+            <groupId>com.github.vatbub</groupId>
+            <artifactId>common.updater</artifactId>
+            <version>0.0.25-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vatbub</groupId>
+            <artifactId>common.view</artifactId>
+            <version>0.0.25-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
