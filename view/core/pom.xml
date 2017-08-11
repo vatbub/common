@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.view.core</artifactId>
+    <name>FOKProjects Common View Core</name>
+    <description>Miscellaneous view classes</description>
 
     <dependencies>
         <dependency>

@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.view.motd</artifactId>
+    <name>FOKProjects Common View Message of the day</name>
+    <description>Utility to show a message of a day at app startup read from a RSS feed.</description>
 
     <dependencies>
         <dependency>

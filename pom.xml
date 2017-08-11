@@ -35,8 +35,8 @@
 
     <artifactId>common.parent</artifactId>
     <version>0.0.25-SNAPSHOT</version>
-    <name>FOKProjects Common</name>
-    <description>Common classes for fok projects</description>
+    <name>Vatbub Common Parent</name>
+    <description>Parent for the vatbub common classes</description>
     <inceptionYear>2016</inceptionYear>
     <url>https://github.com/vatbub/common</url>
 

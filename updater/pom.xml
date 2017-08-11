@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.updater</artifactId>
+    <name>Vatbub Common Updater</name>
+    <description>Utility that allows any app released to a maven repository to update itself</description>
 
     <dependencies>
         <dependency>

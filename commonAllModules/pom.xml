@@ -9,6 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>FOKProjects Common</name>
+    <description>Unifies all common modules. Use this module as a dependency for all submodules of this repo.
+    </description>
     <artifactId>common</artifactId>
 
     <dependencies>

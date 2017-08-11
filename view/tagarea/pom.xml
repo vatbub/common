@@ -10,6 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.view.tagarea</artifactId>
-
-
+    <name>FOKProjects Common View Tag area</name>
+    <description>A simple javafx tag area element</description>
 </project>

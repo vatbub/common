@@ -10,6 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.view.reporting</artifactId>
+    <name>FOKProjects Common Reporting view</name>
+    <description>Frontend for the VatbubGitReports project.</description>
 
     <dependencies>
         <dependency>

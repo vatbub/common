@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.view</artifactId>
+    <name>FOKProjects Common View</name>
+    <description>Unifies all common.view modules. Use this module as a dependency for all view submodules of this
+        repo.
+    </description>
 
     <dependencies>
         <dependency>

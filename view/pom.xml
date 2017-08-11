@@ -10,6 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.view.parent</artifactId>
+    <name>FOKProjects Common View Parent</name>
+    <description>Parent for the vatbub common view classes</description>
+
     <packaging>pom</packaging>
     <modules>
         <module>view</module>

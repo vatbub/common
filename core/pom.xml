@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common.core</artifactId>
+    <name>FOKProjects Common Core</name>
+    <description>Common core classes for vatbub projects. Includes a logger and a preference storage among others
+    </description>
+
     <dependencies>
         <dependency>
             <groupId>com.jcabi</groupId>
