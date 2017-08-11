@@ -1,4 +1,4 @@
-package com.github.vatbub.common.updater;
+package com.github.vatbub.common.view.core;
 
 /*-
  * #%L
