@@ -7,6 +7,12 @@
 **Implemented enhancements:**
 
 - Refactor the entire lib [\#19](https://github.com/vatbub/common/issues/19)
+- Remove unused classes [\#18](https://github.com/vatbub/common/issues/18)
+
+**Closed issues:**
+
+- Convert to gradle [\#5](https://github.com/vatbub/common/issues/5)
+- Test changes in version class in hangman-solver [\#1](https://github.com/vatbub/common/issues/1)
 
 ## [common-0.0.24](https://github.com/vatbub/common/tree/common-0.0.24) (2017-07-26)
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.23...common-0.0.24)
