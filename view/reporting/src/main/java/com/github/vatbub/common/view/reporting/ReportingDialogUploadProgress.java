@@ -50,9 +50,9 @@ public class ReportingDialogUploadProgress {
         try {
             String details = "";
 
-            root = FXMLLoader.load(ReportingDialogUploadProgress.class.getResource("/view/reporting/ReportingDialogUploadProgress.fxml"));
+            root = FXMLLoader.load(ReportingDialogUploadProgress.class.getResource("/com/github/vatbub/common/view/reporting/ReportingDialogUploadProgress.fxml"));
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(ReportingDialogUploadProgress.class.getResource("/view/reporting/ReportingDialog.css").toExternalForm());
+            scene.getStylesheets().add(ReportingDialogUploadProgress.class.getResource("/com/github/vatbub/common/view/reporting/ReportingDialog.css").toExternalForm());
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);

@@ -135,7 +135,7 @@ public class MOTDDialog {
         stage = new Stage();
         Parent root;
         try {
-            root = FXMLLoader.load(MOTDDialog.class.getResource("/view/motd/MOTDDialog.fxml"), bundle);
+            root = FXMLLoader.load(MOTDDialog.class.getResource("/com/github/vatbub/common/view/motd/MOTDDialog.fxml"), bundle);
             scene = new Scene(root);
 
             stage.getIcons().add(new Image(new URL(motd.getImage().getUrl()).openStream()));
