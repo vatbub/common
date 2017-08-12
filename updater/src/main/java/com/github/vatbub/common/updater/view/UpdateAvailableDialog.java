@@ -47,7 +47,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
     private static String messageText;
     private static UpdateInfo updateInfo;
     private static Thread downloadThread = new Thread();
-    private final ResourceBundle bundle = ResourceBundle.getBundle("com.github.vatbub.common.updater.view.updateAvailableDialog.AlertDialog");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("com.github.vatbub.common.updater.view.AlertDialog");
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
     @FXML // URL location of the FXML file that was given to the FXMLLoader

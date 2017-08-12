@@ -289,9 +289,9 @@ public class ReportingDialog {
             gitHubIssue.setToRepo_RepoName(repoName);
             ReportingDialog.gitReportsBaseURL = gitReportsBaseURL;
 
-            root = FXMLLoader.load(ReportingDialog.class.getResource("/com/github/vatbub/common/view/reporting/ReportingDialog.fxml"), bundle);
+            root = FXMLLoader.load(ReportingDialog.class.getResource("ReportingDialog.fxml"), bundle);
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(this.getClass().getResource("/com/github/vatbub/common/view/reporting/ReportingDialog.css").toExternalForm());
+            scene.getStylesheets().add(this.getClass().getResource("ReportingDialog.css").toExternalForm());
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
