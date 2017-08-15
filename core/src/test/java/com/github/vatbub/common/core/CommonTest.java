@@ -21,6 +21,7 @@ package com.github.vatbub.common.core;
  */
 
 
+import com.amazonaws.auth.BasicAWSCredentials;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -189,12 +190,37 @@ public class CommonTest {
     }
 
     @Test
-    public void buildNumberManifestEntryTest(){
+    public void buildNumberManifestEntryTest() {
         // no entry set, check for the default one
         assert Common.getBuildNumberManifestEntry().equals("Custom-Implementation-Build");
 
         String newEntry = "testEntryName";
         Common.setBuildNumberManifestEntry(newEntry);
         assert Common.getBuildNumberManifestEntry().equals(newEntry);
+    }
+
+    @Test
+    public void awsCredentialsTest() {
+        String awsKey = "myAwsKey";
+        String awsSecret = "myAwsSecret";
+
+        try {
+            // should throw a NullPointer
+            Common.getAWSCredentials();
+            Assert.fail("No NullPointerException thrown");
+        } catch (NullPointerException e) {
+            assert true;
+        }
+
+        Common.setAwsAccessKey(awsKey);
+        Common.setAwsSecretAccessKey(awsSecret);
+
+        Assert.assertEquals(awsKey, Common.getAwsAccessKey());
+        Assert.assertEquals(awsSecret, Common.getAwsSecretAccessKey());
+
+        BasicAWSCredentials credentials = Common.getAWSCredentials();
+        Assert.assertNotNull(credentials);
+        Assert.assertEquals(awsKey, credentials.getAWSAccessKeyId());
+        Assert.assertEquals(awsSecret, credentials.getAWSSecretKey());
     }
 }

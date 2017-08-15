@@ -119,6 +119,7 @@ public class UpdateChecker {
      * ignore it.
      * @see Common#getPackaging()
      */
+    @SuppressWarnings("Duplicates")
     public static UpdateInfo isUpdateAvailable(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
                                                String mavenClassifier, @SuppressWarnings("SameParameterValue") String packaging) {
         String savedSetting = updatePrefs.getPreference(latestSeenVersionPrefKey, "");
@@ -197,6 +198,7 @@ public class UpdateChecker {
      * @return {@code true} if a new release is available.
      * @see Common#getPackaging()
      */
+    @SuppressWarnings("Duplicates")
     public static UpdateInfo isUpdateAvailableCompareAppVersion(URL repoBaseURL, String mavenGroupID,
                                                                 String mavenArtifactID, String mavenClassifier, @SuppressWarnings("SameParameterValue") String packaging) {
         UpdateInfo res = null;

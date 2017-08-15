@@ -42,9 +42,7 @@ public class InternetTest {
 
         for (int httpCode : codes) {
             String receivedCode = Internet.getReasonForHTTPCode(httpCode);
-            if (httpCode != invalidCode) {
-                assert receivedCode != null;
-            }
+            assert httpCode == invalidCode || receivedCode != null;
             switch (httpCode) {
                 case 100:
                     Assert.assertEquals("Continue", receivedCode);
@@ -246,5 +244,101 @@ public class InternetTest {
     public void webreadTest() throws IOException {
         String res = Internet.webread(new URL("https://www.google.com"));
         assert !res.equals("");
+    }
+
+    @Test
+    public void iftttMakerChannelTestWithInvalidKey() {
+        String apiKey = "invalidKey";
+        String eventName = "vatbubUnitTest";
+        String details1 = "details1";
+        String details2 = "details2";
+        String details3 = "details3";
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName);
+            System.out.println(response);
+            Assert.fail("IOException expected");
+        } catch (IOException e) {
+            Assert.assertTrue(e.getMessage().contains("401"));
+        }
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1);
+            System.out.println(response);
+            Assert.fail("IOException expected");
+        } catch (IOException e) {
+            Assert.assertTrue(e.getMessage().contains("401"));
+        }
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2);
+            System.out.println(response);
+            Assert.fail("IOException expected");
+        } catch (IOException e) {
+            Assert.assertTrue(e.getMessage().contains("401"));
+        }
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2, details3);
+            System.out.println(response);
+            Assert.fail("IOException expected");
+        } catch (IOException e) {
+            Assert.assertTrue(e.getMessage().contains("401"));
+        }
+    }
+
+    @Test
+    public void iftttMakerChannelTestWithValidKey() {
+        String apiKey = System.getenv("CommonUnitTestsIFTTTMakerAPIKey");
+        String eventName = "vatbubUnitTest";
+        String details1 = "details1";
+        String details2 = "details2";
+        String details3 = "details3";
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName);
+            System.out.println(response);
+            Assert.assertTrue(response.contains("Congratulations"));
+        } catch (IOException e) {
+            Assert.fail("IOException: " + e.getMessage());
+        }
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1);
+            System.out.println(response);
+            Assert.assertTrue(response.contains("Congratulations"));
+        } catch (IOException e) {
+            Assert.fail("IOException: " + e.getMessage());
+        }
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2);
+            System.out.println(response);
+            Assert.assertTrue(response.contains("Congratulations"));
+        } catch (IOException e) {
+            Assert.fail("IOException: " + e.getMessage());
+        }
+
+        try {
+            String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2, details3);
+            System.out.println(response);
+            Assert.assertTrue(response.contains("Congratulations"));
+        } catch (IOException e) {
+            Assert.fail("IOException: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void isConnectedTest() {
+        boolean isConnected;
+        try {
+            // Check if we are really connected
+            Internet.webread(new URL("https://www.google.com"));
+            isConnected = true;
+        } catch (IOException e) {
+            isConnected = false;
+        }
+
+        Assert.assertEquals(isConnected, Internet.isConnected());
     }
 }
