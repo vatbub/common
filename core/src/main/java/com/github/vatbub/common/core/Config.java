@@ -39,10 +39,8 @@ public class Config {
      * Creates a new {@code Config}-Instance from the specified
      * {@code *.properties}-file
      *
-     * @param configFile
-     *            The {@code *.properties}-file to import.
-     * @throws IOException
-     *             If the specified file does not exist or cannot be read.
+     * @param configFile The {@code *.properties}-file to import.
+     * @throws IOException If the specified file does not exist or cannot be read.
      */
     public Config(File configFile) throws IOException {
         this.readConfigFromFile(configFile);
@@ -57,18 +55,13 @@ public class Config {
      * <br>
      * This constructor caches the remote config for offline use.
      *
-     * @param remoteConfig
-     *            The {@code URL} of the remote config to be read.
-     * @param fallbackConfig
-     *            The config file to be read in case the {@code remoteConfig}
-     *            cannot be downloaded and no cached version is available.
-     *            downloaded for offline use.
-     * @param cacheFileName
-     *            The file name of the offline cache.
-     * @throws FileNotFoundException
-     *             If the specified fallbackConfig does not exist.
-     * @throws IOException
-     *             If the specified fallbackConfig cannot be read.
+     * @param remoteConfig   The {@code URL} of the remote config to be read.
+     * @param fallbackConfig The config file to be read in case the {@code remoteConfig}
+     *                       cannot be downloaded and no cached version is available.
+     *                       downloaded for offline use.
+     * @param cacheFileName  The file name of the offline cache.
+     * @throws FileNotFoundException If the specified fallbackConfig does not exist.
+     * @throws IOException           If the specified fallbackConfig cannot be read.
      */
     public Config(URL remoteConfig, File fallbackConfig, String cacheFileName) throws IOException {
         this(remoteConfig, fallbackConfig, true, cacheFileName);
@@ -81,24 +74,19 @@ public class Config {
      * cached config is used instead. If the remote config can't be read and no
      * cached version is available, the fallbackConfig is used.
      *
-     * @param remoteConfig
-     *            The {@code URL} of the remote config to be read.
-     * @param fallbackConfig
-     *            The config file to be read in case the {@code remoteConfig}
-     *            cannot be downloaded and no cached version is available.
-     * @param cacheRemoteConfig
-     *            If {@code true}, the remote config will be cached once
-     *            downloaded for offline use.
-     * @param cacheFileName
-     *            The file name of the offline cache. Only taken into account if
-     *            {@code cacheRemoteConfig==true}
-     * @throws IOException
-     *             If the specified fallbackConfig does not exist or cannot be read.
+     * @param remoteConfig      The {@code URL} of the remote config to be read.
+     * @param fallbackConfig    The config file to be read in case the {@code remoteConfig}
+     *                          cannot be downloaded and no cached version is available.
+     * @param cacheRemoteConfig If {@code true}, the remote config will be cached once
+     *                          downloaded for offline use.
+     * @param cacheFileName     The file name of the offline cache. Only taken into account if
+     *                          {@code cacheRemoteConfig==true}
+     * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
     @SuppressWarnings("RedundantThrows")
     public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName)
             throws IOException {
-
+        this(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName, false);
     }
 
     /**
@@ -107,30 +95,24 @@ public class Config {
      * available, the cached config is used instead. If the remote config can't
      * be read and no cached version is available, the fallbackConfig is used.
      *
-     * @param remoteConfig
-     *            The {@code URL} of the remote config to be read.
-     * @param fallbackConfig
-     *            The config file to be read in case the {@code remoteConfig}
-     *            cannot be downloaded and no cached version is available.
-     * @param cacheRemoteConfig
-     *            If {@code true}, the remote config will be cached once
-     *            downloaded for offline use.
-     * @param cacheFileName
-     *            The file name of the offline cache. Only taken into account if
-     *            {@code cacheRemoteConfig==true}
-     * @param readAsynchronously
-     *            If {@code true}, the remote config will be read
-     *            asynchronously. This happens as follows: First, the
-     *            fallbackConfig or the cached config (if one is available) is
-     *            read. Then, the remote config is loaded in a new Thread. This
-     *            ensures that your Config is instantly accessible while it
-     *            seamlessly updates in the background. You do not need to
-     *            refresh the config once the remote config is loaded, it will
-     *            do that by itself. If the remote config fails to load, a
-     *            message will appear in the log and you will use the cached
-     *            config/fallbackConfig.
-     * @throws IOException
-     *             If the specified fallbackConfig does not exist or cannot be read.
+     * @param remoteConfig       The {@code URL} of the remote config to be read.
+     * @param fallbackConfig     The config file to be read in case the {@code remoteConfig}
+     *                           cannot be downloaded and no cached version is available.
+     * @param cacheRemoteConfig  If {@code true}, the remote config will be cached once
+     *                           downloaded for offline use.
+     * @param cacheFileName      The file name of the offline cache. Only taken into account if
+     *                           {@code cacheRemoteConfig==true}
+     * @param readAsynchronously If {@code true}, the remote config will be read
+     *                           asynchronously. This happens as follows: First, the
+     *                           fallbackConfig or the cached config (if one is available) is
+     *                           read. Then, the remote config is loaded in a new Thread. This
+     *                           ensures that your Config is instantly accessible while it
+     *                           seamlessly updates in the background. You do not need to
+     *                           refresh the config once the remote config is loaded, it will
+     *                           do that by itself. If the remote config fails to load, a
+     *                           message will appear in the log and you will use the cached
+     *                           config/fallbackConfig.
+     * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
     public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
                   boolean readAsynchronously) throws IOException {
@@ -144,10 +126,8 @@ public class Config {
     /**
      * Imports the specified {@code *.properties}-file
      *
-     * @param file
-     *            The {@code *.properties}-file to import.
-     * @throws IOException
-     *             If the specified file does not exist or cannot be read.
+     * @param file The {@code *.properties}-file to import.
+     * @throws IOException If the specified file does not exist or cannot be read.
      */
     private void readConfigFromFile(File file) throws IOException {
         FOKLogger.info(Config.class.getName(), "Reading config from local file...");
@@ -160,16 +140,12 @@ public class Config {
      * remote config can't be read and no cached version is available, the
      * fallbackConfig is used.
      *
-     * @param remoteConfig
-     *            The {@code URL} of the remote config to be read.
-     * @param fallbackConfig
-     *            The config file to be read in case the {@code remoteConfig}
-     *            cannot be downloaded and no cached version is available.
-     * @param cacheRemoteConfig
-     *            If {@code true}, the remote config will be cached once
-     *            downloaded for offline use.
-     * @throws IOException
-     *             If the specified fallbackConfig does not exist or cannot be read.
+     * @param remoteConfig      The {@code URL} of the remote config to be read.
+     * @param fallbackConfig    The config file to be read in case the {@code remoteConfig}
+     *                          cannot be downloaded and no cached version is available.
+     * @param cacheRemoteConfig If {@code true}, the remote config will be cached once
+     *                          downloaded for offline use.
+     * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
     private void readRemoteConfig(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig,
                                   String cacheFileName) throws IOException {
@@ -241,10 +217,9 @@ public class Config {
     /**
      * Checks if the specified key is defined in this Config file.
      *
-     * @param key
-     *            The key of the property to be checked.
+     * @param key The key of the property to be checked.
      * @return {@code true} if a property with the specified key is found,
-     *         {@code false} otherwise.
+     * {@code false} otherwise.
      */
     public boolean contains(String key) {
         return props.getProperty(key) == null;
@@ -254,10 +229,9 @@ public class Config {
      * Returns the config value for the specified key or {@code null} if the key
      * was not found.
      *
-     * @param key
-     *            The key of the config parameter.
+     * @param key The key of the config parameter.
      * @return the config value for the specified key or {@code null} if the key
-     *         was not found.
+     * was not found.
      */
     public String getValue(String key) {
         return props.getProperty(key);
