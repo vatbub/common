@@ -11,6 +11,7 @@
 
 **Closed issues:**
 
+- Config class not working due to a missing constructor call [\#20](https://github.com/vatbub/common/issues/20)
 - Bump up the test coverage [\#8](https://github.com/vatbub/common/issues/8)
 - Convert to gradle [\#5](https://github.com/vatbub/common/issues/5)
 - Test changes in version class in hangman-solver [\#1](https://github.com/vatbub/common/issues/1)
