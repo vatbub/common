@@ -34,6 +34,7 @@ public class Config {
 
     private final Properties props = new Properties();
     private boolean remoteConfigEnabled;
+    private boolean offlineMode;
 
     /**
      * Creates a new {@code Config}-Instance from the specified
@@ -116,6 +117,38 @@ public class Config {
      */
     public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
                   boolean readAsynchronously) throws IOException {
+        this(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName, readAsynchronously, false);
+    }
+
+    /**
+     * Creates a new {@code Config}-instance and reads the config from the
+     * remote url. If this fails for any reason and a cached config is
+     * available, the cached config is used instead. If the remote config can't
+     * be read and no cached version is available, the fallbackConfig is used.
+     *
+     * @param remoteConfig       The {@code URL} of the remote config to be read.
+     * @param fallbackConfig     The config file to be read in case the {@code remoteConfig}
+     *                           cannot be downloaded and no cached version is available.
+     * @param cacheRemoteConfig  If {@code true}, the remote config will be cached once
+     *                           downloaded for offline use.
+     * @param cacheFileName      The file name of the offline cache. Only taken into account if
+     *                           {@code cacheRemoteConfig==true}
+     * @param readAsynchronously If {@code true}, the remote config will be read
+     *                           asynchronously. This happens as follows: First, the
+     *                           fallbackConfig or the cached config (if one is available) is
+     *                           read. Then, the remote config is loaded in a new Thread. This
+     *                           ensures that your Config is instantly accessible while it
+     *                           seamlessly updates in the background. You do not need to
+     *                           refresh the config once the remote config is loaded, it will
+     *                           do that by itself. If the remote config fails to load, a
+     *                           message will appear in the log and you will use the cached
+     *                           config/fallbackConfig.
+     * @param offlineMode        If {@code true}, offline mode will be simulated
+     * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
+     */
+    public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
+                  boolean readAsynchronously, boolean offlineMode) throws IOException {
+        setOfflineMode(offlineMode);
         if (readAsynchronously) {
             this.readRemoteConfigAsynchronous(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName);
         } else {
@@ -150,6 +183,9 @@ public class Config {
     private void readRemoteConfig(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig,
                                   String cacheFileName) throws IOException {
         try {
+            if (isOfflineMode()) {
+                throw new IOException("Offline mode enabled");
+            }
             getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
         } catch (IOException e) {
             // Something went wrong
@@ -235,6 +271,14 @@ public class Config {
      */
     public String getValue(String key) {
         return props.getProperty(key);
+    }
+
+    public boolean isOfflineMode() {
+        return offlineMode;
+    }
+
+    public void setOfflineMode(boolean offlineMode) {
+        this.offlineMode = offlineMode;
     }
 
     @Override
