@@ -23,7 +23,10 @@ package com.github.vatbub.common.core;
 
 import com.github.vatbub.common.core.logging.FOKLogger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -43,7 +46,7 @@ public class Config {
      * @param configFile The {@code *.properties}-file to import.
      * @throws IOException If the specified file does not exist or cannot be read.
      */
-    public Config(File configFile) throws IOException {
+    public Config(URL configFile) throws IOException {
         this.readConfigFromFile(configFile);
     }
 
@@ -64,7 +67,7 @@ public class Config {
      * @throws FileNotFoundException If the specified fallbackConfig does not exist.
      * @throws IOException           If the specified fallbackConfig cannot be read.
      */
-    public Config(URL remoteConfig, File fallbackConfig, String cacheFileName) throws IOException {
+    public Config(URL remoteConfig, URL fallbackConfig, String cacheFileName) throws IOException {
         this(remoteConfig, fallbackConfig, true, cacheFileName);
     }
 
@@ -85,7 +88,7 @@ public class Config {
      * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
     @SuppressWarnings("RedundantThrows")
-    public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName)
+    public Config(URL remoteConfig, URL fallbackConfig, boolean cacheRemoteConfig, String cacheFileName)
             throws IOException {
         this(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName, false);
     }
@@ -115,7 +118,7 @@ public class Config {
      *                           config/fallbackConfig.
      * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
-    public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
+    public Config(URL remoteConfig, URL fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
                   boolean readAsynchronously) throws IOException {
         this(remoteConfig, fallbackConfig, cacheRemoteConfig, cacheFileName, readAsynchronously, false);
     }
@@ -146,7 +149,7 @@ public class Config {
      * @param offlineMode        If {@code true}, offline mode will be simulated
      * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
-    public Config(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
+    public Config(URL remoteConfig, URL fallbackConfig, boolean cacheRemoteConfig, String cacheFileName,
                   boolean readAsynchronously, boolean offlineMode) throws IOException {
         setOfflineMode(offlineMode);
         if (readAsynchronously) {
@@ -162,9 +165,9 @@ public class Config {
      * @param file The {@code *.properties}-file to import.
      * @throws IOException If the specified file does not exist or cannot be read.
      */
-    private void readConfigFromFile(File file) throws IOException {
+    private void readConfigFromFile(URL file) throws IOException {
         FOKLogger.info(Config.class.getName(), "Reading config from local file...");
-        props.load(new FileReader(file));
+        props.load(file.openStream());
     }
 
     /**
@@ -180,7 +183,7 @@ public class Config {
      *                          downloaded for offline use.
      * @throws IOException If the specified fallbackConfig does not exist or cannot be read.
      */
-    private void readRemoteConfig(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig,
+    private void readRemoteConfig(URL remoteConfig, URL fallbackConfig, boolean cacheRemoteConfig,
                                   String cacheFileName) throws IOException {
         try {
             if (isOfflineMode()) {
@@ -211,13 +214,13 @@ public class Config {
         }
     }
 
-    private void checkForOfflineCacheOrLoadFallback(File fallbackConfig, String cacheFileName)
+    private void checkForOfflineCacheOrLoadFallback(URL fallbackConfig, String cacheFileName)
             throws IOException {
         File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
         if (f.exists()) {
             // Offline cache exists
             FOKLogger.info(Config.class.getName(), "Reading cached config...");
-            this.readConfigFromFile(f);
+            this.readConfigFromFile(f.toURI().toURL());
         } else {
             FOKLogger.info(Config.class.getName(), "Reading fallbackConfig...");
             this.readConfigFromFile(fallbackConfig);
@@ -225,7 +228,7 @@ public class Config {
         }
     }
 
-    private void readRemoteConfigAsynchronous(URL remoteConfig, File fallbackConfig, boolean cacheRemoteConfig,
+    private void readRemoteConfigAsynchronous(URL remoteConfig, URL fallbackConfig, boolean cacheRemoteConfig,
                                               String cacheFileName) throws IOException {
         // Read offline cache or fallback first
         checkForOfflineCacheOrLoadFallback(fallbackConfig, cacheFileName);

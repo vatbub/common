@@ -25,9 +25,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Random;
 
 public class ConfigTest {
@@ -39,24 +37,24 @@ public class ConfigTest {
     }
 
     @Test
-    public void LoadRemoteConfigNoCacheTest() throws IOException, URISyntaxException {
-        Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), new File(ConfigTest.class.getResource("FallbackTestConfig.properties").toURI()), false, cacheFileName);
+    public void LoadRemoteConfigNoCacheTest() throws IOException {
+        Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName);
         Assert.assertEquals("remote", config.getValue("configSource"));
-        config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), new File(ConfigTest.class.getResource("FallbackTestConfig.properties").toURI()), false, cacheFileName, false, true);
+        config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName, false, true);
         Assert.assertEquals("fallback", config.getValue("configSource"));
     }
 
     @Test
-    public void LoadRemoteConfigWithCacheTest() throws IOException, URISyntaxException {
-        Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), new File(ConfigTest.class.getResource("FallbackTestConfig.properties").toURI()), cacheFileName);
+    public void LoadRemoteConfigWithCacheTest() throws IOException {
+        Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), cacheFileName);
         Assert.assertEquals("remote", config.getValue("configSource"));
-        config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), new File(ConfigTest.class.getResource("FallbackTestConfig.properties").toURI()), true, cacheFileName, false, true);
+        config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), true, cacheFileName, false, true);
         Assert.assertEquals("remote", config.getValue("configSource"));
     }
 
     @Test
-    public void LoadConfigFromFile() throws IOException, URISyntaxException {
-        Config config = new Config(new File(ConfigTest.class.getResource("FileTestConfig.properties").toURI()));
+    public void LoadConfigFromFile() throws IOException {
+        Config config = new Config(ConfigTest.class.getResource("FileTestConfig.properties"));
         Assert.assertEquals("file", config.getValue("configSource"));
     }
 }
