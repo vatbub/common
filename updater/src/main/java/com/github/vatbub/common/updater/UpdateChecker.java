@@ -39,6 +39,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -384,6 +385,7 @@ public class UpdateChecker {
      *
      * @param updateToInstall The {@link UpdateInfo}-object that contains the information
      *                        about the update to download
+     * @param params          Additional commandline parameters to be submitted to the new application version.
      * @return {@code true} if the download finished successfully, {@code false}
      * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
@@ -392,9 +394,9 @@ public class UpdateChecker {
      * @see #completeUpdate(String[])
      */
     @SuppressWarnings("unused")
-    public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall)
+    public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, String... params)
             throws IllegalStateException, IOException {
-        return downloadAndInstallUpdate(updateToInstall, null);
+        return downloadAndInstallUpdate(updateToInstall, null, params);
     }
 
     /**
@@ -411,6 +413,7 @@ public class UpdateChecker {
      *                        about the update to download
      * @param gui             The reference to an {@link UpdateProgressDialog} that displays
      *                        the current update status.
+     * @param params          Additional commandline parameters to be submitted to the new application version.
      * @return {@code true} if the download finished successfully, {@code false}
      * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
@@ -418,9 +421,9 @@ public class UpdateChecker {
      * @throws IOException           If the updated artifact cannot be launched.
      * @see #completeUpdate(String[])
      */
-    public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui)
+    public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui, String... params)
             throws IllegalStateException, IOException {
-        return downloadAndInstallUpdate(updateToInstall, gui, true);
+        return downloadAndInstallUpdate(updateToInstall, gui, true, params);
     }
 
     /**
@@ -439,6 +442,7 @@ public class UpdateChecker {
      *                                 the current update status.
      * @param launchUpdateAfterInstall If {@code true}, the downloaded file will be launched after
      *                                 the download succeeds.
+     * @param params                   Additional commandline parameters to be submitted to the new application version.
      * @return {@code true} if the download finished successfully, {@code false}
      * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
@@ -447,8 +451,8 @@ public class UpdateChecker {
      * @see #completeUpdate(String[])
      */
     public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
-                                                   @SuppressWarnings("SameParameterValue") boolean launchUpdateAfterInstall) throws IllegalStateException, IOException {
-        return downloadAndInstallUpdate(updateToInstall, gui, launchUpdateAfterInstall, true);
+                                                   @SuppressWarnings("SameParameterValue") boolean launchUpdateAfterInstall, String... params) throws IllegalStateException, IOException {
+        return downloadAndInstallUpdate(updateToInstall, gui, launchUpdateAfterInstall, true, params);
     }
 
     /**
@@ -470,6 +474,7 @@ public class UpdateChecker {
      *                                 actually delete the file, you need to call
      *                                 {@link #completeUpdate(String[])} in your applications main
      *                                 method.
+     * @param params                   Additional commandline parameters to be submitted to the new application version.
      * @return {@code true} if the download finished successfully, {@code false}
      * if the download was cancelled using
      * {@link #cancelDownloadAndLaunch()}
@@ -478,7 +483,40 @@ public class UpdateChecker {
      * @see #completeUpdate(String[])
      */
     public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
-                                                   boolean launchUpdateAfterInstall, @SuppressWarnings("SameParameterValue") boolean deleteOldVersion) throws IllegalStateException, IOException {
+                                                   boolean launchUpdateAfterInstall, @SuppressWarnings("SameParameterValue") boolean deleteOldVersion, String... params) throws IllegalStateException, IOException {
+        return downloadAndInstallUpdate(updateToInstall, gui, launchUpdateAfterInstall, deleteOldVersion, false, params);
+    }
+
+    /**
+     * Downloads the specified update as a jar-file and launches it. The jar
+     * file will be saved at the same location as the currently executed file
+     * but will not replace it (unless it has the same filename but this will
+     * never happen)
+     *
+     * @param updateToInstall          The {@link UpdateInfo}-object that contains the information
+     *                                 about the update to download
+     * @param gui                      The reference to an {@link UpdateProgressDialog} that displays
+     *                                 the current update status.
+     * @param launchUpdateAfterInstall If {@code true}, the downloaded file will be launched after
+     *                                 the download succeeds.
+     * @param deleteOldVersion         If {@code true}, the old app version will be automatically
+     *                                 deleted once the new version is downloaded. <b>Please note</b>
+     *                                 that the file can't delete itself on some operating systems.
+     *                                 Therefore, the deletion is done by the updated file. To
+     *                                 actually delete the file, you need to call
+     *                                 {@link #completeUpdate(String[])} in your applications main
+     *                                 method.
+     * @param inheritIO                If st to {@code true}, the new version will inherit standard in and standard out.
+     * @param params                   Additional commandline parameters to be submitted to the new application version.
+     * @return {@code true} if the download finished successfully, {@code false}
+     * if the download was cancelled using
+     * {@link #cancelDownloadAndLaunch()}
+     * @throws IllegalStateException if maven fails to download or copy the new artifact.
+     * @throws IOException           If the updated artifact cannot be launched.
+     * @see #completeUpdate(String[])
+     */
+    public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, UpdateProgressDialog gui,
+                                                   boolean launchUpdateAfterInstall, @SuppressWarnings("SameParameterValue") boolean deleteOldVersion, boolean inheritIO, String... params) throws IllegalStateException, IOException {
 
         // Reset cancel state
         cancelDownloadAndLaunch = false;
@@ -645,6 +683,8 @@ public class UpdateChecker {
             startupArgs.add("oldVersion=" + Common.getAppVersion());
             startupArgs.add("oldFile=" + decodedPath);
 
+            startupArgs.addAll(Arrays.asList(params));
+
             FOKLogger
                     .info(UpdateChecker.class.getName(), "Launching new version using command: " + StringUtils.join(startupArgs.toArray(), " "));
 
@@ -698,12 +738,14 @@ public class UpdateChecker {
         Version oldVersion = null;
 
         // read all the args
+        List<String> argsAsList = new ArrayList<>(Arrays.asList(startupArgs));
         for (String arg : startupArgs) {
             if (arg.toLowerCase().matches("oldfile=.*")) {
                 updateToComplete = true;
                 // get the info about the old file
                 oldFile = arg.substring(arg.toLowerCase().indexOf('=') + 1);
                 fileToDelete = new File(oldFile);
+                argsAsList.remove(arg);
             } else if (arg.toLowerCase().matches("deletefile.*")) {
                 deleteOldFile = true;
                 updateToComplete = true;
@@ -712,12 +754,16 @@ public class UpdateChecker {
                     oldFile = arg.substring(arg.toLowerCase().indexOf('=') + 1);
                     fileToDelete = new File(oldFile);
                 }
+                argsAsList.remove(arg);
             } else if (arg.toLowerCase().matches("oldversion=.*")) {
                 // get the old version number
                 oldVersion = new Version(arg.substring(arg.toLowerCase().indexOf('=') + 1));
                 updateToComplete = true;
+                argsAsList.remove(arg);
             }
         }
+        //noinspection UnusedAssignment
+        startupArgs = argsAsList.toArray(new String[0]);
 
         if (updateToComplete) {
             if (deleteOldFile) {
