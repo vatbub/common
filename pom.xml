@@ -1,5 +1,4 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
@@ -20,7 +19,7 @@
             <url>http://dl.bintray.com/vatbub/fokprojectsReleases</url>
         </repository>
         <repository>
-            <snapshots/>
+            <snapshots />
             <id>snapshots</id>
             <name>libs-snapshot</name>
             <url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
@@ -30,11 +29,11 @@
     <parent>
         <groupId>com.github.vatbub</groupId>
         <artifactId>parentPom</artifactId>
-        <version>0.0.22-SNAPSHOT</version>
+        <version>0.0.21</version>
     </parent>
 
     <artifactId>common.parent</artifactId>
-    <version>0.0.25-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>Vatbub Common Parent</name>
     <description>Parent for the vatbub common classes</description>
     <inceptionYear>2016</inceptionYear>
@@ -44,7 +43,7 @@
         <connection>scm:git:git@github.com:vatbub/common.git</connection>
         <url>https://github.com/vatbub/common</url>
         <developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-        <tag>testRelease</tag>
+        <tag>common.parent-0.1.0</tag>
     </scm>
 
     <issueManagement>
