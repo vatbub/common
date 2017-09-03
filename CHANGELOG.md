@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.0...HEAD)
+
+**Fixed bugs:**
+
+- Common.getPathAndNameOfCurrentJar\(\) returns invalid path on windows [\#22](https://github.com/vatbub/common/issues/22)
+
 ## [common.parent-0.1.0](https://github.com/vatbub/common/tree/common.parent-0.1.0) (2017-09-02)
 [Full Changelog](https://github.com/vatbub/common/compare/common-0.0.24...common.parent-0.1.0)
 
