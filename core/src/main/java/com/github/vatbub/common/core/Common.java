@@ -333,7 +333,7 @@ public class Common {
     public static String getPathAndNameOfCurrentJar() {
         String path = Common.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         try {
-            return URLDecoder.decode(path, "UTF-8");
+            return new File(URLDecoder.decode(path, "UTF-8")).getAbsolutePath();
         } catch (UnsupportedEncodingException e) {
             FOKLogger.log(Common.class.getName(), Level.SEVERE, "An error occurred", e); // $COVERAGE-IGNORE$
             return null;

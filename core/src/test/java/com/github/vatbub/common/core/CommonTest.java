@@ -223,4 +223,11 @@ public class CommonTest {
         Assert.assertEquals(awsKey, credentials.getAWSAccessKeyId());
         Assert.assertEquals(awsSecret, credentials.getAWSSecretKey());
     }
+
+    @Test
+    public void getPathAndNameOfCurrentJarTest() {
+        String name = Common.getPathAndNameOfCurrentJar();
+        System.out.println(name);
+        Assert.assertNotEquals("", name);
+    }
 }
