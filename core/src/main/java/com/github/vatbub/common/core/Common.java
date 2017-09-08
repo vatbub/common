@@ -23,12 +23,21 @@ package com.github.vatbub.common.core;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.vatbub.common.core.logging.FOKLogger;
+import com.google.common.hash.Hasher;
+import com.google.common.hash.Hashing;
 import com.jcabi.manifests.Manifests;
 import org.apache.commons.lang.SystemUtils;
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.ComputerSystem;
+import oshi.hardware.HWDiskStore;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.software.os.OperatingSystem;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
@@ -424,11 +433,81 @@ public class Common {
         Common.awsSecretAccessKey = awsSecretAccessKey;
     }
 
+    /**
+     * Calculates a unique device identifier using the md5-hashing algorithm. Please see {@link #getUniqueDeviceIdentifier(Hasher)} about the hardware properties utilized to calculate the hash.
+     *
+     * @return The unique hardware identifier
+     */
     public static BasicAWSCredentials getAWSCredentials() {
         if (getAwsAccessKey() == null || getAwsSecretAccessKey() == null) {
             throw new NullPointerException();
         }
 
         return new BasicAWSCredentials(getAwsAccessKey(), getAwsSecretAccessKey());
+    }
+
+    public static String getUniqueDeviceIdentifier() {
+        return getUniqueDeviceIdentifier(Hashing.md5().newHasher());
+    }
+
+    /**
+     * Calculates a unique device identifier.
+     * The identifier is created by hashing the following hardware properties:
+     * <ul>
+     * <li>Operating system:
+     * <ul>
+     * <li>Family</li>
+     * <li>Manufacturer</li>
+     * <li>Version</li>
+     * </ul>
+     * </li>
+     * <li>Drives (All drives are used):
+     * <ul>
+     * <li>Model</li>
+     * <li>Serial number</li>
+     * </ul></li>
+     * <li>CPU:<ul>
+     * <li>Family</li>
+     * <li>Model</li>
+     * <li>Vendor</li>
+     * <li>Core-count</li>
+     * </ul></li>
+     * <li>Motherboard:<ul>
+     * <li>Manufacturer</li>
+     * <li>Model</li>
+     * <li>Serial number</li>
+     * </ul></li>
+     * </ul>
+     *
+     * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
+     * @return The unique hardware identifier
+     */
+    public static String getUniqueDeviceIdentifier(Hasher hasher) {
+        SystemInfo systemInfo = new SystemInfo();
+        OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
+        HardwareAbstractionLayer hardwareAbstractionLayer = systemInfo.getHardware();
+        CentralProcessor centralProcessor = hardwareAbstractionLayer.getProcessor();
+        ComputerSystem computerSystem = hardwareAbstractionLayer.getComputerSystem();
+
+        hasher.putString(operatingSystem.getFamily(), Charset.forName("UTF-8"));
+        hasher.putString(operatingSystem.getManufacturer(), Charset.forName("UTF-8"));
+        hasher.putString(operatingSystem.getVersion().getVersion(), Charset.forName("UTF-8"));
+        hasher.putString(operatingSystem.getVersion().getBuildNumber(), Charset.forName("UTF-8"));
+
+        for (HWDiskStore store : hardwareAbstractionLayer.getDiskStores()) {
+            hasher.putString(store.getModel(), Charset.forName("UTF-8"));
+            hasher.putString(store.getSerial(), Charset.forName("UTF-8"));
+        }
+
+        hasher.putString(centralProcessor.getFamily(), Charset.forName("UTF-8"));
+        hasher.putString(centralProcessor.getModel(), Charset.forName("UTF-8"));
+        hasher.putString(centralProcessor.getVendor(), Charset.forName("UTF-8"));
+        hasher.putInt(centralProcessor.getLogicalProcessorCount());
+
+        hasher.putString(computerSystem.getManufacturer(), Charset.forName("UTF-8"));
+        hasher.putString(computerSystem.getModel(), Charset.forName("UTF-8"));
+        hasher.putString(computerSystem.getSerialNumber(), Charset.forName("UTF-8"));
+
+        return hasher.hash().toString();
     }
 }

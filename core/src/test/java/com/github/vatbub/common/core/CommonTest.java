@@ -22,6 +22,7 @@ package com.github.vatbub.common.core;
 
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.google.common.hash.Hashing;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -229,5 +230,32 @@ public class CommonTest {
         String name = Common.getPathAndNameOfCurrentJar();
         System.out.println(name);
         Assert.assertNotEquals("", name);
+    }
+
+    @Test
+    public void deviceIdentifierTest() {
+        System.out.println("Calculating 1st md5 hash...");
+        String identifier1 = Common.getUniqueDeviceIdentifier();
+        System.out.println("Calculating 2nd md5 hash...");
+        String identifier2 = Common.getUniqueDeviceIdentifier();
+
+        System.out.println("1st md5 hash is: " + identifier1);
+        System.out.println("2nd md5 hash is: " + identifier2);
+
+        Assert.assertNotEquals("", identifier1);
+        Assert.assertNotEquals("", identifier2);
+        Assert.assertEquals(identifier1, identifier2);
+
+        System.out.println("Calculating 1st sha256 hash...");
+        identifier1 = Common.getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        System.out.println("Calculating 2nd sha256 hash...");
+        identifier2 = Common.getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+
+        System.out.println("1st sha256 hash is: " + identifier1);
+        System.out.println("2nd sha256 hash is: " + identifier2);
+
+        Assert.assertNotEquals("", identifier1);
+        Assert.assertNotEquals("", identifier2);
+        Assert.assertEquals(identifier1, identifier2);
     }
 }
