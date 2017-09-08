@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.0...HEAD)
 
+**Implemented enhancements:**
+
+- Add a method to get a unique device identifier [\#23](https://github.com/vatbub/common/issues/23)
+
 **Fixed bugs:**
 
 - Common.getPathAndNameOfCurrentJar\(\) returns invalid path on windows [\#22](https://github.com/vatbub/common/issues/22)
