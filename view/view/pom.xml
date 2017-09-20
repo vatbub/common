@@ -17,22 +17,22 @@
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.view.core</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.view.motd</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.view.reporting</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.view.tagarea</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

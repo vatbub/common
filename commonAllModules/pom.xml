@@ -16,22 +16,22 @@
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.core</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.internet</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.updater</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vatbub</groupId>
             <artifactId>common.view</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>
