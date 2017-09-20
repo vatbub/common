@@ -29,11 +29,11 @@
     <parent>
         <groupId>com.github.vatbub</groupId>
         <artifactId>parentPom</artifactId>
-        <version>0.0.22-SNAPSHOT</version>
+        <version>0.0.22</version>
     </parent>
 
     <artifactId>common.parent</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.1</version>
     <name>Vatbub Common Parent</name>
     <description>Parent for the vatbub common classes</description>
     <inceptionYear>2016</inceptionYear>
@@ -43,7 +43,7 @@
         <connection>scm:git:git@github.com:vatbub/common.git</connection>
         <url>https://github.com/vatbub/common</url>
         <developerConnection>scm:git:git@github.com:vatbub/common.git</developerConnection>
-        <tag>testRelease</tag>
+        <tag>common.parent-0.1.1</tag>
     </scm>
 
     <issueManagement>
