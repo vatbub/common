@@ -510,4 +510,40 @@ public class Common {
 
         return hasher.hash().toString();
     }
+
+    /**
+     * Same as {@link #getAndCreateAppDataPath()} but returns {@code null} if no app name is defined instead of failing with a {@code NullPointerException}
+     *
+     * @return {@link #getAndCreateAppDataPath()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
+     */
+    public static String tryGetAndCreateAppDataPath() {
+        return getAppName() == null ? null : getAndCreateAppDataPath();
+    }
+
+    /**
+     * Same as {@link #getAppDataPath()} but returns {@code null} if no app name is defined instead of failing with a {@code NullPointerException}
+     *
+     * @return {@link #getAppDataPath()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
+     */
+    public static String tryGetAppDataPath() {
+        return getAppName() == null ? null : getAppDataPath();
+    }
+
+    /**
+     * Same as {@link #getAppDataPathAsFile()} but returns {@code null} if no app name is defined instead of failing with a {@code NullPointerException}
+     *
+     * @return {@link #getAppDataPathAsFile()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
+     */
+    public static File tryGetAppDataPathAsFile() {
+        return getAppName() == null ? null : getAppDataPathAsFile();
+    }
+
+    /**
+     * Same as {@link #getAndCreateAppDataPathAsFile()} but returns {@code null} if no app name is defined instead of failing with a {@code NullPointerException}
+     *
+     * @return {@link #getAndCreateAppDataPathAsFile()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
+     */
+    public static File tryGetAndCreateAppDataPathAsFile() {
+        return getAppName() == null ? null : getAndCreateAppDataPathAsFile();
+    }
 }

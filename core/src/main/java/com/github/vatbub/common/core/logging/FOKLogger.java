@@ -40,8 +40,6 @@ import java.util.logging.*;
 public class FOKLogger {
 
     private static final Map<String, FOKLogger> loggerMap = new HashMap<>();
-    //log uncaught exceptions
-    private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable));
     private static Handler fileHandler;
     private static Handler consoleHandler;
     private static boolean handlersInitialized;
@@ -63,6 +61,8 @@ public class FOKLogger {
      */
     private static String logFileName;
     private static String logFilePath;
+    //log uncaught exceptions
+    private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable));
     final Logger log;
 
     /**
@@ -77,7 +77,7 @@ public class FOKLogger {
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     public FOKLogger(String className) {
-        this(className, Common.getAppDataPath() + "Logs", "log_" + Common.getAppName() + "_DateTime.xml");
+        this(className, combineLogPath(), "log_" + Common.getAppName() + "_DateTime.xml");
     }
 
     /**
@@ -91,17 +91,41 @@ public class FOKLogger {
      * @param newLogFileName The name of the log file
      */
     public FOKLogger(String className, String newLogFilePath, String newLogFileName) {
+        this(className, newLogFilePath, newLogFileName, logFilePath == null && newLogFilePath != null);
+    }
+
+    /**
+     * Creates a new {@link java.util.logging.Logger} instance and attaches
+     * automatically a {@link FileHandler} and a {@link ConsoleHandler}.
+     *
+     * @param className           The name of the calling class. It is recommended to use the
+     *                            fully qualified class name that you can get with
+     *                            {@code (YourClassName).class.getName()}.
+     * @param newLogFilePath      The file where the log file shall be saved in
+     * @param newLogFileName      The name of the log file
+     * @param forceReloadHandlers If set to {@code true}, the log handlers are reloaded regardless of whether they were already initialized
+     */
+    public FOKLogger(String className, String newLogFilePath, String newLogFileName, boolean forceReloadHandlers) {
         logFilePath = newLogFilePath;
         logFileName = newLogFileName;
         loggerMap.put(className, this);
 
         // initialize the handlers
-        if (!handlersInitialized) {
+        if (!handlersInitialized || forceReloadHandlers) {
             FOKLogger.initLogHandlers();
         }
 
         log = Logger.getLogger(className);
         log.setLevel(Level.ALL);
+    }
+
+    private static String combineLogPath() {
+        String appDataPath = Common.tryGetAppDataPath();
+        if (appDataPath == null) {
+            return null;
+        } else {
+            return appDataPath + "Logs";
+        }
     }
 
     /**
@@ -170,16 +194,18 @@ public class FOKLogger {
 
         handlersInitialized = true;
 
-        fileHandler = null;
-        consoleHandler = null;
         // Create a directory; all non-existent ancestor directories are
         // automatically created
         // Source:
         // http://stackoverflow.com/questions/4801971/how-to-create-empty-folder-in-java
-        (new File(logFilePath)).mkdirs();
+        if (logFilePath != null) {
+            new File(logFilePath).mkdirs();
+        }
 
         try {
-            fileHandler = new FileHandler(getLogFilePathAndName());
+            if (logFilePath != null) {
+                fileHandler = new FileHandler(getLogFilePathAndName());
+            }
             consoleHandler = new Handler() {
                 @Override
                 public void publish(LogRecord record) {
@@ -216,7 +242,9 @@ public class FOKLogger {
         }
 
         // set the handlers Log Levels
-        fileHandler.setLevel(fileLogLevel);
+        if (logFilePath != null) {
+            fileHandler.setLevel(fileLogLevel);
+        }
         consoleHandler.setLevel(consoleLogLevel);
 
         // Remove all existing parent handlers
@@ -227,20 +255,31 @@ public class FOKLogger {
             globalLogger.removeHandler(handlers[i]);
         }
 
-        globalLogger.addHandler(fileHandler);
+        if (logFilePath != null) {
+            globalLogger.addHandler(fileHandler);
+        }
         globalLogger.addHandler(consoleHandler);
 
-        FOKLogger.info(FOKLogger.class.getName(), "Saving log file \n" + getLogFilePathAndName());
+        if (logFilePath != null) {
+            FOKLogger.info(FOKLogger.class.getName(), "Saving log file \n" + getLogFilePathAndName());
+        } else {
+            FOKLogger.info(FOKLogger.class.getName(), "Not saving the log in a file as no app name was specified");
+        }
     }
 
     public static FOKLogger getLoggerByClassName(String className) {
-        if (loggerMap.containsKey(className)) {
-            // logger exists already
-            return loggerMap.get(className);
-        } else {
+        boolean forceRefreshLogger = Common.getAppName() != null && logFilePath == null;
+        if (!loggerMap.containsKey(className) || forceRefreshLogger) {
             // create a new logger
+            if (loggerMap.containsKey(className)) {
+                loggerMap.remove(className);
+            }
+
             //noinspection deprecation
             return new FOKLogger(className);
+        } else {
+            // logger exists already
+            return loggerMap.get(className);
         }
     }
 
