@@ -39,7 +39,7 @@ import java.util.logging.*;
 @SuppressWarnings("unused")
 public class FOKLogger {
 
-    private static final Map<String, FOKLogger> loggerMap = new HashMap<>();
+    private static Map<String, FOKLogger> loggerMap = new HashMap<>();
     private static Handler fileHandler;
     private static Handler consoleHandler;
     private static boolean handlersInitialized;
@@ -61,6 +61,7 @@ public class FOKLogger {
      */
     private static String logFileName;
     private static String logFilePath;
+    private static boolean forceResetLogHandlersOnNextLogAction = false;
     //log uncaught exceptions
     private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable));
     final Logger log;
@@ -117,6 +118,14 @@ public class FOKLogger {
 
         log = Logger.getLogger(className);
         log.setLevel(Level.ALL);
+    }
+
+    /**
+     * Resets all loggers. This makes no difference for the console logger, but the file logger will start logging into a new file.
+     */
+    public static void resetAllLoggers() {
+        forceResetLogHandlersOnNextLogAction = true;
+        loggerMap = new HashMap<>();
     }
 
     private static String combineLogPath() {
@@ -269,6 +278,11 @@ public class FOKLogger {
 
     public static FOKLogger getLoggerByClassName(String className) {
         boolean forceRefreshLogger = Common.getAppName() != null && logFilePath == null;
+        if (forceResetLogHandlersOnNextLogAction) {
+            forceRefreshLogger = true;
+            handlersInitialized = false;
+            forceResetLogHandlersOnNextLogAction = false;
+        }
         if (!loggerMap.containsKey(className) || forceRefreshLogger) {
             // create a new logger
             if (loggerMap.containsKey(className)) {
