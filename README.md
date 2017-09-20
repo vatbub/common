@@ -19,7 +19,7 @@ To add this artifact as a maven dependency, add the following repositories and d
 <dependency>
 	<groupId>com.github.vatbub</groupId>
 	<artifactId>common</artifactId>
-	<version>0.0.24</version>
+	<version>0.1.1</version>
 </dependency>
 ```
   
