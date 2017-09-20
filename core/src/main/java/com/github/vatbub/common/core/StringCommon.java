@@ -93,4 +93,8 @@ public class StringCommon {
 
         return res;
     }
+
+    public static int countOccurrencesInString(String stringToSearch, String searchString) {
+        return (stringToSearch.length() - stringToSearch.replace(searchString, "").length()) / searchString.length();
+    }
 }
