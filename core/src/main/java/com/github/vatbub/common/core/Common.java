@@ -36,6 +36,7 @@ import oshi.software.os.OperatingSystem;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -444,6 +445,34 @@ public class Common {
         }
 
         return new BasicAWSCredentials(getAwsAccessKey(), getAwsSecretAccessKey());
+    }
+
+    /**
+     * Same as {@link #getUniqueDeviceIdentifierAsDec()} but uses the crc32 hashing algorithm to get a hash that fits into an int variable.
+     *
+     * @return The unique device identifier converted to an int
+     */
+    public static int getUniqueDeviceIdentifierAsDecInt() {
+        return getUniqueDeviceIdentifierAsDec(Hashing.crc32().newHasher()).intValueExact();
+    }
+
+    /**
+     * Same as {@link #getUniqueDeviceIdentifier()} but converts the resulting hash into a decimal number.
+     *
+     * @return The unique device identifier converted to a decimal number
+     */
+    public static BigInteger getUniqueDeviceIdentifierAsDec() {
+        return getUniqueDeviceIdentifierAsDec(Hashing.md5().newHasher());
+    }
+
+    /**
+     * Same as {@link #getUniqueDeviceIdentifier(Hasher)} but converts the resulting hash into a decimal number
+     *
+     * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
+     * @return The unique device identifier converted to a decimal number
+     */
+    public static BigInteger getUniqueDeviceIdentifierAsDec(Hasher hasher) {
+        return new BigInteger(getUniqueDeviceIdentifier(hasher).trim(), 16);
     }
 
     public static String getUniqueDeviceIdentifier() {

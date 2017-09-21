@@ -28,6 +28,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.util.Calendar;
 
 @SuppressWarnings("ConstantConditions")
@@ -257,5 +258,30 @@ public class CommonTest {
         Assert.assertNotEquals("", identifier1);
         Assert.assertNotEquals("", identifier2);
         Assert.assertEquals(identifier1, identifier2);
+    }
+
+    @Test
+    public void decDeviceIdentifierTest() {
+        System.out.println("Calculating md5 hash...");
+        String identifierHex = Common.getUniqueDeviceIdentifier();
+        System.out.println("md5 hash is: " + identifierHex);
+        BigInteger identifierDec = Common.getUniqueDeviceIdentifierAsDec();
+        System.out.println("md5 hash converted to dec is: " + identifierDec);
+
+        Assert.assertEquals(identifierHex, identifierDec.toString(16));
+
+        System.out.println("Calculating sha256 hash...");
+        identifierHex = Common.getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        identifierDec = Common.getUniqueDeviceIdentifierAsDec(Hashing.sha256().newHasher());
+        System.out.println("sha256 hash is: " + identifierHex);
+        Assert.assertEquals(identifierHex, identifierDec.toString(16));
+        System.out.println("sha256 hash converted to dec is: " + identifierDec);
+
+        System.out.println("Calculating crc32 hash...");
+        identifierHex = Common.getUniqueDeviceIdentifier(Hashing.crc32().newHasher());
+        System.out.println("crc32 hash is: " + identifierHex);
+        int identifierDec2 = Common.getUniqueDeviceIdentifierAsDecInt();
+        Assert.assertEquals(identifierHex, Integer.toHexString(identifierDec2));
+        System.out.println("crc32 hash converted to dec is: " + identifierDec2);
     }
 }
