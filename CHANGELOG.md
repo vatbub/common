@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.1...HEAD)
+
+**Implemented enhancements:**
+
+- Extend \#23 to convert the device identifier to an integer value [\#25](https://github.com/vatbub/common/issues/25)
+
 ## [common.parent-0.1.1](https://github.com/vatbub/common/tree/common.parent-0.1.1) (2017-09-20)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.0...common.parent-0.1.1)
 
