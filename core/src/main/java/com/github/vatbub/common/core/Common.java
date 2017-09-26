@@ -66,14 +66,11 @@ public class Common {
     private Common() {
     }
 
-    public static Common getInstance() {
-        //noinspection SynchronizeOnNonFinalField
-        synchronized (instance) {
-            if (instance == null) {
-                instance = new Common();
-            }
-            return instance;
+    public synchronized static Common getInstance() {
+        if (instance == null) {
+            instance = new Common();
         }
+        return instance;
     }
 
     /**
