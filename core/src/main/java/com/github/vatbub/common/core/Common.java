@@ -72,6 +72,12 @@ public class Common {
         return instance;
     }
 
+    public synchronized static void resetInstance() {
+        instance = null;
+    }
+
+    // General
+
     /**
      * Returns the current time as a String.
      *
@@ -82,8 +88,6 @@ public class Common {
         Date now = new Date();
         return sdfDate.format(now);
     }
-
-    // General
 
     /**
      * Returns the time when the app was launched as a String.
@@ -583,12 +587,5 @@ public class Common {
      */
     public File tryGetAndCreateAppDataPathAsFile() {
         return getAppName() == null ? null : getAndCreateAppDataPathAsFile();
-    }
-
-    public void resetInstance() {
-        //noinspection SynchronizeOnNonFinalField
-        synchronized (instance) {
-            instance = null;
-        }
     }
 }

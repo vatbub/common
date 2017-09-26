@@ -25,14 +25,19 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.google.common.hash.Hashing;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.math.BigInteger;
 import java.util.Calendar;
 
-@SuppressWarnings("ConstantConditions")
 public class CommonTest {
+    @Before
+    public void resetConfig() {
+        Common.resetInstance();
+    }
+
     @Test
     public void getAppDataPathFailureTest() {
         // get app name should fail as no app name is set
