@@ -171,7 +171,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
             // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
             // Set the window title and put the app name in it
-            stage.setTitle(bundle.getString("window.Title").replace("{appName}", Common.getAppName()));
+            stage.setTitle(bundle.getString("window.Title").replace("{appName}", Common.getInstance().getAppName()));
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);

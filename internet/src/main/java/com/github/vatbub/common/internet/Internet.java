@@ -269,7 +269,7 @@ public class Internet {
             message.setFrom(new InternetAddress(gMailUsername));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toAddress));
-            message.setSubject("[" + Common.getAppName() + "] An error occurred in your application");
+            message.setSubject("[" + Common.getInstance().getAppName() + "] An error occurred in your application");
 
             String messageText = "Exception occurred in phase: " + phase;
             if (requestBody != null) {

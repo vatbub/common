@@ -110,7 +110,7 @@ public class MOTD {
      * @return A list of indexes already used by serialized {@code MOTD}s
      */
     private static List<Integer> getUsedIndexes() {
-        File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
+        File folder = new File(Common.getInstance().getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
         List<Integer> res = new ArrayList<>();
 
         for (File file : folder.listFiles()) {
@@ -128,7 +128,7 @@ public class MOTD {
      * @return A list of files that contain serialized {@code MOTD}s
      */
     public static List<File> getSerializedMOTFiles() {
-        File folder = new File(Common.getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
+        File folder = new File(Common.getInstance().getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
         folder.mkdirs();
         List<File> res = new ArrayList<>();
 
@@ -247,7 +247,7 @@ public class MOTD {
      */
     public void markAsRead() throws IOException, ClassNotFoundException {
         if (!this.isMarkedAsRead()) {
-            FileOutputStream fileOut = new FileOutputStream(Common.getAndCreateAppDataPath()
+            FileOutputStream fileOut = new FileOutputStream(Common.getInstance().getAndCreateAppDataPath()
                     + latestMOTDSerializedFilePath + File.separator + getNextSerializationFileName());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(entry);

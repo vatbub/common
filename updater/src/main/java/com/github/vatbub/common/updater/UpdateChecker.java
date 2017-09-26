@@ -132,7 +132,7 @@ public class UpdateChecker {
             Version currentVersion;
 
             try {
-                currentVersion = new Version(Common.getAppVersion());
+                currentVersion = new Version(Common.getInstance().getAppVersion());
             } catch (IllegalArgumentException e) {
                 FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
                 res.showAlert = false;
@@ -210,7 +210,7 @@ public class UpdateChecker {
             Version currentVersion;
 
             try {
-                currentVersion = new Version(Common.getAppVersion());
+                currentVersion = new Version(Common.getInstance().getAppVersion());
             } catch (IllegalArgumentException e) {
                 FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
                 res.showAlert = false;
@@ -672,7 +672,7 @@ public class UpdateChecker {
 
             startupArgs.add(destFolder + File.separator + destFilename);
 
-            String decodedPath = Common.getPathAndNameOfCurrentJar();
+            String decodedPath = Common.getInstance().getPathAndNameOfCurrentJar();
 
             if (deleteOldVersion) {
                 FOKLogger.info(UpdateChecker.class.getName(), "The following file will be deleted once the update completes: " + decodedPath);
@@ -680,7 +680,7 @@ public class UpdateChecker {
             }
 
             // add the version info of this file to the startup args
-            startupArgs.add("oldVersion=" + Common.getAppVersion());
+            startupArgs.add("oldVersion=" + Common.getInstance().getAppVersion());
             startupArgs.add("oldFile=" + decodedPath);
 
             startupArgs.addAll(Arrays.asList(params));

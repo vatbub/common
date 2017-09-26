@@ -398,12 +398,12 @@ public class ReportingDialog {
                 // upload the logs to aws
                 Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingLogs")));
 
-                String awsFileName = Common.getAppName() + "/logs/" + FOKLogger.getLogFileName();
+                String awsFileName = Common.getInstance().getAppName() + "/logs/" + FOKLogger.getLogFileName();
                 gitHubIssue.setLogLocation(awsFileName);
 
                 // upload the logs to s3
                 try {
-                    AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(Common.getAWSCredentials())).build();
+                    AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(Common.getInstance().getAWSCredentials())).build();
                     if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                         // create bucket
                         FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
@@ -424,17 +424,17 @@ public class ReportingDialog {
             if (uploadScreenshot.isSelected()) {
                 try {
                     // save it to the disk
-                    File screenshotFile = new File(Common.getAndCreateAppDataPath() + "screenshotForIssueUpload.png");
+                    File screenshotFile = new File(Common.getInstance().getAndCreateAppDataPath() + "screenshotForIssueUpload.png");
                     ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", screenshotFile);
 
                     // upload the screenshot to aws
                     Platform.runLater(() -> ReportingDialogUploadProgress.getStatusLabel().setText(bundle.getString("uploadingScreenshot")));
 
-                    String awsFileName = Common.getAppName() + "/screenshots/screenshot_" + Common.getAppName() + "_" + Common.getLaunchTimeStamp() + ".png";
+                    String awsFileName = Common.getInstance().getAppName() + "/screenshots/screenshot_" + Common.getInstance().getAppName() + "_" + Common.getInstance().getLaunchTimeStamp() + ".png";
                     gitHubIssue.setScreenshotLocation(awsFileName);
 
                     // upload the logs to s3
-                    AmazonS3Client s3Client = new AmazonS3Client(Common.getAWSCredentials());
+                    AmazonS3Client s3Client = new AmazonS3Client(Common.getInstance().getAWSCredentials());
                     if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                         // create bucket
                         FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
