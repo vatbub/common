@@ -39,7 +39,7 @@ public class MOTDTest {
 
     @Before
     public void prepare() throws MalformedURLException {
-        Common.setAppName(appName);
+        Common.getInstance().setAppName(appName);
         testFeedURL = new URL("https://fokprojects.mo-mar.de/message-of-the-day/feed/");
     }
 
