@@ -6,7 +6,12 @@
 
 **Implemented enhancements:**
 
+- Make the Common class a singleton [\#26](https://github.com/vatbub/common/issues/26)
 - Extend \#23 to convert the device identifier to an integer value [\#25](https://github.com/vatbub/common/issues/25)
+
+**Fixed bugs:**
+
+- Config.contains returns inverted values [\#27](https://github.com/vatbub/common/issues/27)
 
 ## [common.parent-0.1.1](https://github.com/vatbub/common/tree/common.parent-0.1.1) (2017-09-20)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.0...common.parent-0.1.1)
