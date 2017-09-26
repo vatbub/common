@@ -206,17 +206,17 @@ public class Config {
         if (cacheRemoteConfig) {
             // Update the offline cache
             FOKLogger.info(Config.class.getName(), "Caching remote config for offline use...");
-            File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
+            File f = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
             f.getParentFile().mkdirs();
             FileOutputStream out = new FileOutputStream(f);
-            props.store(out, "Config of app " + Common.getAppName());
+            props.store(out, "Config of app " + Common.getInstance().getAppName());
             out.close();
         }
     }
 
     private void checkForOfflineCacheOrLoadFallback(URL fallbackConfig, String cacheFileName)
             throws IOException {
-        File f = new File(Common.getAndCreateAppDataPath() + cacheFileName);
+        File f = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
         if (f.exists()) {
             // Offline cache exists
             FOKLogger.info(Config.class.getName(), "Reading cached config...");

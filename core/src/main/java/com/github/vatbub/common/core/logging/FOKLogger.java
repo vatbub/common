@@ -78,7 +78,7 @@ public class FOKLogger {
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
     public FOKLogger(String className) {
-        this(className, combineLogPath(), "log_" + Common.getAppName() + "_DateTime.xml");
+        this(className, combineLogPath(), "log_" + Common.getInstance().getAppName() + "_DateTime.xml");
     }
 
     /**
@@ -129,7 +129,7 @@ public class FOKLogger {
     }
 
     private static String combineLogPath() {
-        String appDataPath = Common.tryGetAppDataPath();
+        String appDataPath = Common.getInstance().tryGetAppDataPath();
         if (appDataPath == null) {
             return null;
         } else {
@@ -184,7 +184,7 @@ public class FOKLogger {
      */
     @SuppressWarnings("unused")
     public static String getLogFileName() {
-        return logFileName.replace("DateTime", Common.getLaunchTimeStamp());
+        return logFileName.replace("DateTime", Common.getInstance().getLaunchTimeStamp());
     }
 
     /**
@@ -196,7 +196,7 @@ public class FOKLogger {
     }
 
     public static String getLogFilePathAndName() {
-        return logFilePath + File.separator + logFileName.replace("DateTime", Common.getLaunchTimeStamp());
+        return logFilePath + File.separator + logFileName.replace("DateTime", Common.getInstance().getLaunchTimeStamp());
     }
 
     public static void initLogHandlers() {
@@ -277,7 +277,7 @@ public class FOKLogger {
     }
 
     public static FOKLogger getLoggerByClassName(String className) {
-        boolean forceRefreshLogger = Common.getAppName() != null && logFilePath == null;
+        boolean forceRefreshLogger = Common.getInstance().getAppName() != null && logFilePath == null;
         if (forceResetLogHandlersOnNextLogAction) {
             forceRefreshLogger = true;
             handlersInitialized = false;

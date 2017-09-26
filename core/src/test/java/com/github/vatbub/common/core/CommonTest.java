@@ -37,21 +37,22 @@ public class CommonTest {
     public void getAppDataPathFailureTest() {
         // get app name should fail as no app name is set
         try {
-            Common.setAppName(null);
-            Common.getAppDataPath();
+            Common.getInstance().setAppName(null);
+            Common.getInstance().getAppDataPath();
             assert false;
         } catch (NullPointerException e) {
             assert true;
         }
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void getAppDataPathTest() {
         // set app name
         String appName = "UnitTests";
 
-        Common.setAppName(appName);
-        String res = Common.getAppDataPath();
+        Common.getInstance().setAppName(appName);
+        String res = Common.getInstance().getAppDataPath();
         String workingDirectory;
 
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -74,14 +75,14 @@ public class CommonTest {
         // set app name
         String appName = "UnitTests";
 
-        Common.setAppName(appName);
-        File res = Common.getAndCreateAppDataPathAsFile();
+        Common.getInstance().setAppName(appName);
+        File res = Common.getInstance().getAndCreateAppDataPathAsFile();
         Assert.assertNotEquals(null, res);
     }
 
     @Test
     public void getCurrentTimeStampTest() {
-        String timestamp = Common.getCurrentTimeStamp();
+        String timestamp = Common.getInstance().getCurrentTimeStamp();
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -139,17 +140,17 @@ public class CommonTest {
         // set app name
         String appName = "UnitTests";
 
-        Common.setAppName(appName);
-        assert Common.getAppVersion().equals(Common.UNKNOWN_APP_VERSION);
-        assert Common.getMockAppVersion().equals("");
+        Common.getInstance().setAppName(appName);
+        Assert.assertEquals(Common.UNKNOWN_APP_VERSION, Common.getInstance().getAppVersion());
+        Assert.assertEquals("", Common.getInstance().getMockAppVersion());
 
-        Common.setMockAppVersion(mockVersion);
-        assert Common.getMockAppVersion().equals(mockVersion);
-        assert Common.getAppVersion().equals(mockVersion);
+        Common.getInstance().setMockAppVersion(mockVersion);
+        Assert.assertEquals(mockVersion, Common.getInstance().getMockAppVersion());
+        Assert.assertEquals(mockVersion, Common.getInstance().getAppVersion());
 
-        Common.clearMockAppVersion();
-        assert Common.getAppVersion().equals(Common.UNKNOWN_APP_VERSION);
-        assert Common.getMockAppVersion().equals("");
+        Common.getInstance().clearMockAppVersion();
+        Assert.assertEquals(Common.UNKNOWN_APP_VERSION, Common.getInstance().getAppVersion());
+        Assert.assertEquals("", Common.getInstance().getMockAppVersion());
     }
 
     @Test
@@ -158,17 +159,17 @@ public class CommonTest {
         // set app name
         String appName = "UnitTests";
 
-        Common.setAppName(appName);
-        assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
-        assert Common.getMockBuildNumber().equals("");
+        Common.getInstance().setAppName(appName);
+        Assert.assertEquals(Common.UNKNOWN_BUILD_NUMBER, Common.getInstance().getBuildNumber());
+        Assert.assertEquals("", Common.getInstance().getMockBuildNumber());
 
-        Common.setMockBuildNumber(mockBuildNumber);
-        assert Common.getBuildNumber().equals(mockBuildNumber);
-        assert Common.getMockBuildNumber().equals(mockBuildNumber);
+        Assert.assertEquals(mockBuildNumber, Common.getInstance().getBuildNumber());
+        Common.getInstance().setMockBuildNumber(mockBuildNumber);
+        Assert.assertEquals(mockBuildNumber, Common.getInstance().getMockBuildNumber());
 
-        Common.clearMockBuildVersion();
-        assert Common.getBuildNumber().equals(Common.UNKNOWN_BUILD_NUMBER);
-        assert Common.getMockBuildNumber().equals("");
+        Common.getInstance().clearMockBuildVersion();
+        Assert.assertEquals(Common.UNKNOWN_BUILD_NUMBER, Common.getInstance().getBuildNumber());
+        Assert.assertEquals("", Common.getInstance().getMockBuildNumber());
     }
 
     @Test
@@ -177,28 +178,28 @@ public class CommonTest {
         String appName = "UnitTests";
         String packaging = "jar";
 
-        Common.setAppName(appName);
+        Common.getInstance().setAppName(appName);
         // no mock packaging set
-        assert Common.getPackaging() == null;
-        assert Common.getMockPackaging().equals("");
+        Assert.assertNull(Common.getInstance().getPackaging());
+        Assert.assertEquals("", Common.getInstance().getMockPackaging());
 
-        Common.setMockPackaging(packaging);
-        assert Common.getPackaging().equals(packaging);
-        assert Common.getMockPackaging().equals(packaging);
+        Common.getInstance().setMockPackaging(packaging);
+        Assert.assertEquals(packaging, Common.getInstance().getPackaging());
+        Assert.assertEquals(packaging, Common.getInstance().getMockPackaging());
 
-        Common.clearMockPackaging();
-        assert Common.getPackaging() == null;
-        assert Common.getMockPackaging().equals("");
+        Common.getInstance().clearMockPackaging();
+        Assert.assertNull(Common.getInstance().getPackaging());
+        Assert.assertEquals("", Common.getInstance().getMockPackaging());
     }
 
     @Test
     public void buildNumberManifestEntryTest() {
         // no entry set, check for the default one
-        assert Common.getBuildNumberManifestEntry().equals("Custom-Implementation-Build");
+        Assert.assertEquals("Custom-Implementation-Build", Common.getInstance().getBuildNumberManifestEntry());
 
         String newEntry = "testEntryName";
-        Common.setBuildNumberManifestEntry(newEntry);
-        assert Common.getBuildNumberManifestEntry().equals(newEntry);
+        Common.getInstance().setBuildNumberManifestEntry(newEntry);
+        Assert.assertEquals(newEntry, Common.getInstance().getBuildNumberManifestEntry());
     }
 
     @Test
@@ -208,19 +209,19 @@ public class CommonTest {
 
         try {
             // should throw a NullPointer
-            Common.getAWSCredentials();
+            Common.getInstance().getAWSCredentials();
             Assert.fail("No NullPointerException thrown");
         } catch (NullPointerException e) {
             assert true;
         }
 
-        Common.setAwsAccessKey(awsKey);
-        Common.setAwsSecretAccessKey(awsSecret);
+        Common.getInstance().setAwsAccessKey(awsKey);
+        Common.getInstance().setAwsSecretAccessKey(awsSecret);
 
-        Assert.assertEquals(awsKey, Common.getAwsAccessKey());
-        Assert.assertEquals(awsSecret, Common.getAwsSecretAccessKey());
+        Assert.assertEquals(awsKey, Common.getInstance().getAwsAccessKey());
+        Assert.assertEquals(awsSecret, Common.getInstance().getAwsSecretAccessKey());
 
-        BasicAWSCredentials credentials = Common.getAWSCredentials();
+        BasicAWSCredentials credentials = Common.getInstance().getAWSCredentials();
         Assert.assertNotNull(credentials);
         Assert.assertEquals(awsKey, credentials.getAWSAccessKeyId());
         Assert.assertEquals(awsSecret, credentials.getAWSSecretKey());
@@ -228,7 +229,7 @@ public class CommonTest {
 
     @Test
     public void getPathAndNameOfCurrentJarTest() {
-        String name = Common.getPathAndNameOfCurrentJar();
+        String name = Common.getInstance().getPathAndNameOfCurrentJar();
         System.out.println(name);
         Assert.assertNotEquals("", name);
     }
@@ -236,9 +237,9 @@ public class CommonTest {
     @Test
     public void deviceIdentifierTest() {
         System.out.println("Calculating 1st md5 hash...");
-        String identifier1 = Common.getUniqueDeviceIdentifier();
+        String identifier1 = Common.getInstance().getUniqueDeviceIdentifier();
         System.out.println("Calculating 2nd md5 hash...");
-        String identifier2 = Common.getUniqueDeviceIdentifier();
+        String identifier2 = Common.getInstance().getUniqueDeviceIdentifier();
 
         System.out.println("1st md5 hash is: " + identifier1);
         System.out.println("2nd md5 hash is: " + identifier2);
@@ -248,9 +249,9 @@ public class CommonTest {
         Assert.assertEquals(identifier1, identifier2);
 
         System.out.println("Calculating 1st sha256 hash...");
-        identifier1 = Common.getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        identifier1 = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
         System.out.println("Calculating 2nd sha256 hash...");
-        identifier2 = Common.getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        identifier2 = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
 
         System.out.println("1st sha256 hash is: " + identifier1);
         System.out.println("2nd sha256 hash is: " + identifier2);
@@ -260,9 +261,9 @@ public class CommonTest {
         Assert.assertEquals(identifier1, identifier2);
 
         System.out.println("Calculating 1st murmur3_32 hash...");
-        int identifier12 = Common.getUniqueDeviceIdentifierAsDecInt();
+        int identifier12 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
         System.out.println("Calculating 2nd murmur3_32 hash...");
-        int identifier22 = Common.getUniqueDeviceIdentifierAsDecInt();
+        int identifier22 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
 
         System.out.println("1st murmur3_32 hash is: " + identifier12);
         System.out.println("2nd murmur3_32 hash is: " + identifier22);
@@ -273,24 +274,24 @@ public class CommonTest {
     @Test
     public void decDeviceIdentifierTest() {
         System.out.println("Calculating md5 hash...");
-        String identifierHex = Common.getUniqueDeviceIdentifier();
+        String identifierHex = Common.getInstance().getUniqueDeviceIdentifier();
         System.out.println("md5 hash is: " + identifierHex);
-        BigInteger identifierDec = Common.getUniqueDeviceIdentifierAsDec();
+        BigInteger identifierDec = Common.getInstance().getUniqueDeviceIdentifierAsDec();
         System.out.println("md5 hash converted to dec is: " + identifierDec);
 
         Assert.assertEquals(identifierHex, identifierDec.toString(16));
 
         System.out.println("Calculating sha256 hash...");
-        identifierHex = Common.getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
-        identifierDec = Common.getUniqueDeviceIdentifierAsDec(Hashing.sha256().newHasher());
+        identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        identifierDec = Common.getInstance().getUniqueDeviceIdentifierAsDec(Hashing.sha256().newHasher());
         System.out.println("sha256 hash is: " + identifierHex);
         Assert.assertEquals(identifierHex, identifierDec.toString(16));
         System.out.println("sha256 hash converted to dec is: " + identifierDec);
 
         System.out.println("Calculating murmur3_32 hash...");
-        identifierHex = Common.getUniqueDeviceIdentifier(Hashing.murmur3_32().newHasher());
+        identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.murmur3_32().newHasher());
         System.out.println("murmur3_32 hash is: " + identifierHex);
-        int identifierDec2 = Common.getUniqueDeviceIdentifierAsDecInt();
+        int identifierDec2 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
         System.out.println("murmur3_32 hash converted to dec is: " + identifierDec2);
         Assert.assertEquals(Integer.toString(Integer.parseInt(identifierHex, 16), 16), Integer.toString(identifierDec2, 16));
     }

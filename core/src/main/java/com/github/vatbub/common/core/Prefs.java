@@ -44,7 +44,7 @@ public class Prefs {
      */
     public Prefs(String className) {
         // Retrieve the user preference node for the package
-        f = new File(Common.getAndCreateAppDataPath() + className + ".properties");
+        f = new File(Common.getInstance().getAndCreateAppDataPath() + className + ".properties");
         reload();
     }
 
@@ -93,7 +93,7 @@ public class Prefs {
             FOKLogger.info(Prefs.class.getName(), "Saving preference file as: " + f.getAbsolutePath());
             f.getParentFile().mkdirs();
             FileOutputStream out = new FileOutputStream(f);
-            props.store(out, "This is a preference file of the app " + Common.getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");
+            props.store(out, "This is a preference file of the app " + Common.getInstance().getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");
         } catch (IOException e) {
             e.printStackTrace();
         }

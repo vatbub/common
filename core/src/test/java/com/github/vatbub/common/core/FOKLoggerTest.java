@@ -34,11 +34,11 @@ public class FOKLoggerTest {
     @Test
     public void noAppNameSetTest() {
         FOKLogger.resetAllLoggers();
-        Common.setAppName(null);
+        Common.getInstance().setAppName(null);
         FOKLogger.info(FOKLoggerTest.class.getName(), "Test without app name");
         Assert.assertEquals(2, StringCommon.countOccurrencesInString(systemOutRule.getLogWithNormalizedLineSeparator(), "\n"));
 
-        Common.setAppName("fokprojectUnitTests");
+        Common.getInstance().setAppName("fokprojectUnitTests");
         FOKLogger.info(FOKLoggerTest.class.getName(), "Test with app name");
         Assert.assertEquals(5, StringCommon.countOccurrencesInString(systemOutRule.getLogWithNormalizedLineSeparator(), "\n"));
     }

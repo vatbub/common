@@ -45,36 +45,49 @@ import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public class Common {
-
     public static final String UNKNOWN_APP_VERSION = "unknown version";
     public static final String UNKNOWN_BUILD_NUMBER = "unknown build number";
+    private static Common instance;
     /**
      * Time when the app was launched. A simple call of the {@link Date}
      * -constructor will get the current timestamp. As this variable is
      * initialized when the app is launched, this represents the time when the
      * app was launched.
      */
-    private static final Date launchDate = new Date();
-    private static String appName;
-    private static String mockAppVersion = "";
-    private static String mockBuildNumber = "";
-    private static String mockPackaging = "";
-    private static String awsAccessKey;
-    private static String awsSecretAccessKey;
-    private static String buildNumberManifestEntry = "Custom-Implementation-Build";
+    private final Date launchDate = new Date();
+    private String appName;
+    private String mockAppVersion = "";
+    private String mockBuildNumber = "";
+    private String mockPackaging = "";
+    private String awsAccessKey;
+    private String awsSecretAccessKey;
+    private String buildNumberManifestEntry = "Custom-Implementation-Build";
 
-    // General
+    private Common() {
+    }
+
+    public static Common getInstance() {
+        //noinspection SynchronizeOnNonFinalField
+        synchronized (instance) {
+            if (instance == null) {
+                instance = new Common();
+            }
+            return instance;
+        }
+    }
 
     /**
      * Returns the current time as a String.
      *
      * @return The current time in the format "yyyy-MM-dd_HH-mm-ss"
      */
-    public static String getCurrentTimeStamp() {
+    public String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");// dd/MM/yyyy
         Date now = new Date();
         return sdfDate.format(now);
     }
+
+    // General
 
     /**
      * Returns the time when the app was launched as a String.
@@ -82,7 +95,7 @@ public class Common {
      * @return The time when the app was launched in the format
      * "yyyy-MM-dd_HH-mm-ss"
      */
-    public static String getLaunchTimeStamp() {
+    public String getLaunchTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");// dd/MM/yyyy
         return sdfDate.format(launchDate);
     }
@@ -110,7 +123,7 @@ public class Common {
      * @see Common#setAppName(String)
      * @see Common#getAndCreateAppDataPath()
      */
-    public static String getAppDataPath() {
+    public String getAppDataPath() {
         if (appName == null) {
             throw new NullPointerException(
                     "Cannot retrieve AppDataPath. No appName specified. Use setAppName(String appName) to set one.");
@@ -138,8 +151,8 @@ public class Common {
      *
      * @return Same as {@link #getAppDataPath()} but converts its output into a {@code File} object.
      */
-    public static File getAppDataPathAsFile() {
-        return new File(Common.getAppDataPath());
+    public File getAppDataPathAsFile() {
+        return new File(getAppDataPath());
     }
 
     /**
@@ -153,7 +166,7 @@ public class Common {
      * @see Common#setAppName(String)
      * @see Common#getAppDataPath()
      */
-    public static String getAndCreateAppDataPath() {
+    public String getAndCreateAppDataPath() {
         String path = getAppDataPath();
 
         new File(path).mkdirs();
@@ -166,8 +179,8 @@ public class Common {
      *
      * @return Same as {@link #getAndCreateAppDataPath()} but converts its output into a {@code File} object.
      */
-    public static File getAndCreateAppDataPathAsFile() {
-        File path = Common.getAppDataPathAsFile();
+    public File getAndCreateAppDataPathAsFile() {
+        File path = getAppDataPathAsFile();
         path.mkdirs();
         return path;
     }
@@ -179,7 +192,7 @@ public class Common {
      * @return The current name of the app that was set with
      * {@link #setAppName(String)}.
      */
-    public static String getAppName() {
+    public String getAppName() {
         return appName;
     }
 
@@ -189,8 +202,8 @@ public class Common {
      *
      * @param appName The name of the app.
      */
-    public static void setAppName(String appName) {
-        Common.appName = appName;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     /**
@@ -199,7 +212,7 @@ public class Common {
      * @return The current mock app version value or "" if no mock app version
      * is in use.
      */
-    public static String getMockAppVersion() {
+    public String getMockAppVersion() {
         return mockAppVersion;
     }
 
@@ -210,7 +223,7 @@ public class Common {
      *
      * @param version The version string to be used as the mock app version
      */
-    public static void setMockAppVersion(String version) {
+    public void setMockAppVersion(String version) {
         FOKLogger.info(Common.class.getName(), "Now using mock app version " + version);
         mockAppVersion = version;
     }
@@ -219,7 +232,7 @@ public class Common {
      * Clears a mock app version set using {@link #setMockAppVersion(String)}
      * and replaces it with the actual app version.
      */
-    public static void clearMockAppVersion() {
+    public void clearMockAppVersion() {
         setMockAppVersion("");
     }
 
@@ -229,7 +242,7 @@ public class Common {
      * @return The current mock build number value or "" if no mock build number
      * is in use.
      */
-    public static String getMockBuildNumber() {
+    public String getMockBuildNumber() {
         return mockBuildNumber;
     }
 
@@ -240,7 +253,7 @@ public class Common {
      *
      * @param buildNumber The build number to be used as the mock build number
      */
-    public static void setMockBuildNumber(String buildNumber) {
+    public void setMockBuildNumber(String buildNumber) {
         FOKLogger.info(Common.class.getName(), "Now using mock build number " + buildNumber);
         mockBuildNumber = buildNumber;
     }
@@ -249,20 +262,20 @@ public class Common {
      * Clears a mock build number set using {@link #setMockBuildNumber(String)}
      * and replaces it with the actual build number.
      */
-    public static void clearMockBuildVersion() {
+    public void clearMockBuildVersion() {
         setMockBuildNumber("");
     }
 
-    public static String getMockPackaging() {
+    public String getMockPackaging() {
         return mockPackaging;
     }
 
-    public static void setMockPackaging(String packaging) {
+    public void setMockPackaging(String packaging) {
         FOKLogger.info(Common.class.getName(), "Now using mock packaging " + packaging);
         mockPackaging = packaging;
     }
 
-    public static void clearMockPackaging() {
+    public void clearMockPackaging() {
         setMockPackaging("");
     }
 
@@ -274,7 +287,7 @@ public class Common {
      * {@link #UNKNOWN_APP_VERSION} if the version cannot be determined
      * or the mock app version if one is specified.
      */
-    public static String getAppVersion() {
+    public String getAppVersion() {
         if (!mockAppVersion.equals("")) {
             // A mock version was defined
             return mockAppVersion;
@@ -302,7 +315,7 @@ public class Common {
      * {@link #UNKNOWN_BUILD_NUMBER} if the build number cannot be
      * determined or the mock build number if one is specified.
      */
-    public static String getBuildNumber() {
+    public String getBuildNumber() {
         if (!mockBuildNumber.equals("")) {
             // A mock build number was defined
             return mockBuildNumber;
@@ -320,7 +333,7 @@ public class Common {
      * @return The current value of the attribute name where the app looks for
      * its build number when using {@link #getBuildNumber()}.
      */
-    public static String getBuildNumberManifestEntry() {
+    public String getBuildNumberManifestEntry() {
         return buildNumberManifestEntry;
     }
 
@@ -331,8 +344,8 @@ public class Common {
      *
      * @param buildNumberManifestEntry The new entry to use.
      */
-    public static void setBuildNumberManifestEntry(String buildNumberManifestEntry) {
-        Common.buildNumberManifestEntry = buildNumberManifestEntry;
+    public void setBuildNumberManifestEntry(String buildNumberManifestEntry) {
+        this.buildNumberManifestEntry = buildNumberManifestEntry;
     }
 
     /**
@@ -340,7 +353,7 @@ public class Common {
      *
      * @return The Path and name of the jar file this app was launched from.
      */
-    public static String getPathAndNameOfCurrentJar() {
+    public String getPathAndNameOfCurrentJar() {
         String path = Common.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         try {
             return new File(URLDecoder.decode(path, "UTF-8")).getAbsolutePath();
@@ -360,13 +373,13 @@ public class Common {
      * packaging cannot be determined.
      */
     @SuppressWarnings("ConstantConditions")
-    public static String getPackaging() {
-        if (!Common.getMockPackaging().equals("")) {
+    public String getPackaging() {
+        if (!getMockPackaging().equals("")) {
             // return the mock packaging
-            return Common.getMockPackaging();
+            return getMockPackaging();
         } else {
             // return the true packaging
-            String path = Common.getPathAndNameOfCurrentJar();
+            String path = getPathAndNameOfCurrentJar();
 
             int positionOfLastDot = path.lastIndexOf(".");
             if (positionOfLastDot != -1) {
@@ -386,7 +399,7 @@ public class Common {
      * @param bundle The bundle to be checked
      * @return A set of locales supported by the specified resource bundle
      */
-    public static List<Locale> getLanguagesSupportedByResourceBundle(ResourceBundle bundle) {
+    public List<Locale> getLanguagesSupportedByResourceBundle(ResourceBundle bundle) {
         return getLanguagesSupportedByResourceBundle(bundle.getBaseBundleName());
     }
 
@@ -399,7 +412,7 @@ public class Common {
      * @param resourceBaseName The base name of the resource bundle
      * @return A set of locales supported by the specified resource bundle
      */
-    public static List<Locale> getLanguagesSupportedByResourceBundle(String resourceBaseName) {
+    public List<Locale> getLanguagesSupportedByResourceBundle(String resourceBaseName) {
         List<Locale> locales = new ArrayList<>();
 
         for (Locale locale : Locale.getAvailableLocales()) {
@@ -418,20 +431,20 @@ public class Common {
         return Collections.unmodifiableList(locales);
     }
 
-    public static String getAwsAccessKey() {
+    public String getAwsAccessKey() {
         return awsAccessKey;
     }
 
-    public static void setAwsAccessKey(String awsAccessKey) {
-        Common.awsAccessKey = awsAccessKey;
+    public void setAwsAccessKey(String awsAccessKey) {
+        this.awsAccessKey = awsAccessKey;
     }
 
-    public static String getAwsSecretAccessKey() {
+    public String getAwsSecretAccessKey() {
         return awsSecretAccessKey;
     }
 
-    public static void setAwsSecretAccessKey(String awsSecretAccessKey) {
-        Common.awsSecretAccessKey = awsSecretAccessKey;
+    public void setAwsSecretAccessKey(String awsSecretAccessKey) {
+        this.awsSecretAccessKey = awsSecretAccessKey;
     }
 
     /**
@@ -439,7 +452,7 @@ public class Common {
      *
      * @return The unique hardware identifier
      */
-    public static BasicAWSCredentials getAWSCredentials() {
+    public BasicAWSCredentials getAWSCredentials() {
         if (getAwsAccessKey() == null || getAwsSecretAccessKey() == null) {
             throw new NullPointerException();
         }
@@ -452,7 +465,7 @@ public class Common {
      *
      * @return The unique device identifier converted to an int
      */
-    public static int getUniqueDeviceIdentifierAsDecInt() {
+    public int getUniqueDeviceIdentifierAsDecInt() {
         return getUniqueDeviceIdentifierAsDec(Hashing.murmur3_32().newHasher()).intValueExact();
     }
 
@@ -461,7 +474,7 @@ public class Common {
      *
      * @return The unique device identifier converted to a decimal number
      */
-    public static BigInteger getUniqueDeviceIdentifierAsDec() {
+    public BigInteger getUniqueDeviceIdentifierAsDec() {
         return getUniqueDeviceIdentifierAsDec(Hashing.md5().newHasher());
     }
 
@@ -471,11 +484,11 @@ public class Common {
      * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
      * @return The unique device identifier converted to a decimal number
      */
-    public static BigInteger getUniqueDeviceIdentifierAsDec(Hasher hasher) {
+    public BigInteger getUniqueDeviceIdentifierAsDec(Hasher hasher) {
         return new BigInteger(getUniqueDeviceIdentifier(hasher).trim(), 16);
     }
 
-    public static String getUniqueDeviceIdentifier() {
+    public String getUniqueDeviceIdentifier() {
         return getUniqueDeviceIdentifier(Hashing.md5().newHasher());
     }
 
@@ -511,7 +524,7 @@ public class Common {
      * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
      * @return The unique hardware identifier
      */
-    public static String getUniqueDeviceIdentifier(Hasher hasher) {
+    public String getUniqueDeviceIdentifier(Hasher hasher) {
         SystemInfo systemInfo = new SystemInfo();
         OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
         HardwareAbstractionLayer hardwareAbstractionLayer = systemInfo.getHardware();
@@ -545,7 +558,7 @@ public class Common {
      *
      * @return {@link #getAndCreateAppDataPath()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
      */
-    public static String tryGetAndCreateAppDataPath() {
+    public String tryGetAndCreateAppDataPath() {
         return getAppName() == null ? null : getAndCreateAppDataPath();
     }
 
@@ -554,7 +567,7 @@ public class Common {
      *
      * @return {@link #getAppDataPath()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
      */
-    public static String tryGetAppDataPath() {
+    public String tryGetAppDataPath() {
         return getAppName() == null ? null : getAppDataPath();
     }
 
@@ -563,7 +576,7 @@ public class Common {
      *
      * @return {@link #getAppDataPathAsFile()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
      */
-    public static File tryGetAppDataPathAsFile() {
+    public File tryGetAppDataPathAsFile() {
         return getAppName() == null ? null : getAppDataPathAsFile();
     }
 
@@ -572,7 +585,14 @@ public class Common {
      *
      * @return {@link #getAndCreateAppDataPathAsFile()} or {@code null} if no app name has been defined using {@link #setAppName(String)}
      */
-    public static File tryGetAndCreateAppDataPathAsFile() {
+    public File tryGetAndCreateAppDataPathAsFile() {
         return getAppName() == null ? null : getAndCreateAppDataPathAsFile();
+    }
+
+    public void resetInstance() {
+        //noinspection SynchronizeOnNonFinalField
+        synchronized (instance) {
+            instance = null;
+        }
     }
 }

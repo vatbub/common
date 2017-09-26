@@ -33,7 +33,7 @@ public class ConfigTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Common.setAppName("fokprojectUnitTests");
+        Common.getInstance().setAppName("fokprojectUnitTests");
     }
 
     @Test
