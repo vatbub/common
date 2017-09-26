@@ -260,7 +260,7 @@ public class Config {
      * {@code false} otherwise.
      */
     public boolean contains(String key) {
-        return props.getProperty(key) == null;
+        return props.getProperty(key) != null;
     }
 
     /**
