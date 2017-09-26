@@ -24,7 +24,6 @@ package com.github.vatbub.common.internet;
 /**
  * A class to represent error messages that can be sent over http in json
  */
-@SuppressWarnings("unused")
 public class Error {
     final String error;
     final String stacktrace;

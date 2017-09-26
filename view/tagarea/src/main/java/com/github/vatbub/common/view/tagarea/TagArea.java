@@ -169,15 +169,15 @@ public class TagArea extends FlowPane {
             // drag dropped
             setOnDragDropped(event -> {
 
-                boolean sucess = false;
+                boolean success = false;
                 if (event.getDragboard().hasString() && event.getDragboard().getString().startsWith("#c")) {
                     String currentTag = getValue();
                     setValue(event.getDragboard().getString().replace("#c", ""));
                     ((Tag) event.getGestureSource()).setValue(currentTag);
-                    sucess = true;
+                    success = true;
                 }
 
-                event.setDropCompleted(sucess);
+                event.setDropCompleted(success);
                 event.consume();
             });
 

@@ -25,9 +25,9 @@ package com.github.vatbub.common.core.undo;
  * Created by Frederik on 07/03/2017.
  */
 public interface Command {
-    public void getText();
+    void getText();
 
-    public void undo();
+    void undo();
 
-    public void redo();
+    void redo();
 }

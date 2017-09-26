@@ -36,7 +36,6 @@ import java.util.logging.*;
  *
  * @author Frederik Kammel
  */
-@SuppressWarnings("unused")
 public class FOKLogger {
 
     private static Map<String, FOKLogger> loggerMap = new HashMap<>();

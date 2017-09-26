@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class StringCommon {
 
     public static String replaceLast(String text, String regex, String replacement) {
@@ -63,16 +62,16 @@ public class StringCommon {
                 maxLength = line.length();
         }
 
-        String separator = "";
+        StringBuilder separator = new StringBuilder();
         for (int i = 0; i < maxLength + 4; i++) {
-            separator = separator + "#";
+            separator.append("#");
         }
 
-        res.add(separator);
+        res.add(separator.toString());
         for (String line : messageToFormat) {
-            res.add("# " + line + getRequiredSpaces(separator, line) + " #");
+            res.add("# " + line + getRequiredSpaces(separator.toString(), line) + " #");
         }
-        res.add(separator);
+        res.add(separator.toString());
 
         return res;
     }
@@ -84,14 +83,14 @@ public class StringCommon {
      * @return The formatted version of {@code message}
      */
     private static String getRequiredSpaces(String reference, String message) {
-        String res = "";
+        StringBuilder res = new StringBuilder();
         int requiredSpaces = reference.length() - message.length() - 4;
 
         for (int i = 0; i < requiredSpaces; i++) {
-            res = res + " ";
+            res.append(" ");
         }
 
-        return res;
+        return res.toString();
     }
 
     public static int countOccurrencesInString(String stringToSearch, String searchString) {

@@ -32,7 +32,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 
-@SuppressWarnings("unused")
 public class Config {
 
     private final Properties props = new Properties();

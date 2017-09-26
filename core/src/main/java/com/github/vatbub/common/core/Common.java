@@ -43,7 +43,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 
-@SuppressWarnings("unused")
 public class Common {
     public static final String UNKNOWN_APP_VERSION = "unknown version";
     public static final String UNKNOWN_BUILD_NUMBER = "unknown build number";

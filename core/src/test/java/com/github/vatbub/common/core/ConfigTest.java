@@ -39,16 +39,24 @@ public class ConfigTest {
     @Test
     public void LoadRemoteConfigNoCacheTest() throws IOException {
         Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName);
+        Assert.assertTrue(config.contains("configSource"));
         Assert.assertEquals("remote", config.getValue("configSource"));
+        Assert.assertTrue(config.isRemoteConfigEnabled());
+        Assert.assertFalse(config.isOfflineMode());
         config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName, false, true);
+        Assert.assertTrue(config.contains("configSource"));
+        Assert.assertFalse(config.isRemoteConfigEnabled());
+        Assert.assertTrue(config.isOfflineMode());
         Assert.assertEquals("fallback", config.getValue("configSource"));
     }
 
     @Test
     public void LoadRemoteConfigWithCacheTest() throws IOException {
         Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), cacheFileName);
+        Assert.assertTrue(config.contains("configSource"));
         Assert.assertEquals("remote", config.getValue("configSource"));
         config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), true, cacheFileName, false, true);
+        Assert.assertTrue(config.contains("configSource"));
         Assert.assertEquals("remote", config.getValue("configSource"));
     }
 

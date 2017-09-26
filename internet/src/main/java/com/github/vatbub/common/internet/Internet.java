@@ -59,7 +59,6 @@ public class Internet {
      * @throws IOException Should actually never be thrown but occurs if something is
      *                     wrong with the connection (e. g. not connected)
      */
-    @SuppressWarnings("unused")
     public static String sendEventToIFTTTMakerChannel(String IFTTTMakerChannelApiKey, String eventName)
             throws IOException {
         return sendEventToIFTTTMakerChannel(IFTTTMakerChannelApiKey, eventName, "");
@@ -195,7 +194,6 @@ public class Internet {
      * @return {@code true} if the computer is connected to the common.internet,
      * {@code false} otherwise.
      */
-    @SuppressWarnings("unused")
     public static boolean isConnected() {
         try {
             return isConnected(new URL("https://www.google.com"));

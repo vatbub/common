@@ -157,7 +157,7 @@ public class LabelUtils {
             // read all the chars from the left up to the leadingIndex,
             // and all the chars from the right up to the trailingIndex,
             // and sum those together to get my total. That is, I cannot have
-            // a running total but must retotal the cummulative chars each time
+            // a running total but must retotal the cumulative chars each time
 
             // either CENTER_ELLIPSIS or CENTER_WORD_ELLIPSIS
             // for this case I read one char on the left, then one on the end

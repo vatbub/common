@@ -53,7 +53,7 @@ public class UndoRedoStack {
     }
 
     /**
-     * Pops the last command from the redo stack, puts it on the com.github.vatbub.common.core.undo stack and calls its {@link Command#redo()}-method. If no commandisfound on the redo stack,the last command from thundo stack is redone.
+     * Pops the last command from the redo stack, puts it on the com.github.vatbub.common.core.undo stack and calls its {@link Command#redo()}-method. If no command is found on the redo stack,the last command from the undo stack is redone.
      *
      * @return The command that was redone. <b>Its redo method was already called!</b>
      */

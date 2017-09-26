@@ -87,7 +87,7 @@
                    </rowConstraints>
                    <children>
                        <CheckBox fx:id="uploadLogsCheckbox" mnemonicParsing="false"
-                                 onAction="#uploadLogsCheckboxOnACtion" text="%uploadLogs">
+                                 onAction="#uploadLogsCheckboxOnAction" text="%uploadLogs">
                            <GridPane.margin>
                                <Insets/>
                            </GridPane.margin>

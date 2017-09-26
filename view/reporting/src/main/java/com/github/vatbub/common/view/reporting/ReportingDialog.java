@@ -150,7 +150,7 @@ public class ReportingDialog {
      * Creates a new {@code ReportingDialog} with the specified settings. Screenshot submission will be disabled. Keep in mind that this class is <i>*NOT*</i> thread safe.
      *
      * @param logInfoURL The url that is opened in the browser if the user clicks the {@code Get more info}-button next to the {@code uploadLogs}-Checkbox
-     * @param privacyURL The url that is opened in the browser if the user clicks the {@code Privace statement}-button.
+     * @param privacyURL The url that is opened in the browser if the user clicks the {@code Privacy statement}-button.
      */
     @SuppressWarnings("unused")
     public ReportingDialog(URL logInfoURL, URL privacyURL) {
@@ -173,7 +173,7 @@ public class ReportingDialog {
      * <br>Keep in mind that this class is <i>*NOT*</i> thread safe.
      *
      * @param logInfoURL      The url that is opened in the browser if the user clicks the {@code Get more info}-button next to the {@code uploadLogs}-Checkbox
-     * @param privacyURL      The url that is opened in the browser if the user clicks the {@code Privace statement}-button.
+     * @param privacyURL      The url that is opened in the browser if the user clicks the {@code Privacy statement}-button.
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
     @SuppressWarnings("unused")
@@ -324,7 +324,7 @@ public class ReportingDialog {
     }
 
     @FXML
-    void uploadLogsCheckboxOnACtion(ActionEvent event) {
+    void uploadLogsCheckboxOnAction(ActionEvent event) {
         if (gitHubIssue.getThrowable() != null && !uploadLogsCheckbox.isSelected()) {
             (new Alert(Alert.AlertType.WARNING, bundle.getString("uploadLogsExceptionInfo"), ButtonType.OK)).show();
         }

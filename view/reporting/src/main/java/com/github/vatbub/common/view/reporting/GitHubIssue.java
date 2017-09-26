@@ -24,7 +24,6 @@ package com.github.vatbub.common.view.reporting;
 /**
  * Representation of an issue on GitHub
  */
-@SuppressWarnings("unused")
 public class GitHubIssue {
     private String reporterName;
     private String reporterEmail;

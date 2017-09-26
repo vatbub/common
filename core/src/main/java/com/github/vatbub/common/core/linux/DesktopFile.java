@@ -1589,114 +1589,114 @@ public class DesktopFile {
 
     @Override
     public String toString() {
-        String res = "[Desktop Entry]\n";
+        StringBuilder res = new StringBuilder("[Desktop Entry]\n");
 
         if (this.getType() != null && this.getType().isValid()) {
-            res = res + "Type=" + this.getType().toString() + "\n";
+            res.append("Type=").append(this.getType().toString()).append("\n");
         }
 
-        res = res + "Version=" + DesktopFile.specificationVersion + "\n";
+        res.append("Version=" + DesktopFile.specificationVersion + "\n");
 
         if (this.getName() != null) {
-            res = res + "Name=" + this.getName() + "\n";
+            res.append("Name=").append(this.getName()).append("\n");
         }
 
         if (this.getGenericName() != null) {
-            res = res + "GenericName=" + this.getGenericName() + "\n";
+            res.append("GenericName=").append(this.getGenericName()).append("\n");
         }
 
-        res = res + "Name=" + this.isNoDisplay() + "\n";
+        res.append("Name=").append(this.isNoDisplay()).append("\n");
 
         if (this.getComment() != null) {
-            res = res + "Comment=" + this.getComment() + "\n";
+            res.append("Comment=").append(this.getComment()).append("\n");
         }
 
         if (this.getIconLocation() != null) {
-            res = res + "Icon=" + this.getIconLocation() + "\n";
+            res.append("Icon=").append(this.getIconLocation()).append("\n");
         }
 
-        res = res + "Hidden=" + this.isHidden() + "\n";
+        res.append("Hidden=").append(this.isHidden()).append("\n");
 
-        res = res + "DBusActivatable=" + this.isdBusActivatable() + "\n";
+        res.append("DBusActivatable=").append(this.isdBusActivatable()).append("\n");
 
         if (this.getTryExec() != null) {
-            res = res + "TryExec=" + this.getTryExec() + "\n";
+            res.append("TryExec=").append(this.getTryExec()).append("\n");
         }
 
         if (this.getExec() != null) {
-            res = res + "Exec=" + this.getExec() + "\n";
+            res.append("Exec=").append(this.getExec()).append("\n");
         }
 
         if (this.getPath() != null) {
-            res = res + "Path=" + this.getPath() + "\n";
+            res.append("Path=").append(this.getPath()).append("\n");
         }
 
-        res = res + "Terminal=" + this.isTerminal() + "\n";
+        res.append("Terminal=").append(this.isTerminal()).append("\n");
 
         if (this.getMimeType() != null) {
-            String t = "";
+            StringBuilder t = new StringBuilder();
             for (String a : this.getMimeType()) {
-                t = t + a + ";";
+                t.append(a).append(";");
             }
 
-            res = res + "MimeType=" + t;
+            res.append("MimeType=").append(t);
         }
 
         if (this.getCategories() != null) {
-            String t = "";
+            StringBuilder t = new StringBuilder();
             for (String a : this.getCategories()) {
-                t = t + a + ";";
+                t.append(a).append(";");
             }
 
-            res = res + "Categories=" + t;
+            res.append("Categories=").append(t);
         }
 
         if (this.getImplementsEntry() != null) {
-            String t = "";
+            StringBuilder t = new StringBuilder();
             for (String a : this.getImplementsEntry()) {
-                t = t + a + ";";
+                t.append(a).append(";");
             }
 
-            res = res + "Implements=" + t;
+            res.append("Implements=").append(t);
         }
 
         if (this.getKeywords() != null) {
-            String t = "";
+            StringBuilder t = new StringBuilder();
             for (String a : this.getKeywords()) {
-                t = t + a + ";";
+                t.append(a).append(";");
             }
 
-            res = res + "Keywords=" + t;
+            res.append("Keywords=").append(t);
         }
 
         if (this.getActions() != null) {
-            String t = "";
+            StringBuilder t = new StringBuilder();
             for (DesktopAction a : this.getActions()) {
-                t = t + a.getInternalName() + ";";
+                t.append(a.getInternalName()).append(";");
             }
 
-            res = res + "Actions=" + t;
+            res.append("Actions=").append(t);
         }
 
-        res = res + "StartupNotify=" + this.isStartupNotify() + "\n";
+        res.append("StartupNotify=").append(this.isStartupNotify()).append("\n");
 
         if (this.getStartupWMClass() != null) {
-            res = res + "StartupWMClass=" + this.getStartupWMClass() + "\n";
+            res.append("StartupWMClass=").append(this.getStartupWMClass()).append("\n");
         }
 
         if (this.getUrl() != null) {
-            res = res + "URL=" + this.getUrl().toString() + "\n";
+            res.append("URL=").append(this.getUrl().toString()).append("\n");
         }
 
         if (this.getActions() != null) {
             // Add the actual actions
             for (DesktopAction a : this.getActions()) {
-                res = res + "\n\n";
-                res = res + a.toString();
+                res.append("\n\n");
+                res.append(a.toString());
             }
         }
 
-        return res;
+        return res.toString();
     }
 
     @SuppressWarnings("unused")
