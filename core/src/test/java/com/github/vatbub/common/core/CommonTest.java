@@ -265,13 +265,13 @@ public class CommonTest {
         Assert.assertNotEquals("", identifier2);
         Assert.assertEquals(identifier1, identifier2);
 
-        System.out.println("Calculating 1st murmur3_32 hash...");
+        System.out.println("Calculating 1st crc32c hash...");
         int identifier12 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
-        System.out.println("Calculating 2nd murmur3_32 hash...");
+        System.out.println("Calculating 2nd crc32c hash...");
         int identifier22 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
 
-        System.out.println("1st murmur3_32 hash is: " + identifier12);
-        System.out.println("2nd murmur3_32 hash is: " + identifier22);
+        System.out.println("1st crc32c hash is: " + identifier12);
+        System.out.println("2nd crc32c hash is: " + identifier22);
 
         Assert.assertEquals(identifier1, identifier2);
     }
@@ -293,11 +293,11 @@ public class CommonTest {
         Assert.assertEquals(identifierHex, identifierDec.toString(16));
         System.out.println("sha256 hash converted to dec is: " + identifierDec);
 
-        System.out.println("Calculating murmur3_32 hash...");
-        identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.murmur3_32().newHasher());
-        System.out.println("murmur3_32 hash is: " + identifierHex);
+        System.out.println("Calculating crc32c hash...");
+        identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.crc32c().newHasher());
+        System.out.println("crc32c hash is: " + identifierHex);
         int identifierDec2 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
-        System.out.println("murmur3_32 hash converted to dec is: " + identifierDec2);
+        System.out.println("crc32c hash converted to dec is: " + identifierDec2);
         Assert.assertEquals(Integer.toString(Integer.parseInt(identifierHex, 16), 16), Integer.toString(identifierDec2, 16));
     }
 }
