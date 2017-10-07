@@ -22,6 +22,7 @@ package com.github.vatbub.common.core;
 
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
@@ -30,7 +31,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CommonTest {
     @Before
@@ -240,7 +243,7 @@ public class CommonTest {
     }
 
     @Test
-    public void deviceIdentifierTest() {
+    public void md5DeviceIdentifierTest() {
         System.out.println("Calculating 1st md5 hash...");
         String identifier1 = Common.getInstance().getUniqueDeviceIdentifier();
         System.out.println("Calculating 2nd md5 hash...");
@@ -252,11 +255,14 @@ public class CommonTest {
         Assert.assertNotEquals("", identifier1);
         Assert.assertNotEquals("", identifier2);
         Assert.assertEquals(identifier1, identifier2);
+    }
 
+    @Test
+    public void sha256DeviceIdentifierTest() {
         System.out.println("Calculating 1st sha256 hash...");
-        identifier1 = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        String identifier1 = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
         System.out.println("Calculating 2nd sha256 hash...");
-        identifier2 = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        String identifier2 = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
 
         System.out.println("1st sha256 hash is: " + identifier1);
         System.out.println("2nd sha256 hash is: " + identifier2);
@@ -264,20 +270,23 @@ public class CommonTest {
         Assert.assertNotEquals("", identifier1);
         Assert.assertNotEquals("", identifier2);
         Assert.assertEquals(identifier1, identifier2);
-
-        System.out.println("Calculating 1st crc32c hash...");
-        int identifier12 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
-        System.out.println("Calculating 2nd crc32c hash...");
-        int identifier22 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
-
-        System.out.println("1st crc32c hash is: " + identifier12);
-        System.out.println("2nd crc32c hash is: " + identifier22);
-
-        Assert.assertEquals(identifier1, identifier2);
     }
 
     @Test
-    public void decDeviceIdentifierTest() {
+    public void murmur3_32DeviceIdentifierTest() {
+        System.out.println("Calculating 1st murmur3_32 hash...");
+        int identifier12 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
+        System.out.println("Calculating 2nd murmur3_32 hash...");
+        int identifier22 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
+
+        System.out.println("1st murmur3_32 hash is: " + identifier12);
+        System.out.println("2nd murmur3_32 hash is: " + identifier22);
+
+        Assert.assertEquals(identifier12, identifier22);
+    }
+
+    @Test
+    public void decMd5DeviceIdentifierTest() {
         System.out.println("Calculating md5 hash...");
         String identifierHex = Common.getInstance().getUniqueDeviceIdentifier();
         System.out.println("md5 hash is: " + identifierHex);
@@ -285,19 +294,41 @@ public class CommonTest {
         System.out.println("md5 hash converted to dec is: " + identifierDec);
 
         Assert.assertEquals(identifierHex, identifierDec.toString(16));
+    }
 
+    @Test
+    public void decSha256DeviceIdentifierTest() {
         System.out.println("Calculating sha256 hash...");
-        identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
-        identifierDec = Common.getInstance().getUniqueDeviceIdentifierAsDec(Hashing.sha256().newHasher());
+        String identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.sha256().newHasher());
+        BigInteger identifierDec = Common.getInstance().getUniqueDeviceIdentifierAsDec(Hashing.sha256().newHasher());
         System.out.println("sha256 hash is: " + identifierHex);
         Assert.assertEquals(identifierHex, identifierDec.toString(16));
         System.out.println("sha256 hash converted to dec is: " + identifierDec);
+    }
 
-        System.out.println("Calculating crc32c hash...");
-        identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Hashing.crc32c().newHasher());
-        System.out.println("crc32c hash is: " + identifierHex);
+    @Test
+    public void decMurmur3_32DeviceIdentifierTest() {
+        System.out.println("Calculating murmur3_32 hash...");
+        String identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Common.getInstance().get32bitHasher());
+        System.out.println("murmur3_32 hash is: " + identifierHex);
         int identifierDec2 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
-        System.out.println("crc32c hash converted to dec is: " + identifierDec2);
+        System.out.println("murmur3_32 hash converted to dec is: " + identifierDec2);
         Assert.assertEquals(Integer.toString(Integer.parseInt(identifierHex, 16), 16), Integer.toString(identifierDec2, 16));
+    }
+
+    @Test
+    public void test32BitHasher() {
+        final int maxCount = 100000;
+        List<Integer> resultList = new ArrayList<>(maxCount);
+        System.out.println();
+        for (int i = 0; i < maxCount; i++) {
+            System.out.print((i * 100 / maxCount) + "%\r");
+            Hasher hasher = Common.getInstance().get32bitHasher();
+            hasher.putInt(i);
+            int res = hasher.hash().asInt();
+            Assert.assertFalse(resultList.contains(res));
+            resultList.add(res);
+        }
+        System.out.println();
     }
 }

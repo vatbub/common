@@ -461,12 +461,16 @@ public class Common {
     }
 
     /**
-     * Same as {@link #getUniqueDeviceIdentifierAsDec()} but uses the crc32c hashing algorithm to get a hash that fits into an int variable.
+     * Same as {@link #getUniqueDeviceIdentifierAsDec()} but uses the murmur3_32 hashing algorithm to get a hash that fits into an int variable.
      *
      * @return The unique device identifier converted to an int
      */
     public int getUniqueDeviceIdentifierAsDecInt() {
-        return getUniqueDeviceIdentifierAsDec(Hashing.crc32c().newHasher()).intValueExact();
+        return getUniqueDeviceIdentifierAsDec(get32bitHasher()).intValueExact();
+    }
+
+    public Hasher get32bitHasher() {
+        return Hashing.murmur3_32().newHasher();
     }
 
     /**
