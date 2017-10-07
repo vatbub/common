@@ -20,7 +20,6 @@
 **Implemented enhancements:**
 
 - FOKLogger: Use console logger only if no app name is specified [\#24](https://github.com/vatbub/common/issues/24)
-- Add a method to get a unique device identifier [\#23](https://github.com/vatbub/common/issues/23)
 
 **Fixed bugs:**
 
