@@ -25,150 +25,230 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ListCommonTest {
     @Test
     public void positiveByteTest() {
         byte[] content = {0, 1, 2, 3, 4};
-        byte[] check = {0, 1, 2, 3, 4};
+        byte[] content2 = {5, 6, 7, 8, 9};
+        byte[] content3 = {10, 11, 12, 13};
+
         List<byte[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        byte[] check = {5, 6, 7, 8, 9};
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveShortTest() {
         short[] content = {0, 1, 2, 3, 4};
-        short[] check = {0, 1, 2, 3, 4};
+        short[] content2 = {5, 6, 7, 8, 9};
+        short[] content3 = {10, 11, 12, 13};
+
         List<short[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        short[] check = {5, 6, 7, 8, 9};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveIntTest() {
         int[] content = {0, 1, 2, 3, 4};
-        int[] check = {0, 1, 2, 3, 4};
+        int[] content2 = {5, 6, 7, 8, 9};
+        int[] content3 = {10, 11, 12, 13};
+
         List<int[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        int[] check = {5, 6, 7, 8, 9};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveLongTest() {
         long[] content = {0, 1, 2, 3, 4};
-        long[] check = {0, 1, 2, 3, 4};
+        long[] content2 = {5, 6, 7, 8, 9};
+        long[] content3 = {10, 11, 12, 13};
+
         List<long[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        long[] check = {5, 6, 7, 8, 9};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveFloatTest() {
         float[] content = {0, 1, 2, 3, 4};
-        float[] check = {0, 1, 2, 3, 4};
+        float[] content2 = {5, 6, 7, 8, 9};
+        float[] content3 = {10, 11, 12, 13};
+
         List<float[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        float[] check = {5, 6, 7, 8, 9};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveDoubleTest() {
         double[] content = {0, 1, 2, 3, 4};
-        double[] check = {0, 1, 2, 3, 4};
+        double[] content2 = {5, 6, 7, 8, 9};
+        double[] content3 = {10, 11, 12, 13};
+
         List<double[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        double[] check = {5, 6, 7, 8, 9};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveBooleanTest() {
-        boolean[] content = {true, true, false, false};
-        boolean[] check = {true, true, false, false};
+        boolean[] content = {true, false, true, false};
+        boolean[] content2 = {false, true, false, true};
+        boolean[] content3 = {true, true, false, false};
+
         List<boolean[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        boolean[] check = {false, true, false, true};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void positiveCharTest() {
         char[] content = {0, 1, 2, 3, 4};
-        char[] check = {0, 1, 2, 3, 4};
+        char[] content2 = {5, 6, 7, 8, 9};
+        char[] content3 = {10, 11, 12, 13};
+
         List<char[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        char[] check = {5, 6, 7, 8, 9};
+
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeByteTest() {
         byte[] content = {0, 1, 2, 3, 4};
-        byte[] check = {0, 1, 2, 3, 5};
+        byte[] content2 = {5, 6, 7, 8, 9};
+        byte[] content3 = {10, 11, 12, 13};
+
         List<byte[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        byte[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeShortTest() {
         short[] content = {0, 1, 2, 3, 4};
-        short[] check = {0, 1, 2, 3, 5};
+        short[] content2 = {5, 6, 7, 8, 9};
+        short[] content3 = {10, 11, 12, 13};
+
         List<short[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        short[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeIntTest() {
         int[] content = {0, 1, 2, 3, 4};
-        int[] check = {0, 1, 2, 3, 5};
+        int[] content2 = {5, 6, 7, 8, 9};
+        int[] content3 = {10, 11, 12, 13};
+
         List<int[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        int[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeLongTest() {
         long[] content = {0, 1, 2, 3, 4};
-        long[] check = {0, 1, 2, 3, 5};
+        long[] content2 = {5, 6, 7, 8, 9};
+        long[] content3 = {10, 11, 12, 13};
+
         List<long[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        long[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeFloatTest() {
         float[] content = {0, 1, 2, 3, 4};
-        float[] check = {0, 1, 2, 3, 5};
+        float[] content2 = {5, 6, 7, 8, 9};
+        float[] content3 = {10, 11, 12, 13};
+
         List<float[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        float[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeDoubleTest() {
         double[] content = {0, 1, 2, 3, 4};
-        double[] check = {0, 1, 2, 3, 5};
+        double[] content2 = {5, 6, 7, 8, 9};
+        double[] content3 = {10, 11, 12, 13};
+
         List<double[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        double[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeBooleanTest() {
-        boolean[] content = {true, true, false, false};
-        boolean[] check = {true, true, false, true};
+        boolean[] content = {true, false, true, false};
+        boolean[] content2 = {false, true, false, true};
+        boolean[] content3 = {true, true, false, false};
+
         List<boolean[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        boolean[] check = {true, true, true, true};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 
     @Test
     public void negativeCharTest() {
         char[] content = {0, 1, 2, 3, 4};
-        char[] check = {0, 1, 2, 3, 5};
+        char[] content2 = {5, 6, 7, 8, 9};
+        char[] content3 = {10, 11, 12, 13};
+
         List<char[]> list = new ArrayList<>();
-        list.add(content);
+        list.addAll(Arrays.asList(content, content2, content3));
+
+        char[] check = {1, 5, 6, 3, 5, 10};
+
         Assert.assertFalse(ListCommon.listContainsArray(list, check));
     }
 }
