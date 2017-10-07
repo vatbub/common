@@ -99,4 +99,76 @@ public class ListCommonTest {
         list.add(content);
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
     }
+
+    @Test
+    public void negativeByteTest() {
+        byte[] content = {0, 1, 2, 3, 4};
+        byte[] check = {0, 1, 2, 3, 5};
+        List<byte[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeShortTest() {
+        short[] content = {0, 1, 2, 3, 4};
+        short[] check = {0, 1, 2, 3, 5};
+        List<short[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeIntTest() {
+        int[] content = {0, 1, 2, 3, 4};
+        int[] check = {0, 1, 2, 3, 5};
+        List<int[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeLongTest() {
+        long[] content = {0, 1, 2, 3, 4};
+        long[] check = {0, 1, 2, 3, 5};
+        List<long[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeFloatTest() {
+        float[] content = {0, 1, 2, 3, 4};
+        float[] check = {0, 1, 2, 3, 5};
+        List<float[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeDoubleTest() {
+        double[] content = {0, 1, 2, 3, 4};
+        double[] check = {0, 1, 2, 3, 5};
+        List<double[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeBooleanTest() {
+        boolean[] content = {true, true, false, false};
+        boolean[] check = {true, true, false, true};
+        List<boolean[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
+
+    @Test
+    public void negativeCharTest() {
+        char[] content = {0, 1, 2, 3, 4};
+        char[] check = {0, 1, 2, 3, 5};
+        List<char[]> list = new ArrayList<>();
+        list.add(content);
+        Assert.assertFalse(ListCommon.listContainsArray(list, check));
+    }
 }
