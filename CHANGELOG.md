@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Add a SingletonMap that imitates an abstract Singleton [\#28](https://github.com/vatbub/common/issues/28)
 - Make the Common class a singleton [\#26](https://github.com/vatbub/common/issues/26)
 - Extend \#23 to convert the device identifier to an integer value [\#25](https://github.com/vatbub/common/issues/25)
 
