@@ -23,6 +23,7 @@ package com.github.vatbub.common.core;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.vatbub.common.core.logging.FOKLogger;
+import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.jcabi.manifests.Manifests;
@@ -466,7 +467,7 @@ public class Common {
      * @return The unique device identifier converted to an int
      */
     public int getUniqueDeviceIdentifierAsDecInt() {
-        return getUniqueDeviceIdentifierAsDec(get32bitHasher()).intValueExact();
+        return getUniqueDeviceIdentifierAsHashCode(get32bitHasher()).asInt();
     }
 
     public Hasher get32bitHasher() {
@@ -528,7 +529,7 @@ public class Common {
      * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
      * @return The unique hardware identifier
      */
-    public String getUniqueDeviceIdentifier(Hasher hasher) {
+    public HashCode getUniqueDeviceIdentifierAsHashCode(Hasher hasher) {
         SystemInfo systemInfo = new SystemInfo();
         OperatingSystem operatingSystem = systemInfo.getOperatingSystem();
         HardwareAbstractionLayer hardwareAbstractionLayer = systemInfo.getHardware();
@@ -554,7 +555,43 @@ public class Common {
         hasher.putString(computerSystem.getModel(), Charset.forName("UTF-8"));
         hasher.putString(computerSystem.getSerialNumber(), Charset.forName("UTF-8"));
 
-        return hasher.hash().toString();
+        return hasher.hash();
+    }
+
+    /**
+     * Calculates a unique device identifier.
+     * The identifier is created by hashing the following hardware properties:
+     * <ul>
+     * <li>Operating system:
+     * <ul>
+     * <li>Family</li>
+     * <li>Manufacturer</li>
+     * <li>Version</li>
+     * </ul>
+     * </li>
+     * <li>Drives (All drives are used):
+     * <ul>
+     * <li>Model</li>
+     * <li>Serial number</li>
+     * </ul></li>
+     * <li>CPU:<ul>
+     * <li>Family</li>
+     * <li>Model</li>
+     * <li>Vendor</li>
+     * <li>Core-count</li>
+     * </ul></li>
+     * <li>Motherboard:<ul>
+     * <li>Manufacturer</li>
+     * <li>Model</li>
+     * <li>Serial number</li>
+     * </ul></li>
+     * </ul>
+     *
+     * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
+     * @return The unique hardware identifier
+     */
+    public String getUniqueDeviceIdentifier(Hasher hasher) {
+        return getUniqueDeviceIdentifierAsHashCode(hasher).toString();
     }
 
     /**
