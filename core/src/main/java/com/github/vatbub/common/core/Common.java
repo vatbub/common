@@ -535,20 +535,42 @@ public class Common {
         CentralProcessor centralProcessor = hardwareAbstractionLayer.getProcessor();
         ComputerSystem computerSystem = hardwareAbstractionLayer.getComputerSystem();
 
+        FOKLogger.info(getClass().getName(), "Calculating the device identifier based on the following info:");
+        FOKLogger.info(getClass().getName(), "OS Family: " + operatingSystem.getFamily());
+        FOKLogger.info(getClass().getName(), "OS Manufacturer: " + operatingSystem.getManufacturer());
+        FOKLogger.info(getClass().getName(), "OS Version (Version.BuildNumber): " + operatingSystem.getVersion().getVersion() + "." + operatingSystem.getVersion().getBuildNumber());
+
         hasher.putString(operatingSystem.getFamily(), Charset.forName("UTF-8"));
         hasher.putString(operatingSystem.getManufacturer(), Charset.forName("UTF-8"));
         hasher.putString(operatingSystem.getVersion().getVersion(), Charset.forName("UTF-8"));
         hasher.putString(operatingSystem.getVersion().getBuildNumber(), Charset.forName("UTF-8"));
 
+        FOKLogger.info(getClass().getName(), "Drive info:");
+        int hddCounter = 0;
         for (HWDiskStore store : hardwareAbstractionLayer.getDiskStores()) {
+            FOKLogger.info(getClass().getName(), "Drive index: " + hddCounter);
+            FOKLogger.info(getClass().getName(), "Drive model: " + store.getModel());
+            FOKLogger.info(getClass().getName(), "Drive serial: " + store.getSerial());
             hasher.putString(store.getModel(), Charset.forName("UTF-8"));
             hasher.putString(store.getSerial(), Charset.forName("UTF-8"));
+            hddCounter++;
         }
+
+        FOKLogger.info(getClass().getName(), "CPU info: ");
+        FOKLogger.info(getClass().getName(), "CPU Family: " + centralProcessor.getFamily());
+        FOKLogger.info(getClass().getName(), "CPU model: " + centralProcessor.getModel());
+        FOKLogger.info(getClass().getName(), "CPU vendor: " + centralProcessor.getVendor());
+        FOKLogger.info(getClass().getName(), "CPU core count: " + centralProcessor.getLogicalProcessorCount());
 
         hasher.putString(centralProcessor.getFamily(), Charset.forName("UTF-8"));
         hasher.putString(centralProcessor.getModel(), Charset.forName("UTF-8"));
         hasher.putString(centralProcessor.getVendor(), Charset.forName("UTF-8"));
         hasher.putInt(centralProcessor.getLogicalProcessorCount());
+
+        FOKLogger.info(getClass().getName(), "computer system info: ");
+        FOKLogger.info(getClass().getName(), "CS manufacturer: " + computerSystem.getManufacturer());
+        FOKLogger.info(getClass().getName(), "CS model: " + computerSystem.getModel());
+        FOKLogger.info(getClass().getName(), "CS serial number: " + computerSystem.getSerialNumber());
 
         hasher.putString(computerSystem.getManufacturer(), Charset.forName("UTF-8"));
         hasher.putString(computerSystem.getModel(), Charset.forName("UTF-8"));
