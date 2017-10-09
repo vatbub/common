@@ -22,6 +22,7 @@ package com.github.vatbub.common.core;
 
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import org.apache.commons.lang.SystemUtils;
@@ -319,16 +320,20 @@ public class CommonTest {
     @Test
     public void test32BitHasher() {
         final int maxCount = 100000;
+        String lastHash = "";
         List<Integer> resultList = new ArrayList<>(maxCount);
         System.out.println();
         for (int i = 0; i < maxCount; i++) {
             System.out.print((i * 100 / maxCount) + "%\r");
             Hasher hasher = Common.getInstance().get32bitHasher();
             hasher.putInt(i);
-            int res = hasher.hash().asInt();
+            HashCode hashCode = hasher.hash();
+            lastHash = hashCode.toString();
+            int res = Integer.parseInt(lastHash, 16);
             Assert.assertFalse(resultList.contains(res));
             resultList.add(res);
         }
         System.out.println();
+        System.out.print("Last hash: " + lastHash);
     }
 }
