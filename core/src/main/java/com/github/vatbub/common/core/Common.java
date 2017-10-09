@@ -27,17 +27,15 @@ import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.jcabi.manifests.Manifests;
 import org.apache.commons.lang.SystemUtils;
+import org.apache.commons.text.similarity.JaccardSimilarity;
 import oshi.SystemInfo;
-import oshi.hardware.CentralProcessor;
-import oshi.hardware.ComputerSystem;
-import oshi.hardware.HWDiskStore;
-import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.*;
 import oshi.software.os.OperatingSystem;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URLDecoder;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -503,27 +501,24 @@ public class Common {
      * <li>Operating system:
      * <ul>
      * <li>Family</li>
-     * <li>Manufacturer</li>
-     * <li>Version</li>
+     * <li>Major version</li>
      * </ul>
      * </li>
-     * <li>Drives (All drives are used):
+     * <li>Drives (All internal drives are used that have a serial number):
      * <ul>
-     * <li>Model</li>
      * <li>Serial number</li>
      * </ul></li>
      * <li>CPU:<ul>
-     * <li>Family</li>
-     * <li>Model</li>
-     * <li>Vendor</li>
      * <li>Core-count</li>
      * </ul></li>
      * <li>Motherboard:<ul>
-     * <li>Manufacturer</li>
-     * <li>Model</li>
      * <li>Serial number</li>
-     * </ul></li>
      * </ul>
+     * </li>
+     * </ul>
+     * <li>Network card (default network card is used):<ul>
+     * <li>MAC-Address</li>
+     * </ul></li>
      *
      * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
      * @return The unique hardware identifier
@@ -537,46 +532,114 @@ public class Common {
 
         FOKLogger.info(getClass().getName(), "Calculating the device identifier based on the following info:");
         FOKLogger.info(getClass().getName(), "OS Family: " + operatingSystem.getFamily());
-        FOKLogger.info(getClass().getName(), "OS Manufacturer: " + operatingSystem.getManufacturer());
-        FOKLogger.info(getClass().getName(), "OS Version (Version.BuildNumber): " + operatingSystem.getVersion().getVersion() + "." + operatingSystem.getVersion().getBuildNumber());
+        FOKLogger.info(getClass().getName(), "OS Version: " + operatingSystem.getVersion().getVersion());
 
         hasher.putString(operatingSystem.getFamily(), Charset.forName("UTF-8"));
-        hasher.putString(operatingSystem.getManufacturer(), Charset.forName("UTF-8"));
         hasher.putString(operatingSystem.getVersion().getVersion(), Charset.forName("UTF-8"));
-        hasher.putString(operatingSystem.getVersion().getBuildNumber(), Charset.forName("UTF-8"));
 
         FOKLogger.info(getClass().getName(), "Drive info:");
         int hddCounter = 0;
+        UsbDevice[] usbDevices = hardwareAbstractionLayer.getUsbDevices(false);
         for (HWDiskStore store : hardwareAbstractionLayer.getDiskStores()) {
-            FOKLogger.info(getClass().getName(), "Drive index: " + hddCounter);
-            FOKLogger.info(getClass().getName(), "Drive model: " + store.getModel());
-            FOKLogger.info(getClass().getName(), "Drive serial: " + store.getSerial());
-            hasher.putString(store.getModel(), Charset.forName("UTF-8"));
-            hasher.putString(store.getSerial(), Charset.forName("UTF-8"));
+            if (store.getSerial() != null && !store.getSerial().equals("unknown") && !isRemovableDrive(store, usbDevices)) {
+                FOKLogger.info(getClass().getName(), "Drive index: " + hddCounter);
+                FOKLogger.info(getClass().getName(), "Drive model: " + store.getModel());
+                FOKLogger.info(getClass().getName(), "Drive serial: " + store.getSerial());
+                hasher.putString(store.getSerial(), Charset.forName("UTF-8"));
+            }
             hddCounter++;
         }
 
         FOKLogger.info(getClass().getName(), "CPU info: ");
-        FOKLogger.info(getClass().getName(), "CPU Family: " + centralProcessor.getFamily());
-        FOKLogger.info(getClass().getName(), "CPU model: " + centralProcessor.getModel());
-        FOKLogger.info(getClass().getName(), "CPU vendor: " + centralProcessor.getVendor());
         FOKLogger.info(getClass().getName(), "CPU core count: " + centralProcessor.getLogicalProcessorCount());
 
-        hasher.putString(centralProcessor.getFamily(), Charset.forName("UTF-8"));
-        hasher.putString(centralProcessor.getModel(), Charset.forName("UTF-8"));
-        hasher.putString(centralProcessor.getVendor(), Charset.forName("UTF-8"));
         hasher.putInt(centralProcessor.getLogicalProcessorCount());
 
         FOKLogger.info(getClass().getName(), "computer system info: ");
-        FOKLogger.info(getClass().getName(), "CS manufacturer: " + computerSystem.getManufacturer());
-        FOKLogger.info(getClass().getName(), "CS model: " + computerSystem.getModel());
         FOKLogger.info(getClass().getName(), "CS serial number: " + computerSystem.getSerialNumber());
 
-        hasher.putString(computerSystem.getManufacturer(), Charset.forName("UTF-8"));
-        hasher.putString(computerSystem.getModel(), Charset.forName("UTF-8"));
-        hasher.putString(computerSystem.getSerialNumber(), Charset.forName("UTF-8"));
+        if (computerSystem.getSerialNumber() != null && !computerSystem.getSerialNumber().equals("") && !computerSystem.getSerialNumber().equalsIgnoreCase("unknown")) {
+            hasher.putString(computerSystem.getSerialNumber(), Charset.forName("UTF-8"));
+        }
+
+        try {
+            String macAddress = getMacAddress();
+            FOKLogger.info(getClass().getName(), "Mac address is: " + macAddress);
+            hasher.putString(macAddress, Charset.forName("UTF-8"));
+        } catch (UnknownHostException | SocketException e) {
+            // ignore
+            FOKLogger.log(getClass().getName(), Level.SEVERE, "Unable to read the mac address", e);
+        }
 
         return hasher.hash().toString();
+    }
+
+    /**
+     * Determines whether the specified drive is a removable drive or not.
+     * This is determined by comparing the drive's model to the name of each connected usb device.
+     * A drive is considered removable if one of the following criteria is met:
+     * <ul>
+     * <li>The drive's model is equal to the name of a usb device</li>
+     * <li>The drive's model contains the name of a usb device</li>
+     * <li>The name of a usb device contains the drive's model</li>
+     * <li>The <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard similarity</a> between the drive's model and a usb device's name is higher than 0.7</li>
+     * </ul>
+     *
+     * @param store      The drive to check
+     * @param usbDevices The list of currently connected usb devices. Use {@code new SystemInfo().getHardware().getUsbDevices(false)} to retrieve the list.
+     * @return {@code true} if the specified drive is removable, {@code false} otherwise
+     */
+    public boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices) {
+        return isRemovableDrive(store, usbDevices, 0.7);
+    }
+
+    /**
+     * Determines whether the specified drive is a removable drive or not.
+     * This is determined by comparing the drive's model to the name of each connected usb device.
+     * A drive is considered removable if one of the following criteria is met:
+     * <ul>
+     * <li>The drive's model is equal to the name of a usb device</li>
+     * <li>The drive's model contains the name of a usb device</li>
+     * <li>The name of a usb device contains the drive's model</li>
+     * <li>The <a href="https://en.wikipedia.org/wiki/Jaccard_index">Jaccard similarity</a> between the drive's model and a usb device's name is higher than the specified threshold</li>
+     * </ul>
+     *
+     * @param store                      The drive to check
+     * @param usbDevices                 The list of currently connected usb devices. Use {@code new SystemInfo().getHardware().getUsbDevices(false)} to retrieve the list.
+     * @param jaccardSimilarityThreshold If the Jaccard similarity between the drive's model and a usb device's name is higher than this value, a drive will be considered removable. The value must be between {@code 0} and {@code 1}.
+     *                                   Higher values will lower the chance of an internal drive being recognized as external but also increase the chance of an external drive being recognized as internal.
+     *                                   Conversely, lower values wil increase the chance of an internal drive being recognized as external and lower the chance of an external drive being recognized as internal.
+     * @return {@code true} if the specified drive is removable, {@code false} otherwise
+     */
+    public boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices, double jaccardSimilarityThreshold) {
+        try {
+            for (UsbDevice device : usbDevices) {
+                // check if one contains the other
+                if (store.getModel().equalsIgnoreCase(device.getName()) || store.getModel().contains(device.getName()) || device.getName().contains(store.getModel())) {
+                    return true;
+                }
+
+                if (SingletonMap.getInstance(JaccardSimilarity.class).apply(store.getModel(), device.getName()) > jaccardSimilarityThreshold) {
+                    return true;
+                }
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            FOKLogger.log(getClass().getName(), Level.SEVERE, "Unable to create the JaccardSimilarity instance", e);
+        }
+
+        return false;
+    }
+
+    private String getMacAddress() throws UnknownHostException, SocketException {
+        InetAddress ip = InetAddress.getLocalHost();
+        NetworkInterface networkInterface = NetworkInterface.getByInetAddress(ip);
+        byte[] macAddress = networkInterface.getHardwareAddress();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < macAddress.length; i++) {
+            stringBuilder.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? "-" : ""));
+        }
+        return stringBuilder.toString();
+
     }
 
     /**
