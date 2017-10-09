@@ -35,7 +35,7 @@ import oshi.software.os.OperatingSystem;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.*;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -516,9 +516,7 @@ public class Common {
      * </ul>
      * </li>
      * </ul>
-     * <li>Network card (default network card is used):<ul>
-     * <li>MAC-Address</li>
-     * </ul></li>
+     * </ul>
      *
      * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
      * @return The unique hardware identifier
@@ -560,15 +558,6 @@ public class Common {
 
         if (computerSystem.getSerialNumber() != null && !computerSystem.getSerialNumber().equals("") && !computerSystem.getSerialNumber().equalsIgnoreCase("unknown")) {
             hasher.putString(computerSystem.getSerialNumber(), Charset.forName("UTF-8"));
-        }
-
-        try {
-            String macAddress = getMacAddress();
-            FOKLogger.info(getClass().getName(), "Mac address is: " + macAddress);
-            hasher.putString(macAddress, Charset.forName("UTF-8"));
-        } catch (UnknownHostException | SocketException e) {
-            // ignore
-            FOKLogger.log(getClass().getName(), Level.SEVERE, "Unable to read the mac address", e);
         }
 
         return hasher.hash().toString();
@@ -628,18 +617,6 @@ public class Common {
         }
 
         return false;
-    }
-
-    private String getMacAddress() throws UnknownHostException, SocketException {
-        InetAddress ip = InetAddress.getLocalHost();
-        NetworkInterface networkInterface = NetworkInterface.getByInetAddress(ip);
-        byte[] macAddress = networkInterface.getHardwareAddress();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < macAddress.length; i++) {
-            stringBuilder.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? "-" : ""));
-        }
-        return stringBuilder.toString();
-
     }
 
     /**
