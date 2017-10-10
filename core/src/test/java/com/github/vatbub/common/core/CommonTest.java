@@ -276,9 +276,9 @@ public class CommonTest {
     @Test
     public void murmur3_32DeviceIdentifierTest() {
         System.out.println("Calculating 1st murmur3_32 hash...");
-        int identifier12 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
+        long identifier12 = Common.getInstance().getUniqueDeviceIdentifierAsDecLong();
         System.out.println("Calculating 2nd murmur3_32 hash...");
-        int identifier22 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
+        long identifier22 = Common.getInstance().getUniqueDeviceIdentifierAsDecLong();
 
         System.out.println("1st murmur3_32 hash is: " + identifier12);
         System.out.println("2nd murmur3_32 hash is: " + identifier22);
@@ -312,16 +312,16 @@ public class CommonTest {
         System.out.println("Calculating murmur3_32 hash...");
         String identifierHex = Common.getInstance().getUniqueDeviceIdentifier(Common.getInstance().get32bitHasher());
         System.out.println("murmur3_32 hash is: " + identifierHex);
-        int identifierDec2 = Common.getInstance().getUniqueDeviceIdentifierAsDecInt();
+        long identifierDec2 = Common.getInstance().getUniqueDeviceIdentifierAsDecLong();
         System.out.println("murmur3_32 hash converted to dec is: " + identifierDec2);
-        Assert.assertEquals(Integer.toString(Integer.parseInt(identifierHex, 16), 16), Integer.toString(identifierDec2, 16));
+        Assert.assertEquals(Integer.toString(Integer.parseInt(identifierHex, 16), 16), Long.toString(identifierDec2, 16));
     }
 
     @Test
     public void test32BitHasher() {
         final int maxCount = 100000;
         String lastHash = "";
-        List<Integer> resultList = new ArrayList<>(maxCount);
+        List<Long> resultList = new ArrayList<>(maxCount);
         System.out.println();
         for (int i = 0; i < maxCount; i++) {
             System.out.print((i * 100 / maxCount) + "%\r");
@@ -329,8 +329,8 @@ public class CommonTest {
             hasher.putInt(i);
             HashCode hashCode = hasher.hash();
             lastHash = hashCode.toString();
-            int res = Integer.parseInt(lastHash, 16);
-            Assert.assertFalse(resultList.contains(res));
+            long res = Long.parseLong(lastHash, 16);
+            Assert.assertFalse("collided hash: " + res, resultList.contains(res));
             resultList.add(res);
         }
         System.out.println();

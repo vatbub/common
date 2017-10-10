@@ -463,8 +463,8 @@ public class Common {
      *
      * @return The unique device identifier converted to an int
      */
-    public int getUniqueDeviceIdentifierAsDecInt() {
-        return Integer.parseInt(getUniqueDeviceIdentifier(get32bitHasher()), 16);
+    public long getUniqueDeviceIdentifierAsDecLong() {
+        return Long.parseLong(getUniqueDeviceIdentifier(get32bitHasher()), 16);
     }
 
     public Hasher get32bitHasher() {
