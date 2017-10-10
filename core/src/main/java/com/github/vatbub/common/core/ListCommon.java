@@ -25,6 +25,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ListCommon {
+    private ListCommon() {
+        throw new IllegalStateException("Class may not be instantiated");
+    }
+
     public static boolean listContainsArray(List<byte[]> list, byte[] array) {
         for (byte[] element : list) {
             if (Arrays.equals(element, array)) {

@@ -47,6 +47,10 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("SameParameterValue")
 public class Internet {
+    private Internet() {
+        throw new IllegalStateException("Class may not be instantiated");
+    }
+
     /**
      * Sends an event to the IFTTT Maker Channel. See
      * <a href="https://maker.ifttt.com/use/">https://maker.ifttt.com/use/</a>
@@ -147,7 +151,6 @@ public class Internet {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-            // ByteStringConverter bs = new ByteStringConverter();
 
             wr.write(postData2);
             connection.connect();
@@ -256,6 +259,7 @@ public class Internet {
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
+                    @Override
                     protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
                         return new javax.mail.PasswordAuthentication(gMailUsername, gMailPassword);
                     }

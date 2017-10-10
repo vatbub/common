@@ -29,6 +29,10 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
  * Various utilities to interact with AWS S3
  */
 public class AWSS3Utils {
+    private AWSS3Utils() {
+        throw new IllegalStateException("Class may not be instantiated");
+    }
+
     @SuppressWarnings("unused")
     public static boolean keyExists(AmazonS3 s3Client, String bucketName, String key) {
         if (!doesBucketExist(s3Client, bucketName)) {

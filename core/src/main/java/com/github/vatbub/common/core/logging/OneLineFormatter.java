@@ -32,6 +32,7 @@ public class OneLineFormatter extends SimpleFormatter {
         super();
     }
 
+    @Override
     public String format(LogRecord record) {
         String res = "[" + record.getLevel() + "] " + record.getMessage() + "\r\n";
 

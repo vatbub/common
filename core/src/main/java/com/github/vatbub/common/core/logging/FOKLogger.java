@@ -68,15 +68,12 @@ public class FOKLogger {
     /**
      * Creates a new {@link java.util.logging.Logger} instance and attaches
      * automatically a {@link FileHandler} and a {@link ConsoleHandler}.<br>
-     * <b>Constructor will soon be declared private!!! Use {@link FOKLogger#getLoggerByClassName(String)} instead</b>
      *
      * @param className The name of the calling class. It is recommended to use the
      *                  fully qualified class name that you can get with
      *                  {@code (YourClassName).class.getName()}.
      */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public FOKLogger(String className) {
+    private FOKLogger(String className) {
         this(className, combineLogPath(), "log_" + Common.getInstance().getAppName() + "_DateTime.xml");
     }
 
@@ -315,7 +312,7 @@ public class FOKLogger {
     }
 
     @SuppressWarnings("unused")
-    public static void log(String className, Level level, String msg, Object params[]) {
+    public static void log(String className, Level level, String msg, Object[] params) {
         getLoggerByClassName(className).getLogger().log(level, msg, params);
     }
 
@@ -347,7 +344,7 @@ public class FOKLogger {
 
     @SuppressWarnings("unused")
     public static void logp(String className, Level level, String sourceClass, String sourceMethod,
-                            String msg, Object params[]) {
+                            String msg, Object[] params) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, msg, params);
     }
 
@@ -386,7 +383,7 @@ public class FOKLogger {
     }
 
     @SuppressWarnings("unused")
-    public static void entering(String className, String sourceClass, String sourceMethod, Object params[]) {
+    public static void entering(String className, String sourceClass, String sourceMethod, Object[] params) {
         getLoggerByClassName(className).getLogger().entering(sourceClass, sourceMethod, params);
     }
 

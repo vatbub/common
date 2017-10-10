@@ -63,14 +63,14 @@ public class Common {
     private Common() {
     }
 
-    public synchronized static Common getInstance() {
+    public static synchronized Common getInstance() {
         if (instance == null) {
             instance = new Common();
         }
         return instance;
     }
 
-    public synchronized static void resetInstance() {
+    public static synchronized void resetInstance() {
         instance = null;
     }
 
@@ -379,7 +379,7 @@ public class Common {
             // return the true packaging
             String path = getPathAndNameOfCurrentJar();
 
-            int positionOfLastDot = path.lastIndexOf(".");
+            int positionOfLastDot = path.lastIndexOf('.');
             if (positionOfLastDot != -1) {
                 return path.substring(positionOfLastDot + 1); // $COVERAGE-IGNORE$
             } else {

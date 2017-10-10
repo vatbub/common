@@ -31,9 +31,13 @@ import java.util.Map;
 public class SingletonMap {
     private static Map<Class, Object> classObjectMap;
 
-    private static Map<Class, Object> getOrInstantiateClassObjectMap(){
-        if (classObjectMap ==null){
-            classObjectMap=new HashMap<>();
+    private SingletonMap() {
+        throw new IllegalStateException("Class may not be instantiated");
+    }
+
+    private static Map<Class, Object> getOrInstantiateClassObjectMap() {
+        if (classObjectMap == null) {
+            classObjectMap = new HashMap<>();
         }
         return classObjectMap;
     }
@@ -41,7 +45,7 @@ public class SingletonMap {
     /**
      * Resets the instances of all classes by resetting the SingletonMap class itself.
      */
-    public static void resetSingletonMap(){
+    public static void resetSingletonMap() {
         classObjectMap = null;
     }
 
@@ -63,8 +67,9 @@ public class SingletonMap {
 
     /**
      * Throws an IllegalStateException if {@link #isInstantiated(Class)} returns {@code true}, does nothing otherwise
+     *
      * @param clazz The class to check if it is already instantiated
-     * @param <T> The type of the class to check
+     * @param <T>   The type of the class to check
      */
     public static <T> void throwIllegalStateExceptionIfAlreadyInstantiated(Class<T> clazz) {
         if (isInstantiated(clazz)) {
@@ -84,7 +89,7 @@ public class SingletonMap {
      * @throws IllegalAccessException if the class or its nullary constructor is not accessible.
      * @throws InstantiationException if this Class represents an abstract class, an interface, an array class, a primitive type, or void; or if the class has no nullary constructor; or if the instantiation fails for some other reason
      */
-    public static  <T> T getInstance(Class<T> clazz) throws IllegalAccessException, InstantiationException {
+    public static <T> T getInstance(Class<T> clazz) throws IllegalAccessException, InstantiationException {
         if (!isInstantiated(clazz)) {
             T object = clazz.newInstance();
             getOrInstantiateClassObjectMap().put(clazz, object);
