@@ -314,7 +314,7 @@ public class CommonTest {
         System.out.println("murmur3_32 hash is: " + identifierHex);
         long identifierDec2 = Common.getInstance().getUniqueDeviceIdentifierAsDecLong();
         System.out.println("murmur3_32 hash converted to dec is: " + identifierDec2);
-        Assert.assertEquals(Integer.toString(Integer.parseInt(identifierHex, 16), 16), Long.toString(identifierDec2, 16));
+        Assert.assertEquals(Long.toString(Long.parseLong(identifierHex, 16), 16), Long.toString(identifierDec2, 16));
     }
 
     @Test
