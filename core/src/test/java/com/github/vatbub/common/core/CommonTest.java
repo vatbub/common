@@ -320,20 +320,14 @@ public class CommonTest {
     @Test
     public void test32BitHasher() {
         final int maxCount = 100000;
-        String lastHash = "";
         List<Long> resultList = new ArrayList<>(maxCount);
-        System.out.println();
         for (int i = 0; i < maxCount; i++) {
-            System.out.print((i * 100 / maxCount) + "%\r");
             Hasher hasher = Common.getInstance().get32bitHasher();
             hasher.putInt(i);
             HashCode hashCode = hasher.hash();
-            lastHash = hashCode.toString();
-            long res = Long.parseLong(lastHash, 16);
+            long res = Long.parseLong(hashCode.toString(), 16);
             Assert.assertFalse("collided hash: " + res, resultList.contains(res));
             resultList.add(res);
         }
-        System.out.println();
-        System.out.print("Last hash: " + lastHash);
     }
 }
