@@ -122,7 +122,7 @@ public class MOTDDialog {
             Desktop.getDesktop().browse(new URI(motd.getEntry().getUri()));
             hide();
         } catch (IOException | URISyntaxException e) {
-            FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
     }
 
@@ -150,7 +150,7 @@ public class MOTDDialog {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
     }
 
@@ -163,7 +163,7 @@ public class MOTDDialog {
             motd.markAsRead();
             stage.hide();
         } catch (ClassNotFoundException | IOException e) {
-            FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
     }
 
@@ -229,7 +229,7 @@ public class MOTDDialog {
                     Desktop.getDesktop().browse(new URI(event.getURL().toString()));
                 }
             } catch (URISyntaxException | IOException e) {
-                FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(MOTDDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
             }
 
             // return true to prevent the WebView from browsing the url behind

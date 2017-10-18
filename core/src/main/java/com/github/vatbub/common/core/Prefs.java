@@ -59,7 +59,7 @@ public class Prefs {
             }
 
         } catch (IOException e) {
-            FOKLogger.log(Prefs.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(Prefs.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
     }
 

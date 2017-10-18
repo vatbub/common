@@ -134,7 +134,7 @@ public class UpdateChecker {
             try {
                 currentVersion = new Version(Common.getInstance().getAppVersion());
             } catch (IllegalArgumentException e) {
-                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
                 res.showAlert = false;
                 return res;
             }
@@ -162,7 +162,7 @@ public class UpdateChecker {
                 FOKLogger.info(UpdateChecker.class.getName(), "No update found.");
             }
         } catch (JDOMException | IOException e) {
-            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
 
         return res;
@@ -212,7 +212,7 @@ public class UpdateChecker {
             try {
                 currentVersion = new Version(Common.getInstance().getAppVersion());
             } catch (IllegalArgumentException e) {
-                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
                 res.showAlert = false;
                 return res;
             }
@@ -228,7 +228,7 @@ public class UpdateChecker {
                 FOKLogger.info(UpdateChecker.class.getName(), "No update found.");
             }
         } catch (JDOMException | IOException e) {
-            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
 
         return res;
@@ -336,7 +336,7 @@ public class UpdateChecker {
                     res.fileSizeInMB = -1;
                 }
             } catch (Exception e) {
-                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
                 res.fileSizeInMB = -1;
             }
         }
@@ -632,7 +632,7 @@ public class UpdateChecker {
             bout.close();
             in.close();
         } catch (IOException e) {
-            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
 
         // Perform Cancel if requested
@@ -694,7 +694,7 @@ public class UpdateChecker {
 			/*
              * // Wait for process to end try { process.waitFor(); } catch
 			 * (InterruptedException e) { FOKLogger.log(Level.SEVERE,
-			 * "An error occurred", e); }
+			 * FOKLogger.DEFAULT_ERROR_TEXT, e); }
 			 */
             Platform.exit();
         }

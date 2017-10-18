@@ -60,7 +60,7 @@ public class ReportingDialogUploadProgress {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e2) {
-            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e2);
+            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e2);
         }
     }
 

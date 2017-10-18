@@ -300,7 +300,7 @@ public class ReportingDialog {
             stage.setTitle(windowTitle);
             stage.show();
         } catch (IOException e2) {
-            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e2);
+            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e2);
         }
     }
 
@@ -335,7 +335,7 @@ public class ReportingDialog {
         try {
             Desktop.getDesktop().browse(logInfoURL.toURI());
         } catch (IOException | URISyntaxException e) {
-            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
     }
 
@@ -344,7 +344,7 @@ public class ReportingDialog {
         try {
             Desktop.getDesktop().browse(privacyInfoURL.toURI());
         } catch (IOException | URISyntaxException e) {
-            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+            FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
         }
     }
 
@@ -500,7 +500,7 @@ public class ReportingDialog {
                             responseBody.append(line);
                         }
                     } catch (IOException e) {
-                        FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+                        FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
                     }
 
                     FOKLogger.info(ReportingDialog.class.getName(), "Submitted GitHub issue, response code from VatbubGitReports-Server: " + responseCode);
@@ -516,7 +516,7 @@ public class ReportingDialog {
                     }
                 });
             } catch (IOException e) {
-                FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
             }
         });
         issueUploadThread.setName("issueUploadThread");

@@ -237,7 +237,7 @@ public class Config {
             try {
                 getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
             } catch (IOException e) {
-                FOKLogger.log(Config.class.getName(), Level.SEVERE, "An error occurred", e);
+                FOKLogger.log(Config.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
             }
         });
 

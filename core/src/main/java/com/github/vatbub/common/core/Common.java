@@ -356,7 +356,7 @@ public class Common {
         try {
             return new File(URLDecoder.decode(path, "UTF-8")).getAbsolutePath();
         } catch (UnsupportedEncodingException e) {
-            FOKLogger.log(Common.class.getName(), Level.SEVERE, "An error occurred", e); // $COVERAGE-IGNORE$
+            FOKLogger.log(Common.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e); // $COVERAGE-IGNORE$
             return null;
         }
     }
