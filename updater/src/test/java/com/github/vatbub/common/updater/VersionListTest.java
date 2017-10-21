@@ -21,6 +21,7 @@ package com.github.vatbub.common.updater;
  */
 
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -85,4 +86,65 @@ public class VersionListTest {
         }
     }
 
+    @Test
+    public void noDuplicatesAddSingleVersionTest() {
+        Version version1 = new Version("0.0.1");
+        VersionList versionList = new VersionList().setEnsureNoDuplicates(true);
+        versionList.add(version1);
+        Assert.assertEquals(1, versionList.size());
+
+        versionList.add(version1.clone());
+        Assert.assertEquals(1, versionList.size());
+    }
+
+    @Test
+    public void noDuplicatesAddSingleVersionAtIndexTest() {
+        Version version1 = new Version("0.0.1");
+        VersionList versionList = new VersionList().setEnsureNoDuplicates(true);
+        versionList.add(0, version1);
+        Assert.assertEquals(1, versionList.size());
+
+        versionList.add(1, version1.clone());
+        Assert.assertEquals(1, versionList.size());
+    }
+
+    @Test
+    public void noDuplicatesAddAllTest() {
+        Version[] elements = {new Version("0.0.1"), new Version("0.0.2"), new Version("0.0.3"), new Version("0.0.3-SNAPSHOT")};
+        VersionList versionList = new VersionList(Arrays.asList(elements)).setEnsureNoDuplicates(true);
+        Assert.assertEquals(elements.length, versionList.size());
+
+        versionList.addAll(Arrays.asList(elements));
+        Assert.assertEquals(elements.length, versionList.size());
+    }
+
+    @Test
+    public void noDuplicatesAddAllAtIndexTest() {
+        Version[] elements = {new Version("0.0.1"), new Version("0.0.2"), new Version("0.0.3"), new Version("0.0.3-SNAPSHOT")};
+        VersionList versionList = new VersionList(Arrays.asList(elements)).setEnsureNoDuplicates(true);
+        Assert.assertEquals(elements.length, versionList.size());
+
+        versionList.addAll(Math.round(elements.length / 2.0f), Arrays.asList(elements));
+        Assert.assertEquals(elements.length, versionList.size());
+    }
+
+    @Test
+    public void addAllTest() {
+        Version[] elements = {new Version("0.0.1"), new Version("0.0.2"), new Version("0.0.3"), new Version("0.0.3-SNAPSHOT")};
+        VersionList versionList = new VersionList(Arrays.asList(elements));
+        Assert.assertEquals(elements.length, versionList.size());
+
+        versionList.addAll(Arrays.asList(elements));
+        Assert.assertEquals(2 * elements.length, versionList.size());
+    }
+
+    @Test
+    public void addAllAtIndexTest() {
+        Version[] elements = {new Version("0.0.1"), new Version("0.0.2"), new Version("0.0.3"), new Version("0.0.3-SNAPSHOT")};
+        VersionList versionList = new VersionList(Arrays.asList(elements));
+        Assert.assertEquals(elements.length, versionList.size());
+
+        versionList.addAll(Math.round(elements.length / 2.0f), Arrays.asList(elements));
+        Assert.assertEquals(2 * elements.length, versionList.size());
+    }
 }

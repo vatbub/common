@@ -23,13 +23,14 @@ package com.github.vatbub.common.updater;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class VersionList extends ArrayList<Version> {
-
     /**
      *
      */
     private static final long serialVersionUID = -2012909928456027745L;
+    private boolean ensureNoDuplicates;
 
     public VersionList() {
         super();
@@ -112,4 +113,51 @@ public class VersionList extends ArrayList<Version> {
         return res;
     }
 
+    public boolean isEnsureNoDuplicates() {
+        return ensureNoDuplicates;
+    }
+
+    public VersionList setEnsureNoDuplicates(boolean ensureNoDuplicates) {
+        this.ensureNoDuplicates = ensureNoDuplicates;
+        return this;
+    }
+
+    @Override
+    public boolean add(Version e) {
+        //noinspection SimplifiableIfStatement
+        if (this.contains(e) && isEnsureNoDuplicates()) {
+            return false;
+        } else {
+            return super.add(e);
+        }
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Version> collection) {
+        if (isEnsureNoDuplicates()) {
+            Collection<Version> copy = new LinkedList<>(collection);
+            copy.removeAll(this);
+            return super.addAll(copy);
+        } else {
+            return super.addAll(collection);
+        }
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends Version> collection) {
+        if (isEnsureNoDuplicates()) {
+            Collection<Version> copy = new LinkedList<>(collection);
+            copy.removeAll(this);
+            return super.addAll(index, copy);
+        } else {
+            return super.addAll(index, collection);
+        }
+    }
+
+    @Override
+    public void add(int index, Version element) {
+        if (!this.contains(element) || !isEnsureNoDuplicates()) {
+            super.add(index, element);
+        }
+    }
 }
