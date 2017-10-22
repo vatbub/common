@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class StringCommon {
 
@@ -95,5 +96,26 @@ public class StringCommon {
 
     public static int countOccurrencesInString(String stringToSearch, String searchString) {
         return (stringToSearch.length() - stringToSearch.replace(searchString, "").length()) / searchString.length();
+    }
+
+    public static String convertFileSizeToReadableString(double kilobytes) {
+        ResourceBundle bundle = ResourceBundle.getBundle("com.github.vatbub.common.core.filesizeUnitStrings");
+        String res;
+        if (kilobytes < 1024) {
+            res = Double.toString(Math.round(kilobytes * 100.0) / 100.0) + " "
+                    + bundle.getString("kilobyte");
+        } else if ((kilobytes / 1024) < 1024) {
+            res = Double.toString(Math.round((kilobytes * 100.0) / 1024) / 100.0)
+                    + " " + bundle.getString("megabyte");
+        } else if (((kilobytes / 1024) / 1024) < 1024) {
+            res = Double
+                    .toString(Math.round(((kilobytes * 100.0) / 1024) / 1024) / 100.0) + " "
+                    + bundle.getString("gigabyte");
+        } else {
+            res = Double
+                    .toString(Math.round((((kilobytes * 100.0) / 1024) / 1024) / 1024) / 100.0)
+                    + " " + bundle.getString("terabyte");
+        }
+        return res;
     }
 }
