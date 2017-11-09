@@ -53,9 +53,12 @@ public class Common {
      */
     private final Date launchDate = new Date();
     private String appName;
-    private String mockAppVersion = "";
-    private String mockBuildNumber = "";
-    private String mockPackaging = "";
+    private String mockAppVersion;
+    private boolean mockAppVersionInUse;
+    private String mockBuildNumber;
+    private boolean mockBuildNumberInUse;
+    private String mockPackaging;
+    private boolean mockPackagingInUse;
     private String awsAccessKey;
     private String awsSecretAccessKey;
     private String buildNumberManifestEntry = "Custom-Implementation-Build";
@@ -224,6 +227,7 @@ public class Common {
     public void setMockAppVersion(String version) {
         FOKLogger.info(Common.class.getName(), "Now using mock app version " + version);
         mockAppVersion = version;
+        mockAppVersionInUse = true;
     }
 
     /**
@@ -231,7 +235,8 @@ public class Common {
      * and replaces it with the actual app version.
      */
     public void clearMockAppVersion() {
-        setMockAppVersion("");
+        setMockAppVersion(null);
+        mockAppVersionInUse = false;
     }
 
     /**
@@ -250,18 +255,21 @@ public class Common {
      * the actual build number.
      *
      * @param buildNumber The build number to be used as the mock build number
+     * @see #clearMockBuildNumber()
      */
     public void setMockBuildNumber(String buildNumber) {
         FOKLogger.info(Common.class.getName(), "Now using mock build number " + buildNumber);
         mockBuildNumber = buildNumber;
+        mockBuildNumberInUse = true;
     }
 
     /**
      * Clears a mock build number set using {@link #setMockBuildNumber(String)}
      * and replaces it with the actual build number.
      */
-    public void clearMockBuildVersion() {
-        setMockBuildNumber("");
+    public void clearMockBuildNumber() {
+        setMockBuildNumber(null);
+        mockBuildNumberInUse = false;
     }
 
     public String getMockPackaging() {
@@ -271,10 +279,24 @@ public class Common {
     public void setMockPackaging(String packaging) {
         FOKLogger.info(Common.class.getName(), "Now using mock packaging " + packaging);
         mockPackaging = packaging;
+        mockPackagingInUse = true;
+    }
+
+    public boolean isMockAppVersionInUse() {
+        return mockAppVersionInUse;
+    }
+
+    public boolean isMockBuildNumberInUse() {
+        return mockBuildNumberInUse;
+    }
+
+    public boolean isMockPackagingInUse() {
+        return mockPackagingInUse;
     }
 
     public void clearMockPackaging() {
-        setMockPackaging("");
+        setMockPackaging(null);
+        mockPackagingInUse = false;
     }
 
     /**
@@ -286,7 +308,7 @@ public class Common {
      * or the mock app version if one is specified.
      */
     public String getAppVersion() {
-        if (!mockAppVersion.equals("")) {
+        if (isMockAppVersionInUse()) {
             // A mock version was defined
             return mockAppVersion;
         } else {
@@ -314,7 +336,7 @@ public class Common {
      * determined or the mock build number if one is specified.
      */
     public String getBuildNumber() {
-        if (!mockBuildNumber.equals("")) {
+        if (isMockBuildNumberInUse()) {
             // A mock build number was defined
             return mockBuildNumber;
         } else if (Manifests.exists(buildNumberManifestEntry)) {
@@ -372,7 +394,7 @@ public class Common {
      */
     @SuppressWarnings("ConstantConditions")
     public String getPackaging() {
-        if (!getMockPackaging().equals("")) {
+        if (isMockPackagingInUse()) {
             // return the mock packaging
             return getMockPackaging();
         } else {

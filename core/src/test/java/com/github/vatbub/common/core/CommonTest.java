@@ -176,7 +176,7 @@ public class CommonTest {
         Assert.assertEquals(mockBuildNumber, Common.getInstance().getBuildNumber());
         Assert.assertEquals(mockBuildNumber, Common.getInstance().getMockBuildNumber());
 
-        Common.getInstance().clearMockBuildVersion();
+        Common.getInstance().clearMockBuildNumber();
         Assert.assertEquals(Common.UNKNOWN_BUILD_NUMBER, Common.getInstance().getBuildNumber());
         Assert.assertEquals("", Common.getInstance().getMockBuildNumber());
     }
