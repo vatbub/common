@@ -151,7 +151,7 @@ public class CommonTest {
 
         Common.getInstance().setAppName(appName);
         Assert.assertEquals(Common.UNKNOWN_APP_VERSION, Common.getInstance().getAppVersion());
-        Assert.assertEquals("", Common.getInstance().getMockAppVersion());
+        Assert.assertNull(Common.getInstance().getMockAppVersion());
 
         Common.getInstance().setMockAppVersion(mockVersion);
         Assert.assertEquals(mockVersion, Common.getInstance().getMockAppVersion());
@@ -170,7 +170,7 @@ public class CommonTest {
 
         Common.getInstance().setAppName(appName);
         Assert.assertEquals(Common.UNKNOWN_BUILD_NUMBER, Common.getInstance().getBuildNumber());
-        Assert.assertEquals("", Common.getInstance().getMockBuildNumber());
+        Assert.assertNull(Common.getInstance().getMockBuildNumber());
 
         Common.getInstance().setMockBuildNumber(mockBuildNumber);
         Assert.assertEquals(mockBuildNumber, Common.getInstance().getBuildNumber());
@@ -190,7 +190,7 @@ public class CommonTest {
         Common.getInstance().setAppName(appName);
         // no mock packaging set
         Assert.assertNull(Common.getInstance().getPackaging());
-        Assert.assertEquals("", Common.getInstance().getMockPackaging());
+        Assert.assertNull(Common.getInstance().getMockPackaging());
 
         Common.getInstance().setMockPackaging(packaging);
         Assert.assertEquals(packaging, Common.getInstance().getPackaging());
