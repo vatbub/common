@@ -538,7 +538,6 @@ public class Common {
      * </ul>
      * </li>
      * </ul>
-     * </ul>
      *
      * @param hasher The hasher object to use to hash the hardware properties. IMPORTANT: It is recommended to create a new hasher instance that has not been used prior to this method call to ensure consistency across calls to this method.
      * @return The unique hardware identifier
