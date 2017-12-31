@@ -1,5 +1,17 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.2...HEAD)
+
+**Implemented enhancements:**
+
+- Make the Config class merge configs [\#29](https://github.com/vatbub/common/issues/29)
+
+**Fixed bugs:**
+
+- Config class ignores offline mode setting when reading asynchronously [\#30](https://github.com/vatbub/common/issues/30)
+
 ## [common.parent-0.1.2](https://github.com/vatbub/common/tree/common.parent-0.1.2) (2017-12-16)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.1...common.parent-0.1.2)
 
