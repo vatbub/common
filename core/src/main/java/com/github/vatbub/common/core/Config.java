@@ -9,9 +9,9 @@ package com.github.vatbub.common.core;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,10 +32,12 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.logging.Level;
 
+@SuppressWarnings("WeakerAccess")
 public class Config {
 
-    private final Properties props = new Properties();
-    private boolean remoteConfigEnabled;
+    private final Properties onlineProps = new Properties();
+    private final Properties offlineProps = new Properties();
+    private volatile ConfigSource currentlyActiveSource;
     private boolean offlineMode;
 
     /**
@@ -166,11 +168,11 @@ public class Config {
      */
     private void readConfigFromFile(URL file) throws IOException {
         FOKLogger.info(Config.class.getName(), "Reading config from local file...");
-        props.load(file.openStream());
+        offlineProps.load(file.openStream());
     }
 
     /**
-     * Reads the config from the remote url. If this fails for any reason and a
+     * Reads the config from the remote url synchronously. If this fails for any reason and a
      * cached config is available, the cached config is used instead. If the
      * remote config can't be read and no cached version is available, the
      * fallbackConfig is used.
@@ -184,22 +186,16 @@ public class Config {
      */
     private void readRemoteConfig(URL remoteConfig, URL fallbackConfig, boolean cacheRemoteConfig,
                                   String cacheFileName) throws IOException {
-        try {
-            if (isOfflineMode()) {
-                throw new IOException("Offline mode enabled");
-            }
+        // Check if offline cache exists
+        checkForOfflineCacheOrLoadFallback(fallbackConfig, cacheFileName);
+        if (!isOfflineMode())
             getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
-        } catch (IOException e) {
-            // Something went wrong
-            // Check if offline cache exists
-            checkForOfflineCacheOrLoadFallback(fallbackConfig, cacheFileName);
-        }
     }
 
     private void getRemoteConfig(URL remoteConfig, boolean cacheRemoteConfig, String cacheFileName) throws IOException {
         FOKLogger.info(Config.class.getName(), "Trying to read remote config...");
-        props.load(remoteConfig.openStream());
-        remoteConfigEnabled = true;
+        onlineProps.load(remoteConfig.openStream());
+        setCurrentlyActiveSource(ConfigSource.ONLINE);
         FOKLogger.info(Config.class.getName(), "Import of remote config successful.");
 
         if (cacheRemoteConfig) {
@@ -208,7 +204,7 @@ public class Config {
             File f = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
             f.getParentFile().mkdirs();
             FileOutputStream out = new FileOutputStream(f);
-            props.store(out, "Config of app " + Common.getInstance().getAppName());
+            onlineProps.store(out, "Config of app " + Common.getInstance().getAppName());
             out.close();
         }
     }
@@ -220,10 +216,11 @@ public class Config {
             // Offline cache exists
             FOKLogger.info(Config.class.getName(), "Reading cached config...");
             this.readConfigFromFile(f.toURI().toURL());
+            setCurrentlyActiveSource(ConfigSource.CACHE);
         } else {
             FOKLogger.info(Config.class.getName(), "Reading fallbackConfig...");
             this.readConfigFromFile(fallbackConfig);
-            remoteConfigEnabled = false;
+            setCurrentlyActiveSource(ConfigSource.OFFLINE);
         }
     }
 
@@ -232,24 +229,29 @@ public class Config {
         // Read offline cache or fallback first
         checkForOfflineCacheOrLoadFallback(fallbackConfig, cacheFileName);
 
-        // Now load the remote config in a new Thread
-        Thread loadConfigThread = new Thread(() -> {
-            try {
-                getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
-            } catch (IOException e) {
-                FOKLogger.log(Config.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
-            }
-        });
+        if (!isOfflineMode()) {
+            // Now load the remote config in a new Thread
+            Thread loadConfigThread = new Thread(() -> {
+                try {
+                    getRemoteConfig(remoteConfig, cacheRemoteConfig, cacheFileName);
+                } catch (IOException e) {
+                    FOKLogger.log(Config.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
+                }
+            });
 
-        loadConfigThread.setName("loadConfigThread");
-        loadConfigThread.start();
+            loadConfigThread.setName("loadConfigThread");
+            loadConfigThread.start();
+        }
     }
 
     /**
-     * @return the remoteConfigEnabled
+     * Use {@link #getCurrentlyActiveSource()} instead
+     *
+     * @deprecated
      */
+    @Deprecated
     public boolean isRemoteConfigEnabled() {
-        return remoteConfigEnabled;
+        return getCurrentlyActiveSource().equals(ConfigSource.ONLINE);
     }
 
     /**
@@ -260,19 +262,25 @@ public class Config {
      * {@code false} otherwise.
      */
     public boolean contains(String key) {
-        return props.getProperty(key) != null;
+        return onlineProps.getProperty(key) != null || offlineProps.getProperty(key) != null;
     }
 
     /**
      * Returns the config value for the specified key or {@code null} if the key
-     * was not found.
+     * was not found. If the key is defined in both, the remote and the fallback config,
+     * the value from the remote config will be returned. If the value is <i>only</i> defined
+     * in the fallback config but <i>not</i> in the remote config, the local fallback value will
+     * be returned. (I. e. the remote and fallback config are merged and the remote config is given priority).
      *
      * @param key The key of the config parameter.
      * @return the config value for the specified key or {@code null} if the key
      * was not found.
      */
     public String getValue(String key) {
-        return props.getProperty(key);
+        if (onlineProps.containsKey(key))
+            return onlineProps.getProperty(key);
+        else
+            return offlineProps.getProperty(key);
     }
 
     public boolean isOfflineMode() {
@@ -287,10 +295,26 @@ public class Config {
     public String toString() {
         StringBuilder res = new StringBuilder();
 
-        for (Entry<Object, Object> e : props.entrySet()) {
+        for (Entry<Object, Object> e : onlineProps.entrySet()) {
+            res.append(e.getKey().toString()).append("=").append(e.getValue()).append("\n");
+        }
+
+        for (Entry<Object, Object> e : offlineProps.entrySet()) {
             res.append(e.getKey().toString()).append("=").append(e.getValue()).append("\n");
         }
 
         return res.toString();
+    }
+
+    public ConfigSource getCurrentlyActiveSource() {
+        return currentlyActiveSource;
+    }
+
+    private void setCurrentlyActiveSource(ConfigSource currentlyActiveSource) {
+        this.currentlyActiveSource = currentlyActiveSource;
+    }
+
+    public enum ConfigSource {
+        ONLINE, CACHE, OFFLINE
     }
 }
