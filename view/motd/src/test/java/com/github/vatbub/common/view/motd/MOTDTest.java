@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class MOTDTest {
 
@@ -58,9 +59,9 @@ public class MOTDTest {
     }
 
     @After
-    public void cleanUp() {
+    public void cleanUp() throws IOException {
         for (File f : MOTD.getSerializedMOTFiles()) {
-            f.delete();
+            Files.delete(f.toPath());
         }
     }
 }

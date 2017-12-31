@@ -49,6 +49,7 @@ public class AWSS3Utils {
         }
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean doesBucketExist(AmazonS3 s3Client, String bucketName) {
         try {
             /*

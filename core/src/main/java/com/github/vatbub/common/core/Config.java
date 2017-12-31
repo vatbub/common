@@ -9,9 +9,9 @@ package com.github.vatbub.common.core;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -202,7 +202,8 @@ public class Config {
             // Update the offline cache
             FOKLogger.info(Config.class.getName(), "Caching remote config for offline use...");
             File f = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
-            f.getParentFile().mkdirs();
+            if (!f.getParentFile().mkdirs())
+                throw new IllegalStateException("Unable to create the folders for the cached config");
             FileOutputStream out = new FileOutputStream(f);
             onlineProps.store(out, "Config of app " + Common.getInstance().getAppName());
             out.close();

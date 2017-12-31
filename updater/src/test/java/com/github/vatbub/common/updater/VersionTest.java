@@ -162,6 +162,7 @@ public class VersionTest {
         Version v1 = new Version("0.0.1");
         String someString = "123";
         assert v1.equals(v1);
+        //noinspection ConstantConditions
         assert !(v1.equals(null));
         assert !(v1.equals(someString));
     }

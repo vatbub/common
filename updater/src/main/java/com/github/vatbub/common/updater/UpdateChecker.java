@@ -38,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -622,7 +623,7 @@ public class UpdateChecker {
                 if (cancelDownloadAndLaunch) {
                     bout.close();
                     in.close();
-                    outputFile.delete();
+                    Files.delete(outputFile.toPath());
                     if (gui != null) {
                         gui.operationCanceled();
                     }

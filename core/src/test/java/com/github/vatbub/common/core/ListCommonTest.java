@@ -35,8 +35,7 @@ public class ListCommonTest {
         byte[] content2 = {5, 6, 7, 8, 9};
         byte[] content3 = {10, 11, 12, 13};
 
-        List<byte[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<byte[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         byte[] check = {5, 6, 7, 8, 9};
         Assert.assertTrue(ListCommon.listContainsArray(list, check));
@@ -48,8 +47,7 @@ public class ListCommonTest {
         short[] content2 = {5, 6, 7, 8, 9};
         short[] content3 = {10, 11, 12, 13};
 
-        List<short[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<short[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         short[] check = {5, 6, 7, 8, 9};
 
@@ -62,8 +60,7 @@ public class ListCommonTest {
         int[] content2 = {5, 6, 7, 8, 9};
         int[] content3 = {10, 11, 12, 13};
 
-        List<int[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<int[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         int[] check = {5, 6, 7, 8, 9};
 
@@ -76,8 +73,7 @@ public class ListCommonTest {
         long[] content2 = {5, 6, 7, 8, 9};
         long[] content3 = {10, 11, 12, 13};
 
-        List<long[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<long[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         long[] check = {5, 6, 7, 8, 9};
 
@@ -90,8 +86,7 @@ public class ListCommonTest {
         float[] content2 = {5, 6, 7, 8, 9};
         float[] content3 = {10, 11, 12, 13};
 
-        List<float[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<float[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         float[] check = {5, 6, 7, 8, 9};
 
@@ -104,8 +99,7 @@ public class ListCommonTest {
         double[] content2 = {5, 6, 7, 8, 9};
         double[] content3 = {10, 11, 12, 13};
 
-        List<double[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<double[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         double[] check = {5, 6, 7, 8, 9};
 
@@ -118,8 +112,7 @@ public class ListCommonTest {
         boolean[] content2 = {false, true, false, true};
         boolean[] content3 = {true, true, false, false};
 
-        List<boolean[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<boolean[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         boolean[] check = {false, true, false, true};
 
@@ -132,8 +125,7 @@ public class ListCommonTest {
         char[] content2 = {5, 6, 7, 8, 9};
         char[] content3 = {10, 11, 12, 13};
 
-        List<char[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<char[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         char[] check = {5, 6, 7, 8, 9};
 
@@ -146,8 +138,7 @@ public class ListCommonTest {
         byte[] content2 = {5, 6, 7, 8, 9};
         byte[] content3 = {10, 11, 12, 13};
 
-        List<byte[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<byte[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         byte[] check = {1, 5, 6, 3, 5, 10};
 
@@ -160,8 +151,7 @@ public class ListCommonTest {
         short[] content2 = {5, 6, 7, 8, 9};
         short[] content3 = {10, 11, 12, 13};
 
-        List<short[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<short[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         short[] check = {1, 5, 6, 3, 5, 10};
 
@@ -174,8 +164,7 @@ public class ListCommonTest {
         int[] content2 = {5, 6, 7, 8, 9};
         int[] content3 = {10, 11, 12, 13};
 
-        List<int[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<int[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         int[] check = {1, 5, 6, 3, 5, 10};
 
@@ -188,8 +177,7 @@ public class ListCommonTest {
         long[] content2 = {5, 6, 7, 8, 9};
         long[] content3 = {10, 11, 12, 13};
 
-        List<long[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<long[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         long[] check = {1, 5, 6, 3, 5, 10};
 
@@ -202,8 +190,7 @@ public class ListCommonTest {
         float[] content2 = {5, 6, 7, 8, 9};
         float[] content3 = {10, 11, 12, 13};
 
-        List<float[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<float[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         float[] check = {1, 5, 6, 3, 5, 10};
 
@@ -216,8 +203,7 @@ public class ListCommonTest {
         double[] content2 = {5, 6, 7, 8, 9};
         double[] content3 = {10, 11, 12, 13};
 
-        List<double[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<double[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         double[] check = {1, 5, 6, 3, 5, 10};
 
@@ -230,8 +216,7 @@ public class ListCommonTest {
         boolean[] content2 = {false, true, false, true};
         boolean[] content3 = {true, true, false, false};
 
-        List<boolean[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<boolean[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         boolean[] check = {true, true, true, true};
 
@@ -244,8 +229,7 @@ public class ListCommonTest {
         char[] content2 = {5, 6, 7, 8, 9};
         char[] content3 = {10, 11, 12, 13};
 
-        List<char[]> list = new ArrayList<>();
-        list.addAll(Arrays.asList(content, content2, content3));
+        List<char[]> list = new ArrayList<>(Arrays.asList(content, content2, content3));
 
         char[] check = {1, 5, 6, 3, 5, 10};
 

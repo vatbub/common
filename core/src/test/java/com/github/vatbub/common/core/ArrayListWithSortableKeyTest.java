@@ -50,6 +50,15 @@ public class ArrayListWithSortableKeyTest {
         list = new ArrayListWithSortableKey<>(10);
     }
 
+    private void assertList(ArrayList<ArrayListWithSortableKey<String>> list, String[][] elements, int firstSortKey){
+        for (String[] row : elements) {
+            ArrayListWithSortableKey<String> rowList = new ArrayListWithSortableKey<>(Arrays.asList(row));
+            rowList.setSortKey(firstSortKey);
+            assert rowList.getSortKey() == firstSortKey;
+            list.add(rowList);
+        }
+    }
+
     @Test
     public void sortArrayListWithSortableKeyTest() {
         // Generate a new list
@@ -59,12 +68,7 @@ public class ArrayListWithSortableKeyTest {
 
         String[][] elements = new String[][]{{"abc", "jkl", "mno"}, {"def", "ghi", "pqr"}};
 
-        for (String[] row : elements) {
-            ArrayListWithSortableKey<String> rowList = new ArrayListWithSortableKey<>(Arrays.asList(row));
-            rowList.setSortKey(firstSortKey);
-            assert rowList.getSortKey() == firstSortKey;
-            list.add(rowList);
-        }
+        assertList(list, elements, firstSortKey);
 
         Collections.sort(list);
 
@@ -100,12 +104,7 @@ public class ArrayListWithSortableKeyTest {
 
         String[][] elements = new String[][]{{"abc", "jkl", "mno"}, {"def", "ghi", "pqr"}};
 
-        for (String[] row : elements) {
-            ArrayListWithSortableKey<String> rowList = new ArrayListWithSortableKey<>(Arrays.asList(row));
-            rowList.setSortKey(firstSortKey);
-            assert rowList.getSortKey() == firstSortKey;
-            list.add(rowList);
-        }
+        assertList(list, elements, firstSortKey);
 
         // Compare first using the default compareTo and then using the custom
         // compareTo
