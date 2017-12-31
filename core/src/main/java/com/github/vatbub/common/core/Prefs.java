@@ -91,7 +91,7 @@ public class Prefs {
     public void savePreferences() {
         try {
             FOKLogger.info(Prefs.class.getName(), "Saving preference file as: " + f.getAbsolutePath());
-            if (!f.getParentFile().mkdirs())
+            if (!f.getParentFile().exists() && !f.getParentFile().mkdirs())
                 throw new IllegalStateException("Unable to create the folder to save the Prefs in");
             FileOutputStream out = new FileOutputStream(f);
             props.store(out, "This is a preference file of the app " + Common.getInstance().getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");

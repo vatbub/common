@@ -202,7 +202,7 @@ public class Config {
             // Update the offline cache
             FOKLogger.info(Config.class.getName(), "Caching remote config for offline use...");
             File f = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
-            if (!f.getParentFile().mkdirs())
+            if (!f.getParentFile().exists() && !f.getParentFile().mkdirs())
                 throw new IllegalStateException("Unable to create the folders for the cached config");
             FileOutputStream out = new FileOutputStream(f);
             onlineProps.store(out, "Config of app " + Common.getInstance().getAppName());

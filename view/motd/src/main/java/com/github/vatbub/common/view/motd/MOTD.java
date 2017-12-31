@@ -129,7 +129,7 @@ public class MOTD {
      */
     public static List<File> getSerializedMOTFiles() {
         File folder = new File(Common.getInstance().getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
-        if (!folder.mkdirs())
+        if (!folder.exists() && !folder.mkdirs())
             throw new IllegalStateException("Unable to create the folder for serialized MOTDs");
         List<File> res = new ArrayList<>();
 

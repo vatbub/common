@@ -170,8 +170,9 @@ public class Common {
     public String getAndCreateAppDataPath() {
         String path = getAppDataPath();
 
-        if (!new File(path).mkdirs())
-            throw new IllegalStateException("Unable to create the app data path");
+        File file = new File(path);
+        if (!file.exists() && !file.mkdirs())
+            throw new IllegalStateException("Unable to create the app data path: " + path);
 
         return path;
     }
@@ -183,8 +184,8 @@ public class Common {
      */
     public File getAndCreateAppDataPathAsFile() {
         File path = getAppDataPathAsFile();
-        if (!path.mkdirs())
-            throw new IllegalStateException("Unable to create the app data path");
+        if (!path.exists() && !path.mkdirs())
+            throw new IllegalStateException("Unable to create the app data path: " + path.getAbsolutePath());
         return path;
     }
 
