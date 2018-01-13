@@ -44,12 +44,7 @@ import java.util.List;
  */
 @SuppressWarnings("ConstantConditions")
 public class MOTD {
-
-    /**
-     * The name of the folder which is used to save serialized messages of the
-     * day.
-     */
-    protected static final String latestMOTDSerializedFilePath = "motd";
+    private static MOTDFileOutputStreamProvider motdFileOutputStreamProvider = new DesktopMOTDFileOutputStreamProvider();
 
     /**
      * The file name which is used to save serialized messages of the day. Use
@@ -110,7 +105,7 @@ public class MOTD {
      * @return A list of indexes already used by serialized {@code MOTD}s
      */
     private static List<Integer> getUsedIndexes() {
-        File folder = new File(Common.getInstance().getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
+        File folder = getMotdFileOutputStreamProvider().getMOTDFolder();
         List<Integer> res = new ArrayList<>();
 
         for (File file : folder.listFiles()) {
@@ -128,7 +123,7 @@ public class MOTD {
      * @return A list of files that contain serialized {@code MOTD}s
      */
     public static List<File> getSerializedMOTFiles() {
-        File folder = new File(Common.getInstance().getAndCreateAppDataPath() + latestMOTDSerializedFilePath);
+        File folder = getMotdFileOutputStreamProvider().getMOTDFolder();
         if (!folder.exists() && !folder.mkdirs())
             throw new IllegalStateException("Unable to create the folder for serialized MOTDs");
         List<File> res = new ArrayList<>();
@@ -190,6 +185,14 @@ public class MOTD {
         return new MOTD(feed.getImage(), feed.getTitle(), feed.getEntries().get(0));
     }
 
+    public static MOTDFileOutputStreamProvider getMotdFileOutputStreamProvider() {
+        return motdFileOutputStreamProvider;
+    }
+
+    public static void setMotdFileOutputStreamProvider(MOTDFileOutputStreamProvider motdFileOutputStreamProvider) {
+        MOTD.motdFileOutputStreamProvider = motdFileOutputStreamProvider;
+    }
+
     /**
      * @return the message icon
      */
@@ -248,8 +251,7 @@ public class MOTD {
      */
     public void markAsRead() throws IOException, ClassNotFoundException {
         if (!this.isMarkedAsRead()) {
-            FileOutputStream fileOut = new FileOutputStream(Common.getInstance().getAndCreateAppDataPath()
-                    + latestMOTDSerializedFilePath + File.separator + getNextSerializationFileName());
+            FileOutputStream fileOut = getMotdFileOutputStreamProvider().createFileOutputStream(getNextSerializationFileName());
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(entry);
             out.close();
