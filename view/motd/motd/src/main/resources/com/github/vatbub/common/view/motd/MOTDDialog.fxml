@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="496.0" xmlns="http://javafx.com/javafx/8"
+            fx:controller="com.github.vatbub.common.view.motd.MOTDDialog">
+   <children>
+      <WebView fx:id="rssWebView" prefHeight="329.0" prefWidth="496.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <HBox layoutY="371.0" maxWidth="1.7976931348623157E308" spacing="5.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+         <children>
+            <Button fx:id="openWebpageButton" defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#openWebpageButtonOnAction" text="%openWebpageButton.text" HBox.hgrow="ALWAYS" />
+            <Button fx:id="closeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#closeButtonOnAction" text="%closeButton.text" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
