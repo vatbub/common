@@ -26,10 +26,5 @@
             <artifactId>rome</artifactId>
             <version>1.8.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.codefx.libfx</groupId>
-            <artifactId>LibFX</artifactId>
-            <version>0.3.0</version>
-        </dependency>
     </dependencies>
 </project>
