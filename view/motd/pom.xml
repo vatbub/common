@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <packaging>pom</packaging>
+    <modules>
+        <module>core</module>
+        <module>motd</module>
+    </modules>
     <repositories>
         <repository>
             <snapshots>
@@ -48,25 +53,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common.view.motd</artifactId>
-    <name>FOKProjects Common View Message of the day</name>
+    <artifactId>common.view.motd.parent</artifactId>
+    <name>FOKProjects Common View Message of the day Parent</name>
     <description>Utility to show a message of a day at app startup read from a RSS feed.</description>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.github.vatbub</groupId>
-            <artifactId>common.core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
-            <version>1.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codefx.libfx</groupId>
-            <artifactId>LibFX</artifactId>
-            <version>0.3.0</version>
-        </dependency>
-    </dependencies>
 </project>

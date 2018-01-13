@@ -27,7 +27,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-public class DesktopMOTDFileOutputStreamProvider implements MOTDFileOutputStreamProvider {
+public class DummyMOTDFileOutputStreamProvider implements MOTDFileOutputStreamProvider {
     /**
      * The name of the folder which is used to save serialized messages of the
      * day.
