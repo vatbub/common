@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Make the internal storage of the MOTD package more abstract [\#31](https://github.com/vatbub/common/issues/31)
 - Make the Config class merge configs [\#29](https://github.com/vatbub/common/issues/29)
 
 **Fixed bugs:**
