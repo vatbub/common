@@ -140,7 +140,6 @@ public class FOKLogger {
     /**
      * @return the fileLogLevel
      */
-    @SuppressWarnings("unused")
     public static Level getFileLogLevel() {
         return fileLogLevel;
     }
@@ -148,7 +147,6 @@ public class FOKLogger {
     /**
      * @param newFileLogLevel the fileLogLevel to set
      */
-    @SuppressWarnings("unused")
     public static void setFileLogLevel(Level newFileLogLevel) {
         fileLogLevel = newFileLogLevel;
 

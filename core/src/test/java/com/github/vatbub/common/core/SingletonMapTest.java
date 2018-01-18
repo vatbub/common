@@ -9,9 +9,9 @@ package com.github.vatbub.common.core;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,9 +21,12 @@ package com.github.vatbub.common.core;
  */
 
 
+import com.github.vatbub.common.core.logging.FOKLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.logging.Level;
 
 public class SingletonMapTest {
 
@@ -57,6 +60,23 @@ public class SingletonMapTest {
         TestDummyClass instance2 = SingletonMap.getInstance(TestDummyClass.class);
         Assert.assertEquals(2, TestDummyClass.getCallCount());
         Assert.assertTrue(instance1 != instance2);
+    }
+
+    @Test
+    public void throwIllegalStateExceptionIfAlreadyInstantiatedTest() throws InstantiationException, IllegalAccessException {
+        // should pass
+        SingletonMap.throwIllegalStateExceptionIfAlreadyInstantiated(TestDummyClass.class);
+
+        // Create instance
+        SingletonMap.getInstance(TestDummyClass.class);
+
+        try {
+            // Should throw an exception
+            SingletonMap.throwIllegalStateExceptionIfAlreadyInstantiated(TestDummyClass.class);
+            Assert.fail("IllegalStateException expected");
+        } catch (IllegalStateException e) {
+            FOKLogger.log(SingletonMapTest.class.getName(), Level.INFO, "Expected exception occurred", e);
+        }
     }
 
     private static class TestDummyClass {

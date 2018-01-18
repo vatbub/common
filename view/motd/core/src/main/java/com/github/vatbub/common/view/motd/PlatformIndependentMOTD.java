@@ -69,6 +69,7 @@ public class PlatformIndependentMOTD {
     /**
      * Creates a new message of the day instance
      *
+     * @param feedTitle The title of the feed
      * @param image The feed icon
      * @param entry The rss entry that corresponds to this message of the day
      */

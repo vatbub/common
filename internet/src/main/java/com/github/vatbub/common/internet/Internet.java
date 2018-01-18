@@ -434,6 +434,7 @@ public class Internet {
      * OPens the specified url in the default browser.
      *
      * @param url The url to open
+     * @throws IOException If the URL cannot be opened
      */
     @SuppressWarnings("unused")
     public static void openInDefaultBrowser(URL url) throws IOException {

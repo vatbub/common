@@ -247,6 +247,7 @@ public class Config {
 
     /**
      * Use {@link #getCurrentlyActiveSource()} instead
+     * @return {@code true} if the remote config is currently enabled.
      *
      * @deprecated
      */

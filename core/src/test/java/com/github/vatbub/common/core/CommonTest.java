@@ -32,9 +32,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class CommonTest {
     @Before
@@ -329,5 +327,14 @@ public class CommonTest {
             Assert.assertFalse("collided hash: " + res, resultList.contains(res));
             resultList.add(res);
         }
+    }
+
+    @Test
+    public void getLanguagesSupportedByResourceBundleTest(){
+        ResourceBundle bundle = ResourceBundle.getBundle("com.github.vatbub.common.core.testResourceBundle");
+        List<Locale> res = Common.getInstance().getLanguagesSupportedByResourceBundle(bundle);
+        Assert.assertTrue(res.contains(Locale.GERMAN));
+        Assert.assertTrue(res.contains(Locale.ENGLISH));
+        Assert.assertTrue(res.contains(Locale.FRENCH));
     }
 }
