@@ -1,8 +1,7 @@
 # Change Log
 
-## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
-
-[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.2...HEAD)
+## [common.parent-0.1.3](https://github.com/vatbub/common/tree/common.parent-0.1.3) (2018-02-11)
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.2...common.parent-0.1.3)
 
 **Implemented enhancements:**
 
