@@ -1,5 +1,20 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.4...HEAD)
+
+**Implemented enhancements:**
+
+- Change the SystemUtils class to use an idle timer instead of a daemon for shutdown [\#33](https://github.com/vatbub/common/issues/33)
+
+## [common.parent-0.1.4](https://github.com/vatbub/common/tree/common.parent-0.1.4) (2018-05-03)
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.3...common.parent-0.1.4)
+
+**Fixed bugs:**
+
+- Fix the URLs in the PlatformIndependentMOTDTest [\#32](https://github.com/vatbub/common/issues/32)
+
 ## [common.parent-0.1.3](https://github.com/vatbub/common/tree/common.parent-0.1.3) (2018-02-11)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.2...common.parent-0.1.3)
 
