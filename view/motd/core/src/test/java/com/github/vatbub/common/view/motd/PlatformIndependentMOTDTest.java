@@ -24,6 +24,7 @@ package com.github.vatbub.common.view.motd;
 import com.github.vatbub.common.core.Common;
 import com.rometools.rome.io.FeedException;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,11 +38,21 @@ public class PlatformIndependentMOTDTest {
 
     private static final String appName = "fokprojectUnitTests";
     private static URL testFeedURL;
+    private static URL testEmptyFeedURL;
 
     @Before
     public void prepare() throws MalformedURLException {
         Common.getInstance().setAppName(appName);
-        testFeedURL = new URL("https://fokprojects.mo-mar.de/message-of-the-day/feed/");
+        testFeedURL = new URL("https://fredplus10.me/de/feed/");
+        testEmptyFeedURL = new URL("https://fredplus10.me/oiuztrfgrdesfg/feed/");
+    }
+
+    @Test
+    public void getEmptyFeedTest() throws IllegalArgumentException, FeedException, IOException, ClassNotFoundException {
+        PlatformIndependentMOTD.setMotdFileOutputStreamProvider(new DummyMOTDFileOutputStreamProvider());
+        PlatformIndependentMOTD motd = PlatformIndependentMOTD.getLatestMOTD(testEmptyFeedURL);
+
+        Assert.assertNull(motd);
     }
 
     @Test
@@ -49,14 +60,15 @@ public class PlatformIndependentMOTDTest {
         PlatformIndependentMOTD.setMotdFileOutputStreamProvider(new DummyMOTDFileOutputStreamProvider());
         PlatformIndependentMOTD motd = PlatformIndependentMOTD.getLatestMOTD(testFeedURL);
 
-        assert !motd.isMarkedAsRead();
-        assert motd.getEntry() != null;
-        assert motd.getFeedTitle() != null;
-        assert motd.getImage() != null;
+        Assert.assertNotNull(motd);
+        Assert.assertFalse(motd.isMarkedAsRead());
+        Assert.assertNotNull(motd.getEntry());
+        Assert.assertNotNull(motd.getFeedTitle());
+        Assert.assertNotNull(motd.getImage());
 
         // mark as read
         motd.markAsRead();
-        assert motd.isMarkedAsRead();
+        Assert.assertTrue(motd.isMarkedAsRead());
     }
 
     @After

@@ -27,6 +27,7 @@ import com.rometools.rome.feed.synd.SyndImage;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.URL;
@@ -171,15 +172,17 @@ public class PlatformIndependentMOTD {
      * Gets the latest {@link PlatformIndependentMOTD} from the specified RSS-feed
      *
      * @param feedUrl The {@code URL} of the RSS-feed to get the {@link PlatformIndependentMOTD} from.
-     * @return The latest {@link PlatformIndependentMOTD} from the specified RSS-feed
+     * @return The latest {@link PlatformIndependentMOTD} from the specified RSS-feed or {@code null} if the feed contaisn no entry.
      * @throws IllegalArgumentException thrown if feed type could not be understood by any of the
      *                                  underlying parsers.
      * @throws FeedException            if the feed could not be parsed
      * @throws IOException              thrown if there is a problem reading the stream of the URL.
      */
-    @SuppressWarnings("unused")
+    @Nullable
     public static PlatformIndependentMOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
         SyndFeed feed = (new SyndFeedInput()).build(new XmlReader(feedUrl));
+        if (feed.getEntries().isEmpty())
+            return null;
         return new PlatformIndependentMOTD(feed.getImage(), feed.getTitle(), feed.getEntries().get(0));
     }
 
