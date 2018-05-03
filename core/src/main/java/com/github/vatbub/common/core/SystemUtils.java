@@ -57,7 +57,7 @@ public class SystemUtils {
         else if (org.apache.commons.lang3.SystemUtils.IS_OS_SOLARIS || org.apache.commons.lang3.SystemUtils.IS_OS_SUN_OS)
             shutdownCommand = "shutdown -y -i5 -g" + t;
         else if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS)
-            shutdownCommand = "shutdown.exe -s -t " + t;
+            shutdownCommand = "shutdown.exe -s -t " + time;
         else
             return false;
 
