@@ -24,10 +24,9 @@ package com.github.vatbub.common.core;
 import com.github.vatbub.common.core.logging.FOKLogger;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -57,7 +56,7 @@ public class SystemUtils {
             shutdownCommand = "shutdown -y -g " + t;
         else if (org.apache.commons.lang3.SystemUtils.IS_OS_SOLARIS || org.apache.commons.lang3.SystemUtils.IS_OS_SUN_OS)
             shutdownCommand = "shutdown -y -i5 -g" + t;
-        else if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS_XP || org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS_VISTA || org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS_7)
+        else if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS)
             shutdownCommand = "shutdown.exe -s -t " + t;
         else
             return false;
@@ -66,28 +65,29 @@ public class SystemUtils {
         return true;
     }
 
-    public void startAutoShutdownDaemon(Callable<Boolean> predicate, long predicateCheckPeriodDuration, TimeUnit predicateCheckPeriodUnit) {
+    public void startAutoShutdownTimer(long timerDuration, TimeUnit timerDurationUnit) {
         if (timer != null)
             timer.cancel();
+        FOKLogger.info(getClass().getName(), "Computer will shut down in " + timerDuration + " " + timerDurationUnit.toString());
         timer = new Timer("AutoShutdownDaemon");
-        Date executionDate = new Date(); // no params = now
-        timer.scheduleAtFixedRate(new TimerTask() {
+        Calendar executionTime = Calendar.getInstance();
+        executionTime.add(Calendar.MILLISECOND, (int) TimeUnit.MILLISECONDS.convert(timerDuration, timerDurationUnit));
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    if (predicate.call()) {
-                        boolean res = shutComputerDown(0);
-                        if (!res)
-                            FOKLogger.log(getClass().getName(), Level.SEVERE, "Unable to shut computer down: shutComputerDown returned false");
-                    }
+                    FOKLogger.log(getClass().getName(), Level.SEVERE, "Shutting computer down...");
+                    boolean res = shutComputerDown(0);
+                    if (!res)
+                        FOKLogger.log(getClass().getName(), Level.SEVERE, "Unable to shut computer down: shutComputerDown returned false");
                 } catch (Exception e) {
                     FOKLogger.log(getClass().getName(), Level.SEVERE, "Unable to shut computer down" + e);
                 }
             }
-        }, executionDate, TimeUnit.MILLISECONDS.convert(predicateCheckPeriodDuration, predicateCheckPeriodUnit));
+        }, executionTime.getTime());
     }
 
-    public void cancelAutoShutdownDaemon() {
+    public void cancelAutoShutdownTimer() {
         if (timer != null)
             timer.cancel();
     }
