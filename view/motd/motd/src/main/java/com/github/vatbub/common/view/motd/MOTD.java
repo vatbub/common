@@ -9,9 +9,9 @@ package com.github.vatbub.common.view.motd;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,20 +21,12 @@ package com.github.vatbub.common.view.motd;
  */
 
 
-import com.github.vatbub.common.core.Common;
 import com.github.vatbub.common.core.logging.FOKLogger;
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.feed.synd.SyndImage;
 import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A class that represents a message of the day
@@ -43,7 +35,7 @@ import java.util.List;
  * @since 0.0.15
  */
 @SuppressWarnings("ConstantConditions")
-public class MOTD extends PlatformIndependentMOTD{
+public class MOTD extends PlatformIndependentMOTD {
     static {
         PlatformIndependentMOTD.setMotdFileOutputStreamProvider(new DesktopMOTDFileOutputStreamProvider());
     }
@@ -52,9 +44,22 @@ public class MOTD extends PlatformIndependentMOTD{
         super(image, feedTitle, entry);
     }
 
+    /**
+     * Gets the latest {@link MOTD} from the specified RSS-feed
+     *
+     * @param feedUrl The {@code URL} of the RSS-feed to get the {@link PlatformIndependentMOTD} from.
+     * @return The latest {@link PlatformIndependentMOTD} from the specified RSS-feed or {@code null} if the feed contaisn no entry.
+     * @throws IllegalArgumentException thrown if feed type could not be understood by any of the
+     *                                  underlying parsers.
+     * @throws FeedException            if the feed could not be parsed
+     * @throws IOException              thrown if there is a problem reading the stream of the URL.
+     */
+    @Nullable
     public static MOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
         FOKLogger.info(PlatformIndependentMOTD.class.getName(), "Retrieving latest MOTD from url " + feedUrl.toString());
         PlatformIndependentMOTD result = PlatformIndependentMOTD.getLatestMOTD(feedUrl);
+        if (result == null)
+            return null;
         // We need to copy the object as we cannot cast :/
         return new MOTD(result.getImage(), result.getFeedTitle(), result.getEntry());
     }
