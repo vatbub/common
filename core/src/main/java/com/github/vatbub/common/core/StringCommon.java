@@ -53,6 +53,8 @@ public class StringCommon {
             if (line != null)
                 sb.append(System.lineSeparator());
         }
+
+        br.close();
         return sb.toString();
     }
 

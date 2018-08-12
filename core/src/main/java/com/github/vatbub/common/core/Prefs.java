@@ -35,7 +35,7 @@ import java.util.logging.Level;
  */
 public class Prefs {
     private final Properties props = new Properties();
-    private final File f;
+    private final File file;
 
     /**
      * Loads or creates the preference file for the specified class
@@ -44,7 +44,7 @@ public class Prefs {
      */
     public Prefs(String className) {
         // Retrieve the user preference node for the package
-        f = new File(Common.getInstance().getAndCreateAppDataPath() + className + ".properties");
+        file = new File(Common.getInstance().getAndCreateAppDataPath() + className + ".properties");
         reload();
     }
 
@@ -53,9 +53,10 @@ public class Prefs {
      */
     public void reload() {
         try {
-            if (f.exists()) {
-                // Load the properties
-                props.load(new FileReader(f));
+            if (file.exists()) {
+                try(FileReader fileReader = new FileReader(file)) {
+                    props.load(fileReader);
+                }
             }
 
         } catch (IOException e) {
@@ -89,11 +90,11 @@ public class Prefs {
      * Saves the properties file to the hard disk. No need to call this method explicitly as it is already called every time {@link #setPreference(String, String)} is called.
      */
     public void savePreferences() {
-        try {
-            FOKLogger.info(Prefs.class.getName(), "Saving preference file as: " + f.getAbsolutePath());
-            if (!f.getParentFile().exists() && !f.getParentFile().mkdirs())
-                throw new IllegalStateException("Unable to create the folder to save the Prefs in");
-            FileOutputStream out = new FileOutputStream(f);
+        FOKLogger.info(Prefs.class.getName(), "Saving preference file as: " + file.getAbsolutePath());
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
+            throw new IllegalStateException("Unable to create the folder to save the Prefs in");
+
+        try (FileOutputStream out = new FileOutputStream(file)){
             props.store(out, "This is a preference file of the app " + Common.getInstance().getAppName() + ". If you delete this file, the specified app will be (partly or entirely) reset to its factory settings.");
         } catch (IOException e) {
             e.printStackTrace();

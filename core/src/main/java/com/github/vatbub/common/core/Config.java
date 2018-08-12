@@ -23,10 +23,7 @@ package com.github.vatbub.common.core;
 
 import com.github.vatbub.common.core.logging.FOKLogger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -168,7 +165,9 @@ public class Config {
      */
     private void readConfigFromFile(URL file) throws IOException {
         FOKLogger.info(Config.class.getName(), "Reading config from local file...");
-        offlineProps.load(file.openStream());
+        InputStream inputStream = file.openStream();
+        offlineProps.load(inputStream);
+        inputStream.close();
     }
 
     /**

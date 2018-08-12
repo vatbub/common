@@ -9,9 +9,9 @@ package com.github.vatbub.common.core.logging;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -124,6 +124,9 @@ public class FOKLogger {
      * Resets all loggers. This makes no difference for the console logger, but the file logger will start logging into a new file.
      */
     public static void resetAllLoggers() {
+        if (fileHandler != null) {
+            fileHandler.close();
+        }
         forceResetLogHandlersOnNextLogAction = true;
         loggerMap = new HashMap<>();
     }
@@ -211,7 +214,13 @@ public class FOKLogger {
 
         try {
             if (logFilePath != null) {
-                fileHandler = new FileHandler(getLogFilePathAndName());
+                fileHandler = new FileHandler(getLogFilePathAndName()) {
+                    @Override
+                    public synchronized void publish(LogRecord record) {
+                        super.publish(record);
+                        flush();
+                    }
+                };
             }
             consoleHandler = new Handler() {
                 @Override
