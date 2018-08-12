@@ -46,11 +46,11 @@ public class ConfigTest  extends CoreBaseTestClass{
         Config config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName);
         Assert.assertTrue(config.contains("configSource"));
         Assert.assertEquals("remote", config.getValue("configSource"));
-        Assert.assertTrue(config.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
+        Assert.assertEquals(config.getCurrentlyActiveSource(), Config.ConfigSource.ONLINE);
         Assert.assertFalse(config.isOfflineMode());
         config = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName, false, true);
         Assert.assertTrue(config.contains("configSource"));
-        Assert.assertFalse(config.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
+        Assert.assertNotEquals(config.getCurrentlyActiveSource(), Config.ConfigSource.ONLINE);
         Assert.assertTrue(config.isOfflineMode());
         Assert.assertEquals("fallback", config.getValue("configSource"));
     }
@@ -71,11 +71,11 @@ public class ConfigTest  extends CoreBaseTestClass{
         await().until(() -> config.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
         Assert.assertTrue(config.contains("configSource"));
         Assert.assertEquals("remote", config.getValue("configSource"));
-        Assert.assertTrue(config.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
+        Assert.assertEquals(config.getCurrentlyActiveSource(), Config.ConfigSource.ONLINE);
         Assert.assertFalse(config.isOfflineMode());
         final Config config2 = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), false, cacheFileName, true, true);
         Assert.assertTrue(config2.contains("configSource"));
-        Assert.assertFalse(config2.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
+        Assert.assertNotEquals(config2.getCurrentlyActiveSource(), Config.ConfigSource.ONLINE);
         Assert.assertTrue(config2.isOfflineMode());
         Assert.assertEquals("fallback", config2.getValue("configSource"));
     }

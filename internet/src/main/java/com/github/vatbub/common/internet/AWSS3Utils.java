@@ -33,7 +33,6 @@ public class AWSS3Utils {
         throw new IllegalStateException("Class may not be instantiated");
     }
 
-    @SuppressWarnings("unused")
     public static boolean keyExists(AmazonS3 s3Client, String bucketName, String key) {
         if (!doesBucketExist(s3Client, bucketName)) {
             return false;

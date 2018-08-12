@@ -34,7 +34,6 @@ import java.util.ResourceBundle;
 /**
  * A dialog that can show an exception
  */
-@SuppressWarnings("unused")
 public class ExceptionAlert extends Alert {
     private static final ResourceBundle bundle = ResourceBundle.getBundle("com.github.vatbub.common.view.core.ExceptionAlert");
 

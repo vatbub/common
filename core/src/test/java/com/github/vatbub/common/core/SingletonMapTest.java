@@ -41,7 +41,7 @@ public class SingletonMapTest extends CoreBaseTestClass {
         TestDummyClass instance1 = SingletonMap.getInstance(TestDummyClass.class);
         TestDummyClass instance2 = SingletonMap.getInstance(TestDummyClass.class);
         Assert.assertEquals(1, TestDummyClass.getCallCount());
-        Assert.assertTrue(instance1 == instance2);
+        Assert.assertSame(instance1, instance2);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class SingletonMapTest extends CoreBaseTestClass {
         SingletonMap.resetInstance(TestDummyClass.class);
         TestDummyClass instance2 = SingletonMap.getInstance(TestDummyClass.class);
         Assert.assertEquals(2, TestDummyClass.getCallCount());
-        Assert.assertTrue(instance1 != instance2);
+        Assert.assertNotSame(instance1, instance2);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class SingletonMapTest extends CoreBaseTestClass {
         SingletonMap.resetSingletonMap();
         TestDummyClass instance2 = SingletonMap.getInstance(TestDummyClass.class);
         Assert.assertEquals(2, TestDummyClass.getCallCount());
-        Assert.assertTrue(instance1 != instance2);
+        Assert.assertNotSame(instance1, instance2);
     }
 
     @Test

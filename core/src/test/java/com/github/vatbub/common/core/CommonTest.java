@@ -21,6 +21,7 @@ package com.github.vatbub.common.core;
  */
 
 
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hasher;
@@ -214,10 +215,7 @@ public class CommonTest extends CoreBaseTestClass {
     }
 
     @Test
-    public void awsCredentialsTest() {
-        String awsKey = "myAwsKey";
-        String awsSecret = "myAwsSecret";
-
+    public void awsCredentialsFailureTest() {
         try {
             // should throw a NullPointer
             Common.getInstance().getAWSCredentials();
@@ -225,17 +223,46 @@ public class CommonTest extends CoreBaseTestClass {
         } catch (NullPointerException e) {
             assert true;
         }
+    }
+
+    @Test
+    public void awsCredentialsSetGetTest() {
+        String awsKey = "myAwsKey";
+        String awsSecret = "myAwsSecret";
 
         Common.getInstance().setAwsAccessKey(awsKey);
         Common.getInstance().setAwsSecretAccessKey(awsSecret);
 
         Assert.assertEquals(awsKey, Common.getInstance().getAwsAccessKey());
         Assert.assertEquals(awsSecret, Common.getInstance().getAwsSecretAccessKey());
+    }
+
+    @Test
+    public void awsCredentialsTest() {
+        String awsKey = "myAwsKey";
+        String awsSecret = "myAwsSecret";
+
+        Common.getInstance().setAwsAccessKey(awsKey);
+        Common.getInstance().setAwsSecretAccessKey(awsSecret);
 
         BasicAWSCredentials credentials = Common.getInstance().getAWSCredentials();
         Assert.assertNotNull(credentials);
         Assert.assertEquals(awsKey, credentials.getAWSAccessKeyId());
         Assert.assertEquals(awsSecret, credentials.getAWSSecretKey());
+    }
+
+    @Test
+    public void awsCredentialsProviderTest() {
+        String awsKey = "myAwsKey";
+        String awsSecret = "myAwsSecret";
+
+        Common.getInstance().setAwsAccessKey(awsKey);
+        Common.getInstance().setAwsSecretAccessKey(awsSecret);
+
+        AWSCredentialsProvider provider = Common.getInstance().getAWSCredentialsProvider();
+        Assert.assertNotNull(provider);
+        Assert.assertEquals(awsKey, provider.getCredentials().getAWSAccessKeyId());
+        Assert.assertEquals(awsSecret, provider.getCredentials().getAWSSecretKey());
     }
 
     @Test

@@ -24,6 +24,7 @@ import com.github.vatbub.common.core.Common;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -65,6 +66,7 @@ public class FOKLogger {
     private static String logFileName;
     private static String logFilePath;
     private static boolean forceResetLogHandlersOnNextLogAction = false;
+    private static boolean fileLoggingDisabled;
     //log uncaught exceptions
     private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable));
     final Logger log;
@@ -162,7 +164,7 @@ public class FOKLogger {
     /**
      * @return the consoleLogLevel
      */
-    @SuppressWarnings("unused")
+
     public static Level getConsoleLogLevel() {
         return consoleLogLevel;
     }
@@ -170,7 +172,7 @@ public class FOKLogger {
     /**
      * @param newConsoleLogLevel the consoleLogLevel to set
      */
-    @SuppressWarnings("unused")
+
     public static void setConsoleLogLevel(Level newConsoleLogLevel) {
         consoleLogLevel = newConsoleLogLevel;
 
@@ -183,7 +185,7 @@ public class FOKLogger {
     /**
      * @return the logFileName
      */
-    @SuppressWarnings("unused")
+
     public static String getLogFileName() {
         return logFileName.replace("DateTime", Common.getInstance().getLaunchTimeStamp());
     }
@@ -191,7 +193,7 @@ public class FOKLogger {
     /**
      * @return the logFilePath
      */
-    @SuppressWarnings("unused")
+
     public static String getLogFilePath() {
         return logFilePath;
     }
@@ -209,7 +211,12 @@ public class FOKLogger {
         // Source:
         // http://stackoverflow.com/questions/4801971/how-to-create-empty-folder-in-java
         if (logFilePath != null) {
-            new File(logFilePath).mkdirs();
+            try {
+                Files.createDirectories(new File(logFilePath).toPath());
+            } catch (IOException e) {
+                fileLoggingDisabled = true;
+                logFilePath = null;
+            }
         }
 
         try {
@@ -284,7 +291,7 @@ public class FOKLogger {
     }
 
     public static FOKLogger getLoggerByClassName(String className) {
-        boolean forceRefreshLogger = Common.getInstance().getAppName() != null && logFilePath == null;
+        boolean forceRefreshLogger = Common.getInstance().getAppName() != null && logFilePath == null && !fileLoggingDisabled;
         if (forceResetLogHandlersOnNextLogAction) {
             forceRefreshLogger = true;
             handlersInitialized = false;
@@ -292,9 +299,7 @@ public class FOKLogger {
         }
         if (!loggerMap.containsKey(className) || forceRefreshLogger) {
             // create a new logger
-            if (loggerMap.containsKey(className)) {
-                loggerMap.remove(className);
-            }
+            loggerMap.remove(className);
 
             //noinspection deprecation
             return new FOKLogger(className);
@@ -304,7 +309,7 @@ public class FOKLogger {
         }
     }
 
-    @SuppressWarnings("unused")
+
     public static void log(String className, LogRecord record) {
         getLoggerByClassName(className).getLogger().log(record);
     }
@@ -317,168 +322,168 @@ public class FOKLogger {
         getLoggerByClassName(className).getLogger().log(level, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void log(String className, Level level, String msg, Object param1) {
         getLoggerByClassName(className).getLogger().log(level, msg, param1);
     }
 
-    @SuppressWarnings("unused")
+
     public static void log(String className, Level level, String msg, Object[] params) {
         getLoggerByClassName(className).getLogger().log(level, msg, params);
     }
 
-    @SuppressWarnings("unused")
+
     public static void log(String className, Level level, String msg, Throwable thrown) {
         getLoggerByClassName(className).getLogger().log(level, msg, thrown);
     }
 
-    @SuppressWarnings("unused")
+
     public static void log(String className, Level level, Throwable thrown, Supplier<String> msgSupplier) {
         getLoggerByClassName(className).getLogger().log(level, thrown, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logp(String className, Level level, String sourceClass, String sourceMethod, String msg) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logp(String className, Level level, String sourceClass, String sourceMethod, Supplier<String> msgSupplier) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logp(String className, Level level, String sourceClass, String sourceMethod,
                             String msg, Object param1) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, msg, param1);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logp(String className, Level level, String sourceClass, String sourceMethod,
                             String msg, Object[] params) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, msg, params);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logp(String className, Level level, String sourceClass, String sourceMethod,
                             String msg, Throwable thrown) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, msg, thrown);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logp(String className, Level level, String sourceClass, String sourceMethod,
                             Throwable thrown, Supplier<String> msgSupplier) {
         getLoggerByClassName(className).getLogger().logp(level, sourceClass, sourceMethod, thrown, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logrb(String className, Level level, String sourceClass, String sourceMethod,
                              ResourceBundle bundle, String msg, Object... params) {
         getLoggerByClassName(className).getLogger().logrb(level, sourceClass, sourceMethod, bundle, msg, params);
     }
 
-    @SuppressWarnings("unused")
+
     public static void logrb(String className, Level level, String sourceClass, String sourceMethod,
                              ResourceBundle bundle, String msg, Throwable thrown) {
         getLoggerByClassName(className).getLogger().logrb(level, sourceClass, sourceMethod, bundle, msg, thrown);
     }
 
-    @SuppressWarnings("unused")
+
     public static void entering(String className, String sourceClass, String sourceMethod) {
         getLoggerByClassName(className).getLogger().entering(sourceClass, sourceMethod);
     }
 
-    @SuppressWarnings("unused")
+
     public static void entering(String className, String sourceClass, String sourceMethod, Object param1) {
         getLoggerByClassName(className).getLogger().entering(sourceClass, sourceMethod, param1);
     }
 
-    @SuppressWarnings("unused")
+
     public static void entering(String className, String sourceClass, String sourceMethod, Object[] params) {
         getLoggerByClassName(className).getLogger().entering(sourceClass, sourceMethod, params);
     }
 
-    @SuppressWarnings("unused")
+
     public static void exiting(String className, String sourceClass, String sourceMethod) {
         getLoggerByClassName(className).getLogger().exiting(sourceClass, sourceMethod);
     }
 
-    @SuppressWarnings("unused")
+
     public static void exiting(String className, String sourceClass, String sourceMethod, Object result) {
         getLoggerByClassName(className).getLogger().exiting(sourceClass, sourceMethod, result);
     }
 
-    @SuppressWarnings("unused")
+
     public static void throwing(String className, String sourceClass, String sourceMethod, Throwable thrown) {
         getLoggerByClassName(className).getLogger().throwing(sourceClass, sourceMethod, thrown);
     }
 
-    @SuppressWarnings("unused")
+
     public static void severe(String className, String msg) {
         log(className, Level.SEVERE, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void warning(String className, String msg) {
         log(className, Level.WARNING, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void info(String className, String msg) {
         log(className, Level.INFO, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void config(String className, String msg) {
         log(className, Level.CONFIG, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void fine(String className, String msg) {
         log(className, Level.FINE, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void finer(String className, String msg) {
         log(className, Level.FINER, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void finest(String className, String msg) {
         log(className, Level.FINEST, msg);
     }
 
-    @SuppressWarnings("unused")
+
     public static void severe(String className, Supplier<String> msgSupplier) {
         log(className, Level.SEVERE, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void warning(String className, Supplier<String> msgSupplier) {
         log(className, Level.WARNING, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void info(String className, Supplier<String> msgSupplier) {
         log(className, Level.INFO, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void config(String className, Supplier<String> msgSupplier) {
         log(className, Level.CONFIG, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void fine(String className, Supplier<String> msgSupplier) {
         log(className, Level.FINE, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void finer(String className, Supplier<String> msgSupplier) {
         log(className, Level.FINER, msgSupplier);
     }
 
-    @SuppressWarnings("unused")
+
     public static void finest(String className, Supplier<String> msgSupplier) {
         log(className, Level.FINEST, msgSupplier);
     }

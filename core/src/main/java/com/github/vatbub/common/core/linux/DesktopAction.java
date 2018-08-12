@@ -21,7 +21,6 @@ package com.github.vatbub.common.core.linux;
  */
 
 
-@SuppressWarnings("unused")
 public class DesktopAction {
 
     // Required

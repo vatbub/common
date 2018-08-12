@@ -234,7 +234,7 @@ public class Internet {
      * @param gMailUsername The username of the gMail-account to use to send the mail from, including {@code {@literal @}gmail.com}
      * @param gMailPassword The password of the gMail-account
      */
-    @SuppressWarnings("unused")
+
     public static void sendErrorMail(String phase, Throwable e, String gMailUsername, String gMailPassword) {
         sendErrorMail(phase, null, e, gMailUsername, gMailPassword);
     }
@@ -436,7 +436,7 @@ public class Internet {
      * @param url The url to open
      * @throws IOException If the URL cannot be opened
      */
-    @SuppressWarnings("unused")
+
     public static void openInDefaultBrowser(URL url) throws IOException {
         Runtime rt = Runtime.getRuntime();
 

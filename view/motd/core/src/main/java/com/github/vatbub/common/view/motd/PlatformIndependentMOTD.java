@@ -204,7 +204,7 @@ public class PlatformIndependentMOTD {
     /**
      * @param image the message icon to set
      */
-    @SuppressWarnings({"unused"})
+
     public void setImage(SyndImage image) {
         this.image = image;
     }
@@ -219,7 +219,7 @@ public class PlatformIndependentMOTD {
     /**
      * @param entry the rss entry that corresponds to this message of the day
      */
-    @SuppressWarnings({"unused"})
+
     public void setEntry(SyndEntry entry) {
         this.entry = entry;
     }
@@ -234,7 +234,7 @@ public class PlatformIndependentMOTD {
     /**
      * @param feedTitle the feedTitle to set
      */
-    @SuppressWarnings({"unused"})
+
     public void setFeedTitle(String feedTitle) {
         this.feedTitle = feedTitle;
     }

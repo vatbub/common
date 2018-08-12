@@ -48,7 +48,7 @@ public class PlatformIndependentMOTDTest {
     }
 
     @Test
-    public void getEmptyFeedTest() throws IllegalArgumentException, FeedException, IOException, ClassNotFoundException {
+    public void getEmptyFeedTest() throws IllegalArgumentException, FeedException, IOException {
         PlatformIndependentMOTD.setMotdFileOutputStreamProvider(new DummyMOTDFileOutputStreamProvider());
         PlatformIndependentMOTD motd = PlatformIndependentMOTD.getLatestMOTD(testEmptyFeedURL);
 

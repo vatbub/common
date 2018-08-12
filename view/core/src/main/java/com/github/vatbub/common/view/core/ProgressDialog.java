@@ -21,7 +21,6 @@ package com.github.vatbub.common.view.core;
  */
 
 
-@SuppressWarnings("unused")
 public interface ProgressDialog {
 
     /**

@@ -28,9 +28,7 @@ import java.util.Collection;
 
 public class ArrayListWithSortableKey<E extends Comparable<E>> extends ArrayList<E>
 		implements Comparable<ArrayListWithSortableKey<E>> {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -6086310283583070059L;
 	private int sortKey;
 	

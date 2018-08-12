@@ -25,7 +25,6 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.github.vatbub.common.core.Common;
@@ -142,7 +141,7 @@ public class ReportingDialog {
     /**
      * Creates a new {@code ReportingDialog} but keeps previous settings. Keep in mind that this class is <i>*NOT*</i> thread safe.
      */
-    @SuppressWarnings("unused")
+
     public ReportingDialog() {
     }
 
@@ -152,7 +151,7 @@ public class ReportingDialog {
      * @param logInfoURL The url that is opened in the browser if the user clicks the {@code Get more info}-button next to the {@code uploadLogs}-Checkbox
      * @param privacyURL The url that is opened in the browser if the user clicks the {@code Privacy statement}-button.
      */
-    @SuppressWarnings("unused")
+
     public ReportingDialog(URL logInfoURL, URL privacyURL) {
         this(logInfoURL, privacyURL, null);
     }
@@ -163,7 +162,7 @@ public class ReportingDialog {
      *
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
-    @SuppressWarnings("unused")
+
     public ReportingDialog(Scene screenshotScene) {
         this(defaultLogInfoURL, defaultPrivacyURL, screenshotScene);
     }
@@ -176,7 +175,7 @@ public class ReportingDialog {
      * @param privacyURL      The url that is opened in the browser if the user clicks the {@code Privacy statement}-button.
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
-    @SuppressWarnings("unused")
+
     public ReportingDialog(URL logInfoURL, URL privacyURL, Scene screenshotScene) {
         ReportingDialog.logInfoURL = logInfoURL;
         ReportingDialog.screenshotScene = screenshotScene;
@@ -189,7 +188,7 @@ public class ReportingDialog {
      * @param userName The repo owner of the repo to send the issue to
      * @param repoName The name of the repo to send the issue to
      */
-    @SuppressWarnings("unused")
+
     public void show(String userName, String repoName) {
         String windowTitle = null;
         show(windowTitle, userName, repoName, null);
@@ -202,7 +201,7 @@ public class ReportingDialog {
      * @param repoName The name of the repo to send the issue to
      * @param e        The exception to attach to the issue
      */
-    @SuppressWarnings("unused")
+
     public void show(String userName, String repoName, Throwable e) {
         show(defaultGitReportsURL, userName, repoName, e);
     }
@@ -214,7 +213,7 @@ public class ReportingDialog {
      * @param userName          The repo owner of the repo to send the issue to
      * @param repoName          The name of the repo to send the issue to
      */
-    @SuppressWarnings("unused")
+
     public void show(URL gitReportsBaseURL, String userName, String repoName) {
         String windowTitle = null;
         show(windowTitle, gitReportsBaseURL, userName, repoName);
@@ -240,7 +239,7 @@ public class ReportingDialog {
      * @param userName    The repo owner of the repo to send the issue to
      * @param repoName    The name of the repo to send the issue to
      */
-    @SuppressWarnings("unused")
+
     public void show(String windowTitle, String userName, String repoName) {
         show(windowTitle, defaultGitReportsURL, userName, repoName);
     }
@@ -434,7 +433,7 @@ public class ReportingDialog {
                     gitHubIssue.setScreenshotLocation(awsFileName);
 
                     // upload the logs to s3
-                    AmazonS3Client s3Client = new AmazonS3Client(Common.getInstance().getAWSCredentials());
+                    AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(Common.getInstance().getAWSCredentialsProvider()).build();
                     if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                         // create bucket
                         FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);

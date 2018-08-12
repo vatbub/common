@@ -100,7 +100,7 @@ public class UpdateChecker {
      * @return {@code true} if a new release is available and the user did not
      * ignore it.
      */
-    @SuppressWarnings("unused")
+
     public static UpdateInfo isUpdateAvailable(URL repoBaseURL, String mavenGroupID, String mavenArtifactID,
                                                String mavenClassifier) {
         return isUpdateAvailable(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
@@ -181,7 +181,7 @@ public class UpdateChecker {
      * @param mavenClassifier The maven classifier of the artifact to update
      * @return {@code true} if a new release is available.
      */
-    @SuppressWarnings("unused")
+
     public static UpdateInfo isUpdateAvailableCompareAppVersion(URL repoBaseURL, String mavenGroupID,
                                                                 String mavenArtifactID, String mavenClassifier) {
         return isUpdateAvailableCompareAppVersion(repoBaseURL, mavenGroupID, mavenArtifactID, mavenClassifier, "jar");
@@ -250,7 +250,7 @@ public class UpdateChecker {
      * @throws IOException   In case mavens {@code maven-metadata.xml} cannot be retrieved
      *                       for any other reason.
      */
-    @SuppressWarnings("unused")
+
     private static UpdateInfo getLatestUpdateInfo(URL repoBaseURL, String mavenGroupID, String mavenArtifactID)
             throws JDOMException, IOException {
         return getLatestUpdateInfo(repoBaseURL, mavenGroupID, mavenArtifactID, "");
@@ -333,8 +333,6 @@ public class UpdateChecker {
                 if (res.fileSizeInMB != -1) {
                     // File size is already known, convert it to mb
                     res.fileSizeInMB = res.fileSizeInMB / 1024.0 / 1024.0;
-                } else {
-                    res.fileSizeInMB = -1;
                 }
             } catch (Exception e) {
                 FOKLogger.log(UpdateChecker.class.getName(), Level.SEVERE, FOKLogger.DEFAULT_ERROR_TEXT, e);
@@ -394,7 +392,7 @@ public class UpdateChecker {
      * @throws IOException           If the updated artifact cannot be launched.
      * @see #completeUpdate(String[])
      */
-    @SuppressWarnings("unused")
+
     public static boolean downloadAndInstallUpdate(UpdateInfo updateToInstall, String... params)
             throws IllegalStateException, IOException {
         return downloadAndInstallUpdate(updateToInstall, null, params);
@@ -715,7 +713,7 @@ public class UpdateChecker {
      *
      * @param startupArgs All arguments passed to the {@code main}-method of the app.
      */
-    @SuppressWarnings("unused")
+
     public static void completeUpdate(String[] startupArgs) {
         completeUpdate(startupArgs, null);
     }
@@ -784,12 +782,12 @@ public class UpdateChecker {
      * Cancels the update completion started using
      * {@link #completeUpdate(String[])}
      */
-    @SuppressWarnings("unused")
+
     public static void cancelUpdateCompletion() {
         cancelUpdateCompletion = true;
     }
 
-    @SuppressWarnings("unused")
+
     public static void cancelDownloadAndLaunch() {
         cancelDownloadAndLaunch(null);
     }

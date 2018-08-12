@@ -21,6 +21,8 @@ package com.github.vatbub.common.core;
  */
 
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.vatbub.common.core.logging.FOKLogger;
 import com.google.common.hash.Hasher;
@@ -247,6 +249,21 @@ public abstract class CommonPlatformIndependentImplementations extends Common {
         }
 
         return new BasicAWSCredentials(getAwsAccessKey(), getAwsSecretAccessKey());
+    }
+
+    @Override
+    public AWSCredentialsProvider getAWSCredentialsProvider() {
+        return new AWSCredentialsProvider() {
+            @Override
+            public AWSCredentials getCredentials() {
+                return getAWSCredentials();
+            }
+
+            @Override
+            public void refresh() {
+
+            }
+        };
     }
 
     @Override

@@ -29,7 +29,7 @@ package com.github.vatbub.common.updater;
  * @author frede
  *
  */
-@SuppressWarnings("unused")
+
 public interface UpdateProgressDialog {
 	/**
 	 * Invoked when the preparation phase started.

@@ -38,7 +38,7 @@ import javafx.scene.control.Button;
  *
  * @author frede
  */
-@SuppressWarnings("unused")
+
 public class ProgressButton extends Button {
 
     private String controlText = "";

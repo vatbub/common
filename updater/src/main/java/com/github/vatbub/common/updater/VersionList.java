@@ -36,12 +36,12 @@ public class VersionList extends ArrayList<Version> {
         super();
     }
 
-    @SuppressWarnings("unused")
+
     public VersionList(int initialCapacity) {
         super(initialCapacity);
     }
 
-    @SuppressWarnings("unused")
+
     public VersionList(Collection<? extends Version> c) {
         super(c);
     }
@@ -49,7 +49,7 @@ public class VersionList extends ArrayList<Version> {
     /**
      * Removes all snapshots from this list
      */
-    @SuppressWarnings("unused")
+
     public void removeSnapshots() {
         VersionList versionToRemove = new VersionList();
 
@@ -71,7 +71,7 @@ public class VersionList extends ArrayList<Version> {
      * otherwise
      * @see Version#isSnapshot()
      */
-    @SuppressWarnings("unused")
+
     public boolean containsSnapshot() {
 
         for (Version ver : this) {
@@ -90,7 +90,7 @@ public class VersionList extends ArrayList<Version> {
      * otherwise
      * @see Version#isSnapshot()
      */
-    @SuppressWarnings("unused")
+
     public boolean containsRelease() {
 
         for (Version ver : this) {

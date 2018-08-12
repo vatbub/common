@@ -234,7 +234,7 @@ public class InternetTest {
                     Assert.assertEquals("Network Authentication Required", receivedCode);
                     break;
                 default:
-                    Assert.assertEquals(null, receivedCode);
+                    Assert.assertNull(receivedCode);
                     break;
             }
         }

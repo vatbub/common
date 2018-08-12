@@ -76,7 +76,6 @@ public class DesktopFile {
      * prior to saving this link.. Docs taken from
      * <a href="https://developer.gnome.org/desktop-entry-spec/">here</a>
      */
-    @SuppressWarnings({"unused"})
     public DesktopFile() {
         this(null);
     }
@@ -1699,12 +1698,10 @@ public class DesktopFile {
         return res.toString();
     }
 
-    @SuppressWarnings("unused")
     public void saveForUser(String fileName) {
         this.save("~/.local/share/applications", fileName);
     }
 
-    @SuppressWarnings("unused")
     public void saveSystemWide(String fileName) {
         this.save("/usr/share/applications", fileName);
     }

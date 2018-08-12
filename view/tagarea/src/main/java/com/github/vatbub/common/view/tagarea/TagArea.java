@@ -41,11 +41,11 @@ import java.util.List;
 /**
  * A gui element that can let a user select tags, similar to <a href="https://github.com/goxr3plus/JavaFX-TagsBar">this Project</a>
  */
-@SuppressWarnings("unused")
+
 public class TagArea extends FlowPane {
     private TextField textField = new TextField();
 
-    @SuppressWarnings("unused")
+
     public TagArea() {
         this.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         getStyleClass().setAll("tag-area");
@@ -77,7 +77,7 @@ public class TagArea extends FlowPane {
         this.getChildren().add(textField);
     }
 
-    @SuppressWarnings("unused")
+
     public TextField getTextField() {
         return textField;
     }
@@ -102,7 +102,7 @@ public class TagArea extends FlowPane {
     /**
      * Removes all tags from this tag area
      */
-    @SuppressWarnings("unused")
+
     public void clearAllTags() {
         this.getChildren().removeAll(getTags());
     }

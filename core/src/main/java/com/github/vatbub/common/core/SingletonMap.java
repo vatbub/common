@@ -56,9 +56,7 @@ public class SingletonMap {
      * @param clazz The class of which the instance shall be reset.
      */
     public static void resetInstance(Class clazz) {
-        if (getOrInstantiateClassObjectMap().containsKey(clazz)) {
-            getOrInstantiateClassObjectMap().remove(clazz);
-        }
+        getOrInstantiateClassObjectMap().remove(clazz);
     }
 
     public static <T> boolean isInstantiated(Class<T> clazz) {
