@@ -71,7 +71,7 @@ public abstract class CommonPlatformIndependentImplementations extends Common {
 
     @Override
     public String getAndCreateAppDataPath() {
-        return getAndCreateAppDataPathAsFile().getPath();
+        return getAndCreateAppDataPathAsFile().getPath() + File.separator;
     }
 
     @Override
