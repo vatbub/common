@@ -31,7 +31,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringCommonTest {
+public class StringCommonTest extends CoreBaseTestClass {
 
     @Test
     public void replaceLastTest() {

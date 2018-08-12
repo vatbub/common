@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class ArrayListWithSortableKeyTest {
+public class ArrayListWithSortableKeyTest extends CoreBaseTestClass{
 
     /**
      * Tests if all constructors work without exceptions

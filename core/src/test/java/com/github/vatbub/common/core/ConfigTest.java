@@ -33,7 +33,7 @@ import java.util.Random;
 
 import static org.awaitility.Awaitility.await;
 
-public class ConfigTest {
+public class ConfigTest  extends CoreBaseTestClass{
     private final String cacheFileName = "commonConfigUnitTestCache" + new Random().nextInt() + ".cache";
 
     @BeforeClass
@@ -86,9 +86,14 @@ public class ConfigTest {
         await().until(() -> config.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
         Assert.assertTrue(config.contains("configSource"));
         Assert.assertEquals("remote", config.getValue("configSource"));
+
+        // Should read from the cache
         final Config config2 = new Config(ConfigTest.class.getResource("RemoteTestConfig.properties"), ConfigTest.class.getResource("FallbackTestConfig.properties"), true, cacheFileName, true);
         Assert.assertTrue(config2.contains("configSource"));
         Assert.assertEquals("remote", config2.getValue("configSource"));
+
+        // Make sure that everything has settled before the test ends
+        await().until(() -> config2.getCurrentlyActiveSource().equals(Config.ConfigSource.ONLINE));
     }
 
     @Test

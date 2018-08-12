@@ -34,7 +34,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.util.*;
 
-public class CommonTest {
+public class CommonTest extends CoreBaseTestClass {
     @Before
     public void resetConfig() {
         Common.resetInstance();
@@ -85,6 +85,14 @@ public class CommonTest {
         Common.getInstance().setAppName(appName);
         File res = Common.getInstance().getAndCreateAppDataPathAsFile();
         Assert.assertNotEquals(null, res);
+    }
+
+    @Test
+    public void getAndCreateAppDataPathTest(){
+        Common.getInstance().setAppName("UnitTests");
+        String appDataPath = Common.getInstance().getAppDataPath();
+        String createdAppDataPath = Common.getInstance().getAndCreateAppDataPath();
+        Assert.assertEquals(appDataPath, createdAppDataPath);
     }
 
     @Test

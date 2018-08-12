@@ -28,7 +28,7 @@ import org.junit.Test;
 
 import java.util.logging.Level;
 
-public class SingletonMapTest {
+public class SingletonMapTest extends CoreBaseTestClass {
 
     @Before
     public void setUp() {

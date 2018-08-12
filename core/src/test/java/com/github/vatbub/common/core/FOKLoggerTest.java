@@ -32,7 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class FOKLoggerTest {
+public class FOKLoggerTest  extends CoreBaseTestClass{
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
     public final SystemErrRule systemErrRule = new SystemErrRule().enableLog();
@@ -72,7 +72,6 @@ public class FOKLoggerTest {
 
         FOKLogger.setFileLogLevel(initialLevel);
         Assert.assertEquals(initialLevel, FOKLogger.getFileLogLevel());
-        logFile.deleteOnExit();
     }
 
     /* @Test

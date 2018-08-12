@@ -23,7 +23,7 @@ package com.github.vatbub.common.core;
 
 import org.junit.Test;
 
-public class PrefsTest {
+public class PrefsTest  extends CoreBaseTestClass{
 	@Test
 	public void readPrefOnCleanEnvironment(){
 		Common.getInstance().setAppName("fokprojectUnitTests");

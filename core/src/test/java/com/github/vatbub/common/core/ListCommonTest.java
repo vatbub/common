@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListCommonTest {
+public class ListCommonTest  extends CoreBaseTestClass{
     @Test
     public void positiveByteTest() {
         byte[] content = {0, 1, 2, 3, 4};
