@@ -44,7 +44,7 @@ public class FOKLoggerTest  extends CoreBaseTestClass{
         FOKLogger.info(FOKLoggerTest.class.getName(), "Test without app name");
         Assert.assertEquals(2, StringCommon.countOccurrencesInString(systemOutRule.getLogWithNormalizedLineSeparator(), "\n"));
 
-        Common.getInstance().setAppName("fokprojectUnitTests");
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         FOKLogger.info(FOKLoggerTest.class.getName(), "Test with app name");
         Assert.assertEquals(5, StringCommon.countOccurrencesInString(systemOutRule.getLogWithNormalizedLineSeparator(), "\n"));
     }
@@ -52,7 +52,7 @@ public class FOKLoggerTest  extends CoreBaseTestClass{
     @Test
     public void fileLogLevelTest() throws IOException {
         FOKLogger.resetAllLoggers();
-        Common.getInstance().setAppName("FOKLoggerUnitTest" + Math.round(Math.random() * 100000));
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         Level initialLevel = FOKLogger.getFileLogLevel();
         Assert.assertEquals(Level.ALL, initialLevel);
 

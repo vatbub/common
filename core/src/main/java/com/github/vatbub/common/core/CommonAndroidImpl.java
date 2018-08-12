@@ -8,17 +8,22 @@ import com.google.common.hash.Hashing;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.UsbDevice;
 
+import java.io.File;
 import java.nio.charset.Charset;
 
-public class CommonAndroidImpl extends CommonPlatformIndependentImplementations{
+public class CommonAndroidImpl extends CommonPlatformIndependentImplementations {
     private Context context;
-    protected CommonAndroidImpl(Context androidContext){
+
+    protected CommonAndroidImpl(Context androidContext) {
         setContext(androidContext);
     }
 
     @Override
     public String getAppDataPath() {
-        return getContext().getFilesDir().getPath();
+        if (getAppName() == null)
+            throw new NullPointerException(
+                    "Cannot retrieve AppDataPath. No appName specified. Use setAppName(String appName) to set one.");
+        return getContext().getFilesDir().getPath() + File.separator;
     }
 
     @Override

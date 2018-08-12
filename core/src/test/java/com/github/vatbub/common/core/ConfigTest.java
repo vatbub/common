@@ -38,7 +38,7 @@ public class ConfigTest  extends CoreBaseTestClass{
 
     @BeforeClass
     public static void beforeClass() {
-        Common.getInstance().setAppName("fokprojectUnitTests");
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
     }
 
     @Test

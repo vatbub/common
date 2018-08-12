@@ -122,7 +122,7 @@ public abstract class Common {
      * Sets the name of the app. This is necessary to get the AppDataPath using
      * {@link #getAppDataPath()}.
      *
-     * @param appName The name of the app.
+     * @param appName The name of the app. Must not be an empty string!
      */
     public abstract void setAppName(String appName);
 

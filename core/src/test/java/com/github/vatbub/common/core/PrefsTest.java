@@ -26,7 +26,7 @@ import org.junit.Test;
 public class PrefsTest  extends CoreBaseTestClass{
 	@Test
 	public void readPrefOnCleanEnvironment(){
-		Common.getInstance().setAppName("fokprojectUnitTests");
+		Common.getInstance().setAppName(DEFAULT_APP_NAME);
 		int randomNumber = (int) (Math.random()*1000000000);
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";
@@ -39,7 +39,7 @@ public class PrefsTest  extends CoreBaseTestClass{
 	
 	@Test
 	public void savePref(){
-		Common.getInstance().setAppName("fokprojectUnitTests");
+		Common.getInstance().setAppName(DEFAULT_APP_NAME);
 		int randomNumber = (int) (Math.random()*1000000000);
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";
@@ -56,7 +56,7 @@ public class PrefsTest  extends CoreBaseTestClass{
 	
 	@Test
 	public void readAfterSaveTest(){
-		Common.getInstance().setAppName("fokprojectUnitTests");
+		Common.getInstance().setAppName(DEFAULT_APP_NAME);
 		int randomNumber = (int) (Math.random()*1000000000);
 		Prefs prefs = new Prefs(PrefsTest.class.getName() + randomNumber);
 		String prefKey = "testPreference";

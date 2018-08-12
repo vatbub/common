@@ -46,19 +46,16 @@ public class CommonTest extends CoreBaseTestClass {
         try {
             Common.getInstance().setAppName(null);
             Common.getInstance().getAppDataPath();
-            assert false;
+            Assert.fail("NullPointerException expected");
         } catch (NullPointerException e) {
-            assert true;
+            System.out.println("Expected NullPointerException was thrown");
         }
     }
 
     @SuppressWarnings("Duplicates")
     @Test
     public void getAppDataPathTest() {
-        // set app name
-        String appName = "UnitTests";
-
-        Common.getInstance().setAppName(appName);
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         String res = Common.getInstance().getAppDataPath();
         String workingDirectory;
 
@@ -74,22 +71,29 @@ public class CommonTest extends CoreBaseTestClass {
             workingDirectory += "/.local/share";
         }
 
-        assert res.equals(workingDirectory + File.separator + appName + File.separator);
+        Assert.assertEquals(workingDirectory + File.separator + DEFAULT_APP_NAME + File.separator, res);
+    }
+
+    @Test
+    public void emptyAppNameTest(){
+        try{
+            Common.getInstance().setAppName("");
+            Assert.fail("IllegalArgumentException is expected");
+        }catch(IllegalArgumentException e){
+            System.out.println("Expected IllegalArgumentException was thrown");
+        }
     }
 
     @Test
     public void getAppDataPathAsFileTest() {
-        // set app name
-        String appName = "UnitTests";
-
-        Common.getInstance().setAppName(appName);
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         File res = Common.getInstance().getAndCreateAppDataPathAsFile();
         Assert.assertNotEquals(null, res);
     }
 
     @Test
     public void getAndCreateAppDataPathTest(){
-        Common.getInstance().setAppName("UnitTests");
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         String appDataPath = Common.getInstance().getAppDataPath();
         String createdAppDataPath = Common.getInstance().getAndCreateAppDataPath();
         Assert.assertEquals(appDataPath, createdAppDataPath);
@@ -152,10 +156,7 @@ public class CommonTest extends CoreBaseTestClass {
     @Test
     public void setMockAppVersionTest() {
         String mockVersion = "111";
-        // set app name
-        String appName = "UnitTests";
-
-        Common.getInstance().setAppName(appName);
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         Assert.assertEquals(Common.UNKNOWN_APP_VERSION, Common.getInstance().getAppVersion());
         Assert.assertNull(Common.getInstance().getMockAppVersion());
 
@@ -171,10 +172,7 @@ public class CommonTest extends CoreBaseTestClass {
     @Test
     public void setMockBuildNumberTest() {
         String mockBuildNumber = "111";
-        // set app name
-        String appName = "UnitTests";
-
-        Common.getInstance().setAppName(appName);
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         Assert.assertEquals(Common.UNKNOWN_BUILD_NUMBER, Common.getInstance().getBuildNumber());
         Assert.assertNull(Common.getInstance().getMockBuildNumber());
 
@@ -189,11 +187,9 @@ public class CommonTest extends CoreBaseTestClass {
 
     @Test
     public void packagingTest() {
-        // set app name
-        String appName = "UnitTests";
         String packaging = "jar";
 
-        Common.getInstance().setAppName(appName);
+        Common.getInstance().setAppName(DEFAULT_APP_NAME);
         // no mock packaging set
         Assert.assertNull(Common.getInstance().getPackaging());
         Assert.assertNull(Common.getInstance().getMockPackaging());
@@ -300,7 +296,7 @@ public class CommonTest extends CoreBaseTestClass {
         BigInteger identifierDec = Common.getInstance().getUniqueDeviceIdentifierAsDec();
         System.out.println("md5 hash converted to dec is: " + identifierDec);
 
-        Assert.assertEquals(identifierHex, identifierDec.toString(16));
+        Assert.assertEquals(new BigInteger(identifierHex, 16), identifierDec);
     }
 
     @Test

@@ -6,9 +6,9 @@ import org.junit.After;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public abstract class CoreBaseTestClass {
+    public static final String DEFAULT_APP_NAME = "CommonLibraryUnitTests";
     private String appDataPathToClean;
     private boolean cleanAppDataPathAfterEachTest = true;
 

@@ -89,6 +89,9 @@ public abstract class CommonPlatformIndependentImplementations extends Common {
 
     @Override
     public void setAppName(String appName) {
+        if (appName != null && appName.isEmpty())
+            throw new IllegalArgumentException("The supplied app name must not be empty");
+
         this.appName = appName;
     }
 
