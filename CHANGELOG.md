@@ -1,5 +1,8 @@
 # Change Log
 
+## [common.parent-0.1.5](https://github.com/vatbub/common/tree/common.parent-0.1.5) (2018-10-27)
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.4.1...common.parent-0.1.5)
+
 ## [common.parent-0.1.4.1](https://github.com/vatbub/common/tree/common.parent-0.1.4.1) (2018-05-05)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.4...common.parent-0.1.4.1)
 
