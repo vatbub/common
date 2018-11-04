@@ -211,11 +211,10 @@ public class Config {
 
     private void checkForOfflineCacheOrLoadFallback(URL fallbackConfig, String cacheFileName)
             throws IOException {
-        File f = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
-        if (f.exists()) {
-            // Offline cache exists
+        File cacheFile = new File(Common.getInstance().getAndCreateAppDataPath() + cacheFileName);
+        if (cacheFile.exists()) {
             FOKLogger.info(Config.class.getName(), "Reading cached config...");
-            this.readConfigFromFile(f.toURI().toURL());
+            this.readConfigFromFile(cacheFile.toURI().toURL());
             setCurrentlyActiveSource(ConfigSource.CACHE);
         } else {
             FOKLogger.info(Config.class.getName(), "Reading fallbackConfig...");
