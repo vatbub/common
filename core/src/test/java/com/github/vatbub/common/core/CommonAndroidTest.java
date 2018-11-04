@@ -98,6 +98,13 @@ public class CommonAndroidTest extends CommonTest {
     }
 
     @Override
+    public void getAppDataPathFailureTest() {
+        Common.getInstance().setAppName(null);
+        // should work on android
+        Assert.assertNotNull(Common.getInstance().getAppDataPath());
+    }
+
+    @Override
     public void packagingTest() {
         Assert.assertEquals("apk", Common.getInstance().getPackaging());
     }

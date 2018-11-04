@@ -294,21 +294,37 @@ public abstract class CommonPlatformIndependentImplementations extends Common {
 
     @Override
     public String tryGetAndCreateAppDataPath() {
-        return getAppName() == null ? null : getAndCreateAppDataPath();
+        try {
+            return getAndCreateAppDataPath();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public String tryGetAppDataPath() {
-        return getAppName() == null ? null : getAppDataPath();
+        try {
+            return getAppDataPath();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public File tryGetAppDataPathAsFile() {
-        return getAppName() == null ? null : getAppDataPathAsFile();
+        try {
+            return getAppDataPathAsFile();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public File tryGetAndCreateAppDataPathAsFile() {
-        return getAppName() == null ? null : getAndCreateAppDataPathAsFile();
+        try {
+            return getAndCreateAppDataPathAsFile();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
