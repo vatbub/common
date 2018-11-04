@@ -41,12 +41,10 @@ public class FOKLoggerTest  extends CoreBaseTestClass{
     public void noAppNameSetTest() {
         FOKLogger.resetAllLoggers();
         Common.getInstance().setAppName(null);
-        FOKLogger.info(FOKLoggerTest.class.getName(), "Test without app name");
-        Assert.assertEquals(2, StringCommon.countOccurrencesInString(systemOutRule.getLogWithNormalizedLineSeparator(), "\n"));
-
-        Common.getInstance().setAppName(DEFAULT_APP_NAME);
-        FOKLogger.info(FOKLoggerTest.class.getName(), "Test with app name");
-        Assert.assertEquals(5, StringCommon.countOccurrencesInString(systemOutRule.getLogWithNormalizedLineSeparator(), "\n"));
+        final String testLog1 = "Test without app name";
+        FOKLogger.info(FOKLoggerTest.class.getName(), testLog1);
+        Assert.assertEquals("[INFO] Not saving the log in a file as no app name was specified\n" +
+                "[INFO] " + testLog1 + "\n", systemOutRule.getLogWithNormalizedLineSeparator());
     }
 
     @Test
