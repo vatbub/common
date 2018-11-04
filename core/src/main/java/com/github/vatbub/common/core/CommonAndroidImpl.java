@@ -41,9 +41,6 @@ public class CommonAndroidImpl extends CommonPlatformIndependentImplementations 
 
     @Override
     public String getAppDataPath() {
-        if (getAppName() == null)
-            throw new NullPointerException(
-                    "Cannot retrieve AppDataPath. No appName specified. Use setAppName(String appName) to set one.");
         return getContext().getFilesDir().getPath() + File.separator;
     }
 
