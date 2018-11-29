@@ -5,9 +5,6 @@ jdk:
 addons:
   sonarcloud:
     organization: "vatbub-github"
-  apt:
-    packages:
-    - oracle-java8-installer
 cache:
   directories:
   - $HOME/.m2
@@ -15,7 +12,10 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_728734c634db_key -iv $encrypted_728734c634db_iv
   -in github_deploy_key.enc -out github_deploy_key -d
 - git clone -b travis `git config --get remote.origin.url` target/travis
-install: echo Install phase has been disabled as a complete build is run during deployment
+install:
+- wget https://s3.eu-central-1.amazonaws.com/vatbubjdk/jdk-8u191-linux-x64.tar.gz -nv
+- tar -xf jdk-8u191-linux-x64.tar.gz
+- export JAVA_HOME=/home/travis/build/vatbub/common/jdk1.8.0_191/
 script:
 - mvn org.jacoco:jacoco-maven-plugin:prepare-agent deploy sonar:sonar --settings target/travis/settings.xml
 after_success:
