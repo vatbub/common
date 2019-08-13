@@ -23,7 +23,6 @@
 **Implemented enhancements:**
 
 - Make the internal storage of the MOTD package more abstract [\#31](https://github.com/vatbub/common/issues/31)
-- Make the Config class merge configs [\#29](https://github.com/vatbub/common/issues/29)
 
 **Fixed bugs:**
 
@@ -34,10 +33,7 @@
 
 **Implemented enhancements:**
 
-- Add a SingletonMap that imitates an abstract Singleton [\#28](https://github.com/vatbub/common/issues/28)
 - Make the Common class a singleton [\#26](https://github.com/vatbub/common/issues/26)
-- Extend \#23 to convert the device identifier to an integer value [\#25](https://github.com/vatbub/common/issues/25)
-- Add a method to get a unique device identifier [\#23](https://github.com/vatbub/common/issues/23)
 
 **Fixed bugs:**
 
@@ -61,12 +57,10 @@
 
 - Allow the application to pass command line args after the update has been installed [\#21](https://github.com/vatbub/common/issues/21)
 - Refactor the entire lib [\#19](https://github.com/vatbub/common/issues/19)
-- Remove unused classes [\#18](https://github.com/vatbub/common/issues/18)
 
 **Closed issues:**
 
 - Config class not working due to a missing constructor call [\#20](https://github.com/vatbub/common/issues/20)
-- Bump up the test coverage [\#8](https://github.com/vatbub/common/issues/8)
 - Convert to gradle [\#5](https://github.com/vatbub/common/issues/5)
 - Test changes in version class in hangman-solver [\#1](https://github.com/vatbub/common/issues/1)
 
