@@ -5,46 +5,6 @@
         <module>core</module>
         <module>motd</module>
     </modules>
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>central</id>
-            <name>bintray</name>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-        <repository>
-            <id>codehaus</id>
-            <url>https://nexus.codehaus.org/snapshots</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>central</id>
-            <name>bintray-plugins</name>
-            <url>http://jcenter.bintray.com</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>codehaus-snapshots</id>
-            <url>https://nexus.codehaus.org/snapshots</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
 
     <parent>
         <artifactId>common.view.parent</artifactId>
