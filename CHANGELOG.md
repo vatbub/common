@@ -8,6 +8,8 @@
 
 - Bump aws-java-sdk-s3 from 1.11.438 to 1.11.722 [\#59](https://github.com/vatbub/common/pull/59) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump parentPom from 1.0.1-SNAPSHOT to 1.0.3-SNAPSHOT [\#49](https://github.com/vatbub/common/pull/49) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump gson from 2.8.5 to 2.8.6 [\#38](https://github.com/vatbub/common/pull/38) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump commons-text from 1.6 to 1.8 [\#36](https://github.com/vatbub/common/pull/36) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [common.parent-0.1.5](https://github.com/vatbub/common/tree/common.parent-0.1.5) (2018-10-27)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.4.1...common.parent-0.1.5)
@@ -69,7 +71,6 @@
 **Implemented enhancements:**
 
 - Allow the application to pass command line args after the update has been installed [\#21](https://github.com/vatbub/common/issues/21)
-- Refactor the entire lib [\#19](https://github.com/vatbub/common/issues/19)
 - Remove unused classes [\#18](https://github.com/vatbub/common/issues/18)
 
 **Closed issues:**
