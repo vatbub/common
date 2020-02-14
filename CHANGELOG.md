@@ -1,5 +1,14 @@
 # Change Log
 
+## [Unreleased](https://github.com/vatbub/common/tree/HEAD)
+
+[Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.5...HEAD)
+
+**Merged pull requests:**
+
+- Bump aws-java-sdk-s3 from 1.11.438 to 1.11.722 [\#59](https://github.com/vatbub/common/pull/59) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump parentPom from 1.0.1-SNAPSHOT to 1.0.3-SNAPSHOT [\#49](https://github.com/vatbub/common/pull/49) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [common.parent-0.1.5](https://github.com/vatbub/common/tree/common.parent-0.1.5) (2018-10-27)
 [Full Changelog](https://github.com/vatbub/common/compare/common.parent-0.1.4.1...common.parent-0.1.5)
 
