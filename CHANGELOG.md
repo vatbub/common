@@ -71,6 +71,7 @@
 **Implemented enhancements:**
 
 - Allow the application to pass command line args after the update has been installed [\#21](https://github.com/vatbub/common/issues/21)
+- Refactor the entire lib [\#19](https://github.com/vatbub/common/issues/19)
 - Remove unused classes [\#18](https://github.com/vatbub/common/issues/18)
 
 **Closed issues:**
