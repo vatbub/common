@@ -20,9 +20,6 @@ script:
 - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar --settings target/travis/settings.xml
 after_success:
   - source ./travisAfterSuccess.sh
-branches:
-  only:
-  - master
 notifications:
   email:
     recipients:
