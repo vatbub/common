@@ -7,9 +7,14 @@
 **Merged pull requests:**
 
 - Bump aws-java-sdk-s3 from 1.11.722 to 1.11.740 [\#80](https://github.com/vatbub/common/pull/80) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump mockito-core from 2.23.0 to 3.3.1 [\#72](https://github.com/vatbub/common/pull/72) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump oshi-core from 3.9.1 to 4.4.2 [\#67](https://github.com/vatbub/common/pull/67) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.438 to 1.11.722 [\#59](https://github.com/vatbub/common/pull/59) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump parentPom from 1.0.1-SNAPSHOT to 1.0.3-SNAPSHOT [\#49](https://github.com/vatbub/common/pull/49) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump system-rules from 1.18.0 to 1.19.0 [\#42](https://github.com/vatbub/common/pull/42) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump guava from 27.0-jre to 28.2-jre [\#40](https://github.com/vatbub/common/pull/40) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump gson from 2.8.5 to 2.8.6 [\#38](https://github.com/vatbub/common/pull/38) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump awaitility from 3.1.2 to 4.0.2 [\#37](https://github.com/vatbub/common/pull/37) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump commons-text from 1.6 to 1.8 [\#36](https://github.com/vatbub/common/pull/36) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump rome from 1.11.1 to 1.12.2 [\#35](https://github.com/vatbub/common/pull/35) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
