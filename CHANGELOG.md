@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump aws-java-sdk-s3 from 1.11.742 to 1.11.743 [\#83](https://github.com/vatbub/common/pull/83) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.741 to 1.11.742 [\#82](https://github.com/vatbub/common/pull/82) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.740 to 1.11.741 [\#81](https://github.com/vatbub/common/pull/81) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.722 to 1.11.740 [\#80](https://github.com/vatbub/common/pull/80) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
