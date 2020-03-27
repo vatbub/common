@@ -6,6 +6,9 @@
 
 **Merged pull requests:**
 
+- Bump aws-java-sdk-s3 from 1.11.749 to 1.11.753 [\#97](https://github.com/vatbub/common/pull/97) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump oshi-core from 4.5.0 to 4.5.2 [\#93](https://github.com/vatbub/common/pull/93) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump aws-java-sdk-s3 from 1.11.748 to 1.11.749 [\#92](https://github.com/vatbub/common/pull/92) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.746 to 1.11.748 [\#91](https://github.com/vatbub/common/pull/91) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.744 to 1.11.746 [\#88](https://github.com/vatbub/common/pull/88) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.743 to 1.11.744 [\#86](https://github.com/vatbub/common/pull/86) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
