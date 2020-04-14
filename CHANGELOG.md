@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump guava from 28.2-jre to 29.0-jre [\#109](https://github.com/vatbub/common/pull/109) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.755 to 1.11.762 [\#108](https://github.com/vatbub/common/pull/108) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump oshi-core from 4.5.2 to 4.6.1 [\#107](https://github.com/vatbub/common/pull/107) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.753 to 1.11.755 [\#99](https://github.com/vatbub/common/pull/99) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
