@@ -288,7 +288,7 @@ public abstract class CommonPlatformIndependentImplementations extends Common {
     }
 
     @Override
-    public boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices) {
+    public boolean isRemovableDrive(HWDiskStore store, List<UsbDevice> usbDevices) {
         return isRemovableDrive(store, usbDevices, 0.7);
     }
 

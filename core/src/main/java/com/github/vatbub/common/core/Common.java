@@ -372,7 +372,7 @@ public abstract class Common {
      * @param usbDevices The list of currently connected usb devices. Use {@code new SystemInfo().getHardware().getUsbDevices(false)} to retrieve the list.
      * @return {@code true} if the specified drive is removable, {@code false} otherwise
      */
-    public abstract boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices);
+    public abstract boolean isRemovableDrive(HWDiskStore store, List<UsbDevice> usbDevices);
 
     /**
      * Determines whether the specified drive is a removable drive or not.
@@ -392,7 +392,7 @@ public abstract class Common {
      *                                   Conversely, lower values wil increase the chance of an internal drive being recognized as external and lower the chance of an external drive being recognized as internal.
      * @return {@code true} if the specified drive is removable, {@code false} otherwise
      */
-    public abstract boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices, double jaccardSimilarityThreshold);
+    public abstract boolean isRemovableDrive(HWDiskStore store, List<UsbDevice> usbDevices, double jaccardSimilarityThreshold);
 
     /**
      * Same as {@link #getAndCreateAppDataPath()} but returns {@code null} if no app name is defined instead of failing with a {@code NullPointerException}
