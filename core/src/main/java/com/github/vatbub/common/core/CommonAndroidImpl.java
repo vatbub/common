@@ -31,6 +31,7 @@ import oshi.hardware.UsbDevice;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.List;
 
 public class CommonAndroidImpl extends CommonPlatformIndependentImplementations {
     private Context context;
@@ -70,7 +71,7 @@ public class CommonAndroidImpl extends CommonPlatformIndependentImplementations 
     }
 
     @Override
-    public boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices, double jaccardSimilarityThreshold) {
+    public boolean isRemovableDrive(HWDiskStore store, List<UsbDevice> usbDevices, double jaccardSimilarityThreshold) {
         throw new UnsupportedOperationException("Operation not supported on Android");
     }
 

@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -107,14 +108,14 @@ public class CommonComputerImpl extends CommonPlatformIndependentImplementations
 
         FOKLogger.info(getClass().getName(), "Calculating the device identifier based on the following info:");
         FOKLogger.info(getClass().getName(), "OS Family: " + operatingSystem.getFamily());
-        FOKLogger.info(getClass().getName(), "OS Version: " + operatingSystem.getVersion().getVersion());
+        FOKLogger.info(getClass().getName(), "OS Version: " + operatingSystem.getVersionInfo().getVersion());
 
         hasher.putString(operatingSystem.getFamily(), Charset.forName("UTF-8"));
-        hasher.putString(operatingSystem.getVersion().getVersion(), Charset.forName("UTF-8"));
+        hasher.putString(operatingSystem.getVersionInfo().getVersion(), Charset.forName("UTF-8"));
 
         FOKLogger.info(getClass().getName(), "Drive info:");
         int hddCounter = 0;
-        UsbDevice[] usbDevices = hardwareAbstractionLayer.getUsbDevices(false);
+        List<UsbDevice> usbDevices = hardwareAbstractionLayer.getUsbDevices(false);
         for (HWDiskStore store : hardwareAbstractionLayer.getDiskStores()) {
             if (store.getSerial() != null && !store.getSerial().equals("unknown") && !isRemovableDrive(store, usbDevices)) {
                 FOKLogger.info(getClass().getName(), "Drive index: " + hddCounter);
@@ -141,7 +142,7 @@ public class CommonComputerImpl extends CommonPlatformIndependentImplementations
     }
 
     @Override
-    public boolean isRemovableDrive(HWDiskStore store, UsbDevice[] usbDevices, double jaccardSimilarityThreshold) {
+    public boolean isRemovableDrive(HWDiskStore store, List<UsbDevice> usbDevices, double jaccardSimilarityThreshold) {
         try {
             for (UsbDevice device : usbDevices) {
                 // check if one contains the other
