@@ -6,7 +6,15 @@
 
 **Merged pull requests:**
 
+- Bump aws-java-sdk-s3 from 1.11.780 to 1.11.852 [\#227](https://github.com/vatbub/common/pull/227) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump oshi-core from 5.0.1 to 5.2.5 [\#225](https://github.com/vatbub/common/pull/225) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump mockito-core from 3.3.3 to 3.5.7 [\#222](https://github.com/vatbub/common/pull/222) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump commons-text from 1.8 to 1.9 [\#195](https://github.com/vatbub/common/pull/195) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump rome from 1.12.2 to 1.15.0 [\#184](https://github.com/vatbub/common/pull/184) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump commons-io from 2.6 to 2.7 [\#145](https://github.com/vatbub/common/pull/145) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump awaitility from 4.0.2 to 4.0.3 [\#139](https://github.com/vatbub/common/pull/139) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.762 to 1.11.780 [\#131](https://github.com/vatbub/common/pull/131) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump oshi-core from 4.6.1 to 5.0.1 [\#128](https://github.com/vatbub/common/pull/128) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump guava from 28.2-jre to 29.0-jre [\#109](https://github.com/vatbub/common/pull/109) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.755 to 1.11.762 [\#108](https://github.com/vatbub/common/pull/108) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump oshi-core from 4.5.2 to 4.6.1 [\#107](https://github.com/vatbub/common/pull/107) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
