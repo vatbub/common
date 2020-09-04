@@ -6,6 +6,8 @@
 
 **Merged pull requests:**
 
+- Bump mockito-core from 3.5.9 to 3.5.10 [\#233](https://github.com/vatbub/common/pull/233) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump aws-java-sdk-s3 from 1.11.854 to 1.11.855 [\#232](https://github.com/vatbub/common/pull/232) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.853 to 1.11.854 [\#231](https://github.com/vatbub/common/pull/231) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump mockito-core from 3.5.7 to 3.5.9 [\#229](https://github.com/vatbub/common/pull/229) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.852 to 1.11.853 [\#228](https://github.com/vatbub/common/pull/228) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
