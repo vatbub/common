@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump aws-java-sdk-s3 from 1.11.860 to 1.11.861 [\#240](https://github.com/vatbub/common/pull/240) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.859 to 1.11.860 [\#239](https://github.com/vatbub/common/pull/239) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.858 to 1.11.859 [\#238](https://github.com/vatbub/common/pull/238) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.856 to 1.11.858 [\#237](https://github.com/vatbub/common/pull/237) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
@@ -33,8 +34,6 @@
 - Bump oshi-core from 4.5.0 to 4.5.2 [\#93](https://github.com/vatbub/common/pull/93) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.748 to 1.11.749 [\#92](https://github.com/vatbub/common/pull/92) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.746 to 1.11.748 [\#91](https://github.com/vatbub/common/pull/91) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump aws-java-sdk-s3 from 1.11.744 to 1.11.746 [\#88](https://github.com/vatbub/common/pull/88) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
-- Bump aws-java-sdk-s3 from 1.11.743 to 1.11.744 [\#86](https://github.com/vatbub/common/pull/86) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump oshi-core from 4.4.2 to 4.5.0 [\#85](https://github.com/vatbub/common/pull/85) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump mockito-core from 3.3.1 to 3.3.3 [\#84](https://github.com/vatbub/common/pull/84) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump aws-java-sdk-s3 from 1.11.742 to 1.11.743 [\#83](https://github.com/vatbub/common/pull/83) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
