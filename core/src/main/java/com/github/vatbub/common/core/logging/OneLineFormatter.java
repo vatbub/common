@@ -21,8 +21,8 @@ package com.github.vatbub.common.core.logging;
  */
 
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
@@ -32,13 +32,20 @@ public class OneLineFormatter extends SimpleFormatter {
         super();
     }
 
+    private static String getStackTrace(Throwable throwable) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw, true);
+        throwable.printStackTrace(pw);
+        return sw.getBuffer().toString();
+    }
+
     @Override
     public String format(LogRecord record) {
         String res = "[" + record.getLevel() + "] " + record.getMessage() + "\r\n";
 
         if (record.getThrown() != null) {
             // An exception is associated with the record
-            res = res + ExceptionUtils.getStackTrace(record.getThrown()) + "\r\n";
+            res = res + getStackTrace(record.getThrown()) + "\r\n";
         }
 
         return res;
