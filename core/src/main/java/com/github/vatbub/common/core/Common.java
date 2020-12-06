@@ -22,8 +22,6 @@ package com.github.vatbub.common.core;
 
 
 import android.content.Context;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.google.common.hash.Hasher;
 import oshi.hardware.HWDiskStore;
 import oshi.hardware.UsbDevice;
@@ -290,18 +288,6 @@ public abstract class Common {
      * @return A set of locales supported by the specified resource bundle
      */
     public abstract List<Locale> getLanguagesSupportedByResourceBundle(String resourceBaseName);
-
-    public abstract String getAwsAccessKey();
-
-    public abstract void setAwsAccessKey(String awsAccessKey);
-
-    public abstract String getAwsSecretAccessKey();
-
-    public abstract void setAwsSecretAccessKey(String awsSecretAccessKey);
-
-    public abstract BasicAWSCredentials getAWSCredentials();
-
-    public abstract AWSCredentialsProvider getAWSCredentialsProvider();
 
     /**
      * Same as {@link #getUniqueDeviceIdentifierAsDec()} but uses the murmur3_32 hashing algorithm to get a hash that fits into an int variable.

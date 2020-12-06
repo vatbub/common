@@ -30,6 +30,8 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import static org.apache.commons.lang3.SystemUtils.*;
+
 public class SystemUtils {
     private static SystemUtils instance;
     private Timer timer;
@@ -46,17 +48,17 @@ public class SystemUtils {
     public boolean shutComputerDown(int time) throws IOException {
         String shutdownCommand, t = time == 0 ? "now" : String.valueOf(time);
 
-        if (org.apache.commons.lang3.SystemUtils.IS_OS_AIX)
+        if (IS_OS_AIX)
             shutdownCommand = "shutdown -Fh " + t;
-        else if (org.apache.commons.lang3.SystemUtils.IS_OS_FREE_BSD || org.apache.commons.lang3.SystemUtils.IS_OS_LINUX || org.apache.commons.lang3.SystemUtils.IS_OS_MAC || org.apache.commons.lang3.SystemUtils.IS_OS_MAC_OSX || org.apache.commons.lang3.SystemUtils.IS_OS_NET_BSD || org.apache.commons.lang3.SystemUtils.IS_OS_OPEN_BSD || org.apache.commons.lang3.SystemUtils.IS_OS_UNIX)
+        else if (IS_OS_FREE_BSD || IS_OS_LINUX || IS_OS_MAC || IS_OS_MAC_OSX || IS_OS_NET_BSD || IS_OS_OPEN_BSD || IS_OS_UNIX)
             shutdownCommand = "shutdown -h " + t;
-        else if (org.apache.commons.lang3.SystemUtils.IS_OS_HP_UX)
+        else if (IS_OS_HP_UX)
             shutdownCommand = "shutdown -hy " + t;
-        else if (org.apache.commons.lang3.SystemUtils.IS_OS_IRIX)
+        else if (IS_OS_IRIX)
             shutdownCommand = "shutdown -y -g " + t;
-        else if (org.apache.commons.lang3.SystemUtils.IS_OS_SOLARIS || org.apache.commons.lang3.SystemUtils.IS_OS_SUN_OS)
+        else if (IS_OS_SOLARIS || IS_OS_SUN_OS)
             shutdownCommand = "shutdown -y -i5 -g" + t;
-        else if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS)
+        else if (IS_OS_WINDOWS)
             shutdownCommand = "shutdown.exe -s -t " + time;
         else
             return false;
