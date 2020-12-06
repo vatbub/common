@@ -1,4 +1,4 @@
-package com.github.vatbub.common.view.motd;
+package com.github.vatbub.common.view.motd.core;
 
 /*-
  * #%L
@@ -180,7 +180,7 @@ public class PlatformIndependentMOTD {
      */
     @Nullable
     public static PlatformIndependentMOTD getLatestMOTD(URL feedUrl) throws IllegalArgumentException, FeedException, IOException {
-        SyndFeed feed = (new SyndFeedInput()).build(new XmlReader(feedUrl));
+        SyndFeed feed = new SyndFeedInput().build(new XmlReader(feedUrl));
         if (feed.getEntries().isEmpty())
             return null;
         return new PlatformIndependentMOTD(feed.getImage(), feed.getTitle(), feed.getEntries().get(0));

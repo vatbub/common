@@ -22,6 +22,7 @@ package com.github.vatbub.common.view.motd;
 
 
 import com.github.vatbub.common.core.Common;
+import com.github.vatbub.common.view.motd.core.MOTDFileOutputStreamProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -22,6 +22,7 @@ package com.github.vatbub.common.view.motd;
 
 
 import com.github.vatbub.common.core.logging.FOKLogger;
+import com.github.vatbub.common.view.motd.core.PlatformIndependentMOTD;
 import com.rometools.rome.io.FeedException;
 import org.jetbrains.annotations.Nullable;
 

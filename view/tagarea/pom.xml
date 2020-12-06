@@ -10,4 +10,21 @@
     <artifactId>common.view.tagarea</artifactId>
     <name>FOKProjects Common View Tag area</name>
     <description>A simple javafx tag area element</description>
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>14.0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>14.0.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>14.0.2.1</version>
+        </dependency>
+    </dependencies>
 </project>

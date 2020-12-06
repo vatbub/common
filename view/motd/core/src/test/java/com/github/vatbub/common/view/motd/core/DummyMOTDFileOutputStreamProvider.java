@@ -1,4 +1,4 @@
-package com.github.vatbub.common.view.motd;
+package com.github.vatbub.common.view.motd.core;
 
 /*-
  * #%L

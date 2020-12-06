@@ -9,9 +9,9 @@ package com.github.vatbub.common.view.reporting;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,15 +21,8 @@ package com.github.vatbub.common.view.reporting;
  */
 
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.github.vatbub.common.core.Common;
 import com.github.vatbub.common.core.logging.FOKLogger;
-import com.github.vatbub.common.internet.AWSS3Utils;
 import com.github.vatbub.common.internet.Internet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,14 +34,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -89,6 +88,7 @@ public class ReportingDialog {
     private static URL logInfoURL;
     private static URL privacyInfoURL;
     private static Scene screenshotScene;
+    private static AwsSessionCredentials awsCredentials;
     @SuppressWarnings("CanBeFinal")
     private static URL defaultLogInfoURL;
     @SuppressWarnings("CanBeFinal")
@@ -152,8 +152,8 @@ public class ReportingDialog {
      * @param privacyURL The url that is opened in the browser if the user clicks the {@code Privacy statement}-button.
      */
 
-    public ReportingDialog(URL logInfoURL, URL privacyURL) {
-        this(logInfoURL, privacyURL, null);
+    public ReportingDialog(URL logInfoURL, URL privacyURL, AwsSessionCredentials awsCredentials) {
+        this(logInfoURL, privacyURL, null, awsCredentials);
     }
 
     /**
@@ -163,8 +163,8 @@ public class ReportingDialog {
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
 
-    public ReportingDialog(Scene screenshotScene) {
-        this(defaultLogInfoURL, defaultPrivacyURL, screenshotScene);
+    public ReportingDialog(Scene screenshotScene, AwsSessionCredentials awsCredentials) {
+        this(defaultLogInfoURL, defaultPrivacyURL, screenshotScene, awsCredentials);
     }
 
     /**
@@ -176,10 +176,11 @@ public class ReportingDialog {
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
 
-    public ReportingDialog(URL logInfoURL, URL privacyURL, Scene screenshotScene) {
+    public ReportingDialog(URL logInfoURL, URL privacyURL, Scene screenshotScene, AwsSessionCredentials awsCredentials) {
         ReportingDialog.logInfoURL = logInfoURL;
         ReportingDialog.screenshotScene = screenshotScene;
         ReportingDialog.privacyInfoURL = privacyURL;
+        ReportingDialog.awsCredentials = awsCredentials;
     }
 
     /**
@@ -401,23 +402,20 @@ public class ReportingDialog {
                 gitHubIssue.setLogLocation(awsFileName);
 
                 // upload the logs to s3
-                try {
-                    AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(Common.getInstance().getAWSCredentials())).build();
-                    if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
-                        // create bucket
-                        FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
-                        s3Client.createBucket(s3BucketName);
-                    }
-
-                    // Upload the log file
-                    FOKLogger.info(ReportingDialog.class.getName(), "Uploading log file to aws: " + awsFileName);
-                    s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, new File(FOKLogger.getLogFilePathAndName())));
-                    FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
-                } catch (AmazonServiceException ase) {
-                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
-                } catch (AmazonClientException ace) {
-                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
+                S3Client s3Client = S3Client.builder().credentialsProvider(StaticCredentialsProvider.create(awsCredentials)).build();
+                if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
+                    // create bucket
+                    FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
+                    s3Client.createBucket(CreateBucketRequest.builder().bucket(s3BucketName).build());
                 }
+
+                // Upload the log file
+                FOKLogger.info(ReportingDialog.class.getName(), "Uploading log file to aws: " + awsFileName);
+                s3Client.putObject(PutObjectRequest.builder().bucket(s3BucketName).key(awsFileName).build(),
+                        RequestBody.fromFile(new File(FOKLogger.getLogFilePathAndName())));
+                FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
+                // FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
+                // FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
             }
 
             if (uploadScreenshot.isSelected()) {
@@ -433,21 +431,20 @@ public class ReportingDialog {
                     gitHubIssue.setScreenshotLocation(awsFileName);
 
                     // upload the logs to s3
-                    AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(Common.getInstance().getAWSCredentialsProvider()).build();
+                    S3Client s3Client = S3Client.builder().credentialsProvider(StaticCredentialsProvider.create(awsCredentials)).build();
                     if (!AWSS3Utils.doesBucketExist(s3Client, s3BucketName)) {
                         // create bucket
                         FOKLogger.info(ReportingDialog.class.getName(), "Creating aws s3 bucket " + s3BucketName);
-                        s3Client.createBucket(s3BucketName);
+                        s3Client.createBucket(CreateBucketRequest.builder().bucket(s3BucketName).build());
                     }
 
                     // Upload the screenshot file
                     FOKLogger.info(ReportingDialog.class.getName(), "Uploading screenshot to aws: " + awsFileName);
-                    s3Client.putObject(new PutObjectRequest(s3BucketName, awsFileName, screenshotFile));
+                    s3Client.putObject(PutObjectRequest.builder().bucket(s3BucketName).key(awsFileName).build(),
+                            RequestBody.fromFile(screenshotFile));
                     FOKLogger.info(ReportingDialog.class.getName(), "Upload completed");
-                } catch (AmazonServiceException ase) {
-                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
-                } catch (AmazonClientException ace) {
-                    FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
+                    // FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught AmazonServiceException which means that the request made it to S3, but was rejected with an error response", ase);
+                    // FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Caught an AmazonClientException, which means the client encountered an internal error while trying to communicate with S3, such as not being able to access the network.", ace);
                 } catch (IOException e) {
                     FOKLogger.log(ReportingDialog.class.getName(), Level.SEVERE, "Could not write temporary screenshot file, screenshot will not be uploaded", e);
                 }

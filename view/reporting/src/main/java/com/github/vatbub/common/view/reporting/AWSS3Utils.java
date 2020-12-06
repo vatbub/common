@@ -1,4 +1,4 @@
-package com.github.vatbub.common.internet;
+package com.github.vatbub.common.view.reporting;
 
 /*-
  * #%L
@@ -21,9 +21,8 @@ package com.github.vatbub.common.internet;
  */
 
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ListObjectsRequest;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
 /**
  * Various utilities to interact with AWS S3
@@ -33,35 +32,37 @@ public class AWSS3Utils {
         throw new IllegalStateException("Class may not be instantiated");
     }
 
-    public static boolean keyExists(AmazonS3 s3Client, String bucketName, String key) {
+    public static boolean keyExists(S3Client s3Client, String bucketName, String key) {
         if (!doesBucketExist(s3Client, bucketName)) {
             return false;
         }
 
         // bucket exists, try to retrieve the object
         try {
-            s3Client.getObjectMetadata(bucketName, key);
+            s3Client.getObject(GetObjectRequest.builder().bucket(bucketName).key(key).build());
             // worked
             return true;
-        } catch (AmazonServiceException e) {
+        } catch (NoSuchKeyException e) {
             return false;
         }
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean doesBucketExist(AmazonS3 s3Client, String bucketName) {
+    public static boolean doesBucketExist(S3Client s3Client, String bucketName) {
         try {
             /*
-            * If a bucket exists, but isn't owned by you, trying to list its
-            * objects returns a 403 AccessDenied error response from Amazon S3.
-            *
-            * Notice that we supply the bucket name in the request and specify
-            * that we want 0 keys returned since we don't actually care about the data.
-            */
-            s3Client.listObjects(new ListObjectsRequest(bucketName, null, null, null, 0));
-        } catch (AmazonServiceException ase) {
-            // bucket exists but we have no permission to write in it
-            return ase.getStatusCode() == 403;
+             * If a bucket exists, but isn't owned by you, trying to list its
+             * objects returns a 403 AccessDenied error response from Amazon S3.
+             *
+             * Notice that we supply the bucket name in the request and specify
+             * that we want 0 keys returned since we don't actually care about the data.
+             */
+            s3Client.listObjects(ListObjectsRequest.builder().bucket(bucketName).maxKeys(0).build());
+        } catch (NoSuchBucketException ase) {
+            return false;
+        } catch (S3Exception e) {
+            // Ain't no  permission?
+            return e.statusCode() == 403;
         }
 
         // bucket exists and we have the permission to write in it
