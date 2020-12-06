@@ -23,7 +23,7 @@ module common.core {
     requires java.logging;
     requires commons.lang;
     requires org.jetbrains.annotations;
-    requires android;
+    requires static android;
     requires com.google.common;
     requires com.github.oshi;
     requires org.apache.commons.text;
