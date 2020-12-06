@@ -9,9 +9,9 @@ package com.github.vatbub.common.core;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,10 @@ import org.junit.Test;
 
 import java.io.File;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 public class CommonTest extends CoreBaseTestClass {
     @Before
@@ -74,11 +77,11 @@ public class CommonTest extends CoreBaseTestClass {
     }
 
     @Test
-    public void emptyAppNameTest(){
-        try{
+    public void emptyAppNameTest() {
+        try {
             Common.getInstance().setAppName("");
             Assert.fail("IllegalArgumentException is expected");
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.out.println("Expected IllegalArgumentException was thrown");
         }
     }
@@ -91,7 +94,7 @@ public class CommonTest extends CoreBaseTestClass {
     }
 
     @Test
-    public void getAndCreateAppDataPathTest(){
+    public void getAndCreateAppDataPathTest() {
         Common.getInstance().setAppName(DEFAULT_APP_NAME);
         String appDataPath = Common.getInstance().getAppDataPath();
         String createdAppDataPath = Common.getInstance().getAndCreateAppDataPath();
@@ -308,9 +311,8 @@ public class CommonTest extends CoreBaseTestClass {
     }
 
     @Test
-    public void getLanguagesSupportedByResourceBundleTest(){
-        ResourceBundle bundle = ResourceBundle.getBundle("com.github.vatbub.common.core.testResourceBundle");
-        List<Locale> res = Common.getInstance().getLanguagesSupportedByResourceBundle(bundle);
+    public void getLanguagesSupportedByResourceBundleTest() {
+        List<Locale> res = Common.getInstance().getLanguagesSupportedByResourceBundle("com.github.vatbub.common.core.testResourceBundle");
         Assert.assertTrue(res.contains(Locale.GERMAN));
         Assert.assertTrue(res.contains(Locale.ENGLISH));
         Assert.assertTrue(res.contains(Locale.FRENCH));

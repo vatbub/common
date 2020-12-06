@@ -275,7 +275,9 @@ public abstract class Common {
      *
      * @param bundle The bundle to be checked
      * @return A set of locales supported by the specified resource bundle
+     * @deprecated Doesn't work in JDK 14 due to a bug in the JRE
      */
+    @Deprecated
     public abstract List<Locale> getLanguagesSupportedByResourceBundle(ResourceBundle bundle);
 
     /**
