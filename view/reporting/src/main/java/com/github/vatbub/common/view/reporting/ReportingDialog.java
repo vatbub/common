@@ -42,7 +42,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -88,7 +88,7 @@ public class ReportingDialog {
     private static URL logInfoURL;
     private static URL privacyInfoURL;
     private static Scene screenshotScene;
-    private static AwsSessionCredentials awsCredentials;
+    private static AwsCredentials awsCredentials;
     @SuppressWarnings("CanBeFinal")
     private static URL defaultLogInfoURL;
     @SuppressWarnings("CanBeFinal")
@@ -152,7 +152,7 @@ public class ReportingDialog {
      * @param privacyURL The url that is opened in the browser if the user clicks the {@code Privacy statement}-button.
      */
 
-    public ReportingDialog(URL logInfoURL, URL privacyURL, AwsSessionCredentials awsCredentials) {
+    public ReportingDialog(URL logInfoURL, URL privacyURL, AwsCredentials awsCredentials) {
         this(logInfoURL, privacyURL, null, awsCredentials);
     }
 
@@ -163,7 +163,7 @@ public class ReportingDialog {
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
 
-    public ReportingDialog(Scene screenshotScene, AwsSessionCredentials awsCredentials) {
+    public ReportingDialog(Scene screenshotScene, AwsCredentials awsCredentials) {
         this(defaultLogInfoURL, defaultPrivacyURL, screenshotScene, awsCredentials);
     }
 
@@ -176,7 +176,7 @@ public class ReportingDialog {
      * @param screenshotScene The {@code Scene} to take a screenshot from if the user selects that option
      */
 
-    public ReportingDialog(URL logInfoURL, URL privacyURL, Scene screenshotScene, AwsSessionCredentials awsCredentials) {
+    public ReportingDialog(URL logInfoURL, URL privacyURL, Scene screenshotScene, AwsCredentials awsCredentials) {
         ReportingDialog.logInfoURL = logInfoURL;
         ReportingDialog.screenshotScene = screenshotScene;
         ReportingDialog.privacyInfoURL = privacyURL;
