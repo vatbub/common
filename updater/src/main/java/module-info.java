@@ -26,4 +26,7 @@ module common.updater {
     requires jdom2;
     requires org.jetbrains.annotations;
     requires java.logging;
+
+    exports com.github.vatbub.common.updater;
+    exports com.github.vatbub.common.updater.view;
 }
