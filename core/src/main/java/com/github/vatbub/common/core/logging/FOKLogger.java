@@ -68,7 +68,16 @@ public class FOKLogger {
     private static boolean forceResetLogHandlersOnNextLogAction = false;
     private static boolean fileLoggingDisabled;
     //log uncaught exceptions
-    private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> FOKLogger.log(throwable.getStackTrace()[0].getClassName(), Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable));
+    private static final Thread.UncaughtExceptionHandler logUncaughtException = ((thread, throwable) -> {
+        String className;
+        try {
+            className = throwable.getStackTrace()[0].getClassName();
+        } catch (Throwable e) {
+            FOKLogger.severe(FOKLogger.class.getName(), "Unable to determine class that caused an uncaught exception");
+            className = "Unknown class name";
+        }
+        FOKLogger.log(className, Level.SEVERE, "An uncaught exception occurred in the thread " + thread.getName(), throwable);
+    });
     final Logger log;
 
     /**
