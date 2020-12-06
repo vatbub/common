@@ -195,6 +195,7 @@ public abstract class CommonPlatformIndependentImplementations extends Common {
     }
 
     @Override
+    @Deprecated
     public List<Locale> getLanguagesSupportedByResourceBundle(ResourceBundle bundle) {
         return getLanguagesSupportedByResourceBundle(bundle.getBaseBundleName());
     }
