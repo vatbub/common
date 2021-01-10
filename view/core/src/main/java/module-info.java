@@ -21,4 +21,6 @@ module common.view.core {
     requires javafx.graphics;
     requires javafx.controls;
     requires commons.lang;
+
+    exports com.github.vatbub.common.view.core;
 }
