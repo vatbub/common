@@ -21,8 +21,8 @@ package com.github.vatbub.common.internet;
  */
 
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ErrorTest {
     @Test
@@ -34,11 +34,11 @@ public class ErrorTest {
                 "\n at java.io.PrintStream.println(PrintStream.java:700)" +
                 "\n at com.gmail.br45entei.main.Main.main(Main.java:21)";
         Error error = new Error(errorText);
-        Assert.assertEquals(errorText, error.error);
-        Assert.assertEquals("", error.stacktrace);
+        Assertions.assertEquals(errorText, error.error);
+        Assertions.assertEquals("", error.stacktrace);
 
         error = new Error(errorText, stacktraceText);
-        Assert.assertEquals(errorText, error.error);
-        Assert.assertEquals(stacktraceText, error.stacktrace);
+        Assertions.assertEquals(errorText, error.error);
+        Assertions.assertEquals(stacktraceText, error.stacktrace);
     }
 }

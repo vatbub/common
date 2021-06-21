@@ -21,8 +21,8 @@ package com.github.vatbub.common.internet;
  */
 
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,196 +45,196 @@ public class InternetTest {
             assert httpCode == invalidCode || receivedCode != null;
             switch (httpCode) {
                 case 100:
-                    Assert.assertEquals("Continue", receivedCode);
+                    Assertions.assertEquals("Continue", receivedCode);
                     break;
                 case 101:
-                    Assert.assertEquals("Switching Protocols", receivedCode);
+                    Assertions.assertEquals("Switching Protocols", receivedCode);
                     break;
                 case 102:
-                    Assert.assertEquals("Processing", receivedCode);
+                    Assertions.assertEquals("Processing", receivedCode);
                     break;
                 case 200:
-                    Assert.assertEquals("OK", receivedCode);
+                    Assertions.assertEquals("OK", receivedCode);
                     break;
                 case 201:
-                    Assert.assertEquals("Created", receivedCode);
+                    Assertions.assertEquals("Created", receivedCode);
                     break;
                 case 202:
-                    Assert.assertEquals("Accepted", receivedCode);
+                    Assertions.assertEquals("Accepted", receivedCode);
                     break;
                 case 203:
-                    Assert.assertEquals("Non-Authoritative Information", receivedCode);
+                    Assertions.assertEquals("Non-Authoritative Information", receivedCode);
                     break;
                 case 204:
-                    Assert.assertEquals("No Content", receivedCode);
+                    Assertions.assertEquals("No Content", receivedCode);
                     break;
                 case 205:
-                    Assert.assertEquals("Reset Content", receivedCode);
+                    Assertions.assertEquals("Reset Content", receivedCode);
                     break;
                 case 206:
-                    Assert.assertEquals("Partial Content", receivedCode);
+                    Assertions.assertEquals("Partial Content", receivedCode);
                     break;
                 case 207:
-                    Assert.assertEquals("Multi-Status", receivedCode);
+                    Assertions.assertEquals("Multi-Status", receivedCode);
                     break;
                 case 208:
-                    Assert.assertEquals("Already Reported", receivedCode);
+                    Assertions.assertEquals("Already Reported", receivedCode);
                     break;
                 case 226:
-                    Assert.assertEquals("IM Used", receivedCode);
+                    Assertions.assertEquals("IM Used", receivedCode);
                     break;
                 case 300:
-                    Assert.assertEquals("Multiple Choices", receivedCode);
+                    Assertions.assertEquals("Multiple Choices", receivedCode);
                     break;
                 case 301:
-                    Assert.assertEquals("Moved Permanently", receivedCode);
+                    Assertions.assertEquals("Moved Permanently", receivedCode);
                     break;
                 case 302:
-                    Assert.assertEquals("Moved Temporarily", receivedCode);
+                    Assertions.assertEquals("Moved Temporarily", receivedCode);
                     break;
                 case 303:
-                    Assert.assertEquals("See Other", receivedCode);
+                    Assertions.assertEquals("See Other", receivedCode);
                     break;
                 case 304:
-                    Assert.assertEquals("Not Modified", receivedCode);
+                    Assertions.assertEquals("Not Modified", receivedCode);
                     break;
                 case 305:
-                    Assert.assertEquals("Use Proxy", receivedCode);
+                    Assertions.assertEquals("Use Proxy", receivedCode);
                     break;
                 case 307:
-                    Assert.assertEquals("Temporary Redirect", receivedCode);
+                    Assertions.assertEquals("Temporary Redirect", receivedCode);
                     break;
                 case 308:
-                    Assert.assertEquals("Permanent Redirect", receivedCode);
+                    Assertions.assertEquals("Permanent Redirect", receivedCode);
                     break;
                 case 400:
-                    Assert.assertEquals("Bad Request", receivedCode);
+                    Assertions.assertEquals("Bad Request", receivedCode);
                     break;
                 case 401:
-                    Assert.assertEquals("Unauthorized", receivedCode);
+                    Assertions.assertEquals("Unauthorized", receivedCode);
                     break;
                 case 402:
-                    Assert.assertEquals("Payment Required", receivedCode);
+                    Assertions.assertEquals("Payment Required", receivedCode);
                     break;
                 case 403:
-                    Assert.assertEquals("Forbidden", receivedCode);
+                    Assertions.assertEquals("Forbidden", receivedCode);
                     break;
                 case 404:
-                    Assert.assertEquals("Not Found", receivedCode);
+                    Assertions.assertEquals("Not Found", receivedCode);
                     break;
                 case 405:
-                    Assert.assertEquals("Method Not Allowed", receivedCode);
+                    Assertions.assertEquals("Method Not Allowed", receivedCode);
                     break;
                 case 406:
-                    Assert.assertEquals("Not Acceptable", receivedCode);
+                    Assertions.assertEquals("Not Acceptable", receivedCode);
                     break;
                 case 407:
-                    Assert.assertEquals("Proxy Authentication Required", receivedCode);
+                    Assertions.assertEquals("Proxy Authentication Required", receivedCode);
                     break;
                 case 408:
-                    Assert.assertEquals("Request Time-out", receivedCode);
+                    Assertions.assertEquals("Request Time-out", receivedCode);
                     break;
                 case 409:
-                    Assert.assertEquals("Conflict", receivedCode);
+                    Assertions.assertEquals("Conflict", receivedCode);
                     break;
                 case 410:
-                    Assert.assertEquals("Gone", receivedCode);
+                    Assertions.assertEquals("Gone", receivedCode);
                     break;
                 case 411:
-                    Assert.assertEquals("Length required", receivedCode);
+                    Assertions.assertEquals("Length required", receivedCode);
                     break;
                 case 412:
-                    Assert.assertEquals("Precondition failed", receivedCode);
+                    Assertions.assertEquals("Precondition failed", receivedCode);
                     break;
                 case 413:
-                    Assert.assertEquals("Request Entity Too Large", receivedCode);
+                    Assertions.assertEquals("Request Entity Too Large", receivedCode);
                     break;
                 case 414:
-                    Assert.assertEquals("Request-URL Too Long", receivedCode);
+                    Assertions.assertEquals("Request-URL Too Long", receivedCode);
                     break;
                 case 415:
-                    Assert.assertEquals("UnsupportedMedia Type", receivedCode);
+                    Assertions.assertEquals("UnsupportedMedia Type", receivedCode);
                     break;
                 case 416:
-                    Assert.assertEquals("Requested range not satisfiable", receivedCode);
+                    Assertions.assertEquals("Requested range not satisfiable", receivedCode);
                     break;
                 case 417:
-                    Assert.assertEquals("Expectation failed", receivedCode);
+                    Assertions.assertEquals("Expectation failed", receivedCode);
                     break;
                 case 418:
-                    Assert.assertEquals("I'm a teapot", receivedCode);
+                    Assertions.assertEquals("I'm a teapot", receivedCode);
                     break;
                 case 420:
-                    Assert.assertEquals("Policy Not Fulfilled", receivedCode);
+                    Assertions.assertEquals("Policy Not Fulfilled", receivedCode);
                     break;
                 case 421:
-                    Assert.assertEquals("Misdirected Request", receivedCode);
+                    Assertions.assertEquals("Misdirected Request", receivedCode);
                     break;
                 case 422:
-                    Assert.assertEquals("Unprocessable Entity", receivedCode);
+                    Assertions.assertEquals("Unprocessable Entity", receivedCode);
                     break;
                 case 423:
-                    Assert.assertEquals("Locked", receivedCode);
+                    Assertions.assertEquals("Locked", receivedCode);
                     break;
                 case 424:
-                    Assert.assertEquals("Failed Dependency", receivedCode);
+                    Assertions.assertEquals("Failed Dependency", receivedCode);
                     break;
                 case 425:
-                    Assert.assertEquals("Unordered Collection", receivedCode);
+                    Assertions.assertEquals("Unordered Collection", receivedCode);
                     break;
                 case 426:
-                    Assert.assertEquals("Upgrade Required", receivedCode);
+                    Assertions.assertEquals("Upgrade Required", receivedCode);
                     break;
                 case 428:
-                    Assert.assertEquals("Precondition Required", receivedCode);
+                    Assertions.assertEquals("Precondition Required", receivedCode);
                     break;
                 case 429:
-                    Assert.assertEquals("Too Many Requests", receivedCode);
+                    Assertions.assertEquals("Too Many Requests", receivedCode);
                     break;
                 case 431:
-                    Assert.assertEquals("Request Header Fields Too Large", receivedCode);
+                    Assertions.assertEquals("Request Header Fields Too Large", receivedCode);
                     break;
                 case 451:
-                    Assert.assertEquals("Unavailable For Legal Reasons", receivedCode);
+                    Assertions.assertEquals("Unavailable For Legal Reasons", receivedCode);
                     break;
                 case 500:
-                    Assert.assertEquals("Internal Server Error", receivedCode);
+                    Assertions.assertEquals("Internal Server Error", receivedCode);
                     break;
                 case 501:
-                    Assert.assertEquals("Not Implemented", receivedCode);
+                    Assertions.assertEquals("Not Implemented", receivedCode);
                     break;
                 case 502:
-                    Assert.assertEquals("Bad Gateway", receivedCode);
+                    Assertions.assertEquals("Bad Gateway", receivedCode);
                     break;
                 case 503:
-                    Assert.assertEquals("Service Unavailable", receivedCode);
+                    Assertions.assertEquals("Service Unavailable", receivedCode);
                     break;
                 case 504:
-                    Assert.assertEquals("Gateway Time-out", receivedCode);
+                    Assertions.assertEquals("Gateway Time-out", receivedCode);
                     break;
                 case 505:
-                    Assert.assertEquals("HTTP Version not supported", receivedCode);
+                    Assertions.assertEquals("HTTP Version not supported", receivedCode);
                     break;
                 case 506:
-                    Assert.assertEquals("Variant Also Negotiates", receivedCode);
+                    Assertions.assertEquals("Variant Also Negotiates", receivedCode);
                     break;
                 case 507:
-                    Assert.assertEquals("Insufficient Storage", receivedCode);
+                    Assertions.assertEquals("Insufficient Storage", receivedCode);
                     break;
                 case 508:
-                    Assert.assertEquals("Loop Detected", receivedCode);
+                    Assertions.assertEquals("Loop Detected", receivedCode);
                     break;
                 case 509:
-                    Assert.assertEquals("Bandwidth Limit Exceeded", receivedCode);
+                    Assertions.assertEquals("Bandwidth Limit Exceeded", receivedCode);
                     break;
                 case 510:
-                    Assert.assertEquals("Not Extended", receivedCode);
+                    Assertions.assertEquals("Not Extended", receivedCode);
                     break;
                 case 511:
-                    Assert.assertEquals("Network Authentication Required", receivedCode);
+                    Assertions.assertEquals("Network Authentication Required", receivedCode);
                     break;
                 default:
-                    Assert.assertNull(receivedCode);
+                    Assertions.assertNull(receivedCode);
                     break;
             }
         }
@@ -257,33 +257,33 @@ public class InternetTest {
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName);
             System.out.println(response);
-            Assert.fail("IOException expected");
+            Assertions.fail("IOException expected");
         } catch (IOException e) {
-            Assert.assertTrue(e.getMessage().contains("401"));
+            Assertions.assertTrue(e.getMessage().contains("401"));
         }
 
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1);
             System.out.println(response);
-            Assert.fail("IOException expected");
+            Assertions.fail("IOException expected");
         } catch (IOException e) {
-            Assert.assertTrue(e.getMessage().contains("401"));
+            Assertions.assertTrue(e.getMessage().contains("401"));
         }
 
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2);
             System.out.println(response);
-            Assert.fail("IOException expected");
+            Assertions.fail("IOException expected");
         } catch (IOException e) {
-            Assert.assertTrue(e.getMessage().contains("401"));
+            Assertions.assertTrue(e.getMessage().contains("401"));
         }
 
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2, details3);
             System.out.println(response);
-            Assert.fail("IOException expected");
+            Assertions.fail("IOException expected");
         } catch (IOException e) {
-            Assert.assertTrue(e.getMessage().contains("401"));
+            Assertions.assertTrue(e.getMessage().contains("401"));
         }
     }
 
@@ -298,33 +298,33 @@ public class InternetTest {
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName);
             System.out.println(response);
-            Assert.assertTrue(response.contains("Congratulations"));
+            Assertions.assertTrue(response.contains("Congratulations"));
         } catch (IOException e) {
-            Assert.fail("IOException: " + e.getMessage());
+            Assertions.fail("IOException: " + e.getMessage());
         }
 
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1);
             System.out.println(response);
-            Assert.assertTrue(response.contains("Congratulations"));
+            Assertions.assertTrue(response.contains("Congratulations"));
         } catch (IOException e) {
-            Assert.fail("IOException: " + e.getMessage());
+            Assertions.fail("IOException: " + e.getMessage());
         }
 
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2);
             System.out.println(response);
-            Assert.assertTrue(response.contains("Congratulations"));
+            Assertions.assertTrue(response.contains("Congratulations"));
         } catch (IOException e) {
-            Assert.fail("IOException: " + e.getMessage());
+            Assertions.fail("IOException: " + e.getMessage());
         }
 
         try {
             String response = Internet.sendEventToIFTTTMakerChannel(apiKey, eventName, details1, details2, details3);
             System.out.println(response);
-            Assert.assertTrue(response.contains("Congratulations"));
+            Assertions.assertTrue(response.contains("Congratulations"));
         } catch (IOException e) {
-            Assert.fail("IOException: " + e.getMessage());
+            Assertions.fail("IOException: " + e.getMessage());
         }
     }
 
@@ -339,6 +339,6 @@ public class InternetTest {
             isConnected = false;
         }
 
-        Assert.assertEquals(isConnected, Internet.isConnected());
+        Assertions.assertEquals(isConnected, Internet.isConnected());
     }
 }

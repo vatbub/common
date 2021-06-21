@@ -21,12 +21,11 @@ package com.github.vatbub.common.view.motd;
  */
 
 
-import com.github.vatbub.common.core.Common;
 import com.rometools.rome.io.FeedException;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class MOTDTest {
     private static URL testFeedURL;
     private static URL testEmptyFeedURL;
 
-    @Before
+    @BeforeEach
     public void prepare() throws MalformedURLException {
         Common.getInstance().setAppName(appName);
         testFeedURL = new URL("https://fredplus10.me/de/feed/");
@@ -51,25 +50,25 @@ public class MOTDTest {
     public void getEmptyFeedTest() throws IllegalArgumentException, FeedException, IOException {
         MOTD motd = MOTD.getLatestMOTD(testEmptyFeedURL);
 
-        Assert.assertNull(motd);
+        Assertions.assertNull(motd);
     }
 
     @Test
     public void getMOTDTest() throws IllegalArgumentException, FeedException, IOException, ClassNotFoundException {
         MOTD motd = MOTD.getLatestMOTD(testFeedURL);
 
-        Assert.assertNotNull(motd);
-        Assert.assertFalse(motd.isMarkedAsRead());
-        Assert.assertNotNull(motd.getEntry());
-        Assert.assertNotNull(motd.getFeedTitle());
-        Assert.assertNotNull(motd.getImage());
+        Assertions.assertNotNull(motd);
+        Assertions.assertFalse(motd.isMarkedAsRead());
+        Assertions.assertNotNull(motd.getEntry());
+        Assertions.assertNotNull(motd.getFeedTitle());
+        Assertions.assertNotNull(motd.getImage());
 
         // mark as read
         motd.markAsRead();
-        Assert.assertTrue(motd.isMarkedAsRead());
+        Assertions.assertTrue(motd.isMarkedAsRead());
     }
 
-    @After
+    @AfterEach
     public void cleanUp() throws IOException {
         for (File f : MOTD.getSerializedMOTFiles()) {
             Files.delete(f.toPath());
