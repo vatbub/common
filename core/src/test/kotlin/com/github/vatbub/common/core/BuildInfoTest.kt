@@ -19,19 +19,26 @@
  */
 package com.github.vatbub.common.core
 
+import io.mockk.every
+import io.mockk.mockkObject
+import io.mockk.unmockkAll
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-private val globalLogger = logger
-
-class LoggingTest {
+class BuildInfoTest {
     @Test
-    fun globalLoggerNameTest() {
-        Assertions.assertEquals("Global", globalLogger.name)
+    fun currentJarFileTest() {
+        Assertions.assertNotEquals("", BuildInfo.currentJarFile)
     }
 
     @Test
-    fun classLoggerNameTest() {
-        Assertions.assertEquals(LoggingTest::class.qualifiedName, logger.name)
+    fun android_packagingTest() {
+        mockkObject(AndroidUtils)
+        every { AndroidUtils.isAndroid } returns true
+        try {
+            Assertions.assertEquals("apk", BuildInfo.packaging)
+        } finally {
+            unmockkAll()
+        }
     }
 }

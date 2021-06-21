@@ -21,17 +21,21 @@ package com.github.vatbub.common.core
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.util.*
 
-private val globalLogger = logger
-
-class LoggingTest {
+class LanguageBundleUtilsTest {
     @Test
-    fun globalLoggerNameTest() {
-        Assertions.assertEquals("Global", globalLogger.name)
-    }
+    fun getLanguagesSupportedByResourceBundleTest() {
+        val expected = listOf(
+            Locale(""), // default locale
+            Locale.GERMAN,
+            Locale.ENGLISH,
+            Locale.FRENCH
+        )
 
-    @Test
-    fun classLoggerNameTest() {
-        Assertions.assertEquals(LoggingTest::class.qualifiedName, logger.name)
+        val result = getLanguagesSupportedByResourceBundle("com.github.vatbub.common.core.testResourceBundle")
+
+        Assertions.assertEquals(expected.size, result.size)
+        expected.forEach { Assertions.assertTrue(result.contains(it)) }
     }
 }
