@@ -21,8 +21,7 @@ package com.github.vatbub.common.internet;
  */
 
 
-import com.github.vatbub.common.core.Common;
-import com.github.vatbub.common.core.logging.FOKLogger;
+import com.github.vatbub.common.core.LoggingKt;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
@@ -38,7 +37,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * All custom common.internet functions
@@ -163,7 +161,7 @@ public class Internet {
             }
             return response.toString();
         } catch (MalformedURLException e) {
-            FOKLogger.log(Internet.class.getName(), Level.SEVERE, "An error occurred!", e);
+            LoggingKt.getLogger().error("An error occurred!", e);
             return "";
         }
 
@@ -235,8 +233,8 @@ public class Internet {
      * @param gMailPassword The password of the gMail-account
      */
 
-    public static void sendErrorMail(String phase, Throwable e, String gMailUsername, String gMailPassword) {
-        sendErrorMail(phase, null, e, gMailUsername, gMailPassword);
+    public static void sendErrorMail(String appName, String phase, Throwable e, String gMailUsername, String gMailPassword) {
+        sendErrorMail(appName, phase, null, e, gMailUsername, gMailPassword);
     }
 
     /**
@@ -248,7 +246,7 @@ public class Internet {
      * @param gMailUsername The username of the gMail-account to use to send the mail from, including {@code {@literal @}gmail.com}
      * @param gMailPassword The password of the gMail-account
      */
-    public static void sendErrorMail(String phase, String requestBody, Throwable e, String gMailUsername, String gMailPassword) {
+    public static void sendErrorMail(String appName, String phase, String requestBody, Throwable e, String gMailUsername, String gMailPassword) {
         final String toAddress = "vatbub123+automatederrorreports@gmail.com";
 
         Properties props = new Properties();
@@ -271,7 +269,7 @@ public class Internet {
             message.setFrom(new InternetAddress(gMailUsername));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toAddress));
-            message.setSubject("[" + Common.getInstance().getAppName() + "] An error occurred in your application");
+            message.setSubject("[" + appName + "] An error occurred in your application");
 
             String messageText = "Exception occurred in phase: " + phase;
             if (requestBody != null) {

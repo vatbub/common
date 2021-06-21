@@ -21,7 +21,6 @@ package com.github.vatbub.common.view.reporting;
  */
 
 
-import com.github.vatbub.common.core.Common;
 import com.github.vatbub.common.core.logging.FOKLogger;
 import com.github.vatbub.common.internet.Internet;
 import com.google.gson.Gson;

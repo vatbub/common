@@ -20,7 +20,6 @@ package com.github.vatbub.common.updater.view;
  * #L%
  */
 
-import com.github.vatbub.common.core.Common;
 import com.github.vatbub.common.updater.UpdateChecker;
 import com.github.vatbub.common.updater.UpdateInfo;
 import com.github.vatbub.common.updater.UpdateProgressDialog;
@@ -83,8 +82,8 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
      *
      * @param update The info about the update do install.
      */
-    public UpdateAvailableDialog(UpdateInfo update) {
-        show(update);
+    public UpdateAvailableDialog(UpdateInfo update, String appName) {
+        show(update, appName);
     }
 
     // Handler for Button[fx:id="cancelButton"] onAction
@@ -150,7 +149,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
         updateProgressText.setVisible(false);
     }
 
-    private void show(UpdateInfo update) {
+    private void show(UpdateInfo update, String appName) {
         stage = new Stage();
         Parent root;
         try {
@@ -171,7 +170,7 @@ public class UpdateAvailableDialog implements UpdateProgressDialog {
             // scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 
             // Set the window title and put the app name in it
-            stage.setTitle(bundle.getString("window.Title").replace("{appName}", Common.getInstance().getAppName()));
+            stage.setTitle(bundle.getString("window.Title").replace("{appName}", appName));
 
             stage.setMinWidth(scene.getRoot().minWidth(0) + 70);
             stage.setMinHeight(scene.getRoot().minHeight(0) + 70);
