@@ -31,15 +31,9 @@ sealed class AppDataPath {
     object Computer : AppDataPath() {
         override val appDataPath by lazy {
             when {
-                SystemUtils.IS_OS_WINDOWS -> {
-                    System.getenv("AppData")
-                }
-                SystemUtils.IS_OS_MAC -> {
-                    "${System.getProperty("user.home")}/Library/Application Support"
-                }
-                else -> {
-                    "${System.getProperty("user.home")}/.local/share"
-                }
+                SystemUtils.IS_OS_WINDOWS -> System.getenv("AppData")
+                SystemUtils.IS_OS_MAC -> "${System.getProperty("user.home")}/Library/Application Support"
+                else -> "${System.getProperty("user.home")}/.local/share"
             }.let { File(it) }
         }
     }

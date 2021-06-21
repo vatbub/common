@@ -22,6 +22,7 @@ package com.github.vatbub.common.core
 import android.content.Context
 import io.mockk.every
 import io.mockk.mockk
+import org.apache.commons.lang.SystemUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -29,8 +30,13 @@ import java.io.File
 class AppDataPathTest {
     @Test
     fun computer_appDataPathTest() {
+        val expectedPath = when {
+            SystemUtils.IS_OS_WINDOWS -> System.getenv("AppData")
+            SystemUtils.IS_OS_MAC -> "${System.getProperty("user.home")}/Library/Application Support"
+            else -> "${System.getProperty("user.home")}/.local/share"
+        }
         val appDataPath = AppDataPath.Computer.appDataPath
-        Assertions.assertTrue(appDataPath.exists())
+        Assertions.assertEquals(File(expectedPath).absolutePath, appDataPath.absolutePath)
     }
 
     @Test
