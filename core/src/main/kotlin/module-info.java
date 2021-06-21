@@ -19,14 +19,14 @@
  */
 module common.core {
     exports com.github.vatbub.common.core;
-    exports com.github.vatbub.common.core.logging;
     requires java.logging;
     requires commons.lang;
-    requires org.jetbrains.annotations;
     requires static android;
-    requires com.google.common;
     requires com.github.oshi;
     requires org.apache.commons.text;
     requires jcabi.manifests;
     requires org.apache.commons.lang3;
+    requires kotlin.stdlib;
+    requires org.slf4j;
+    requires kotlinx.coroutines.core.jvm;
 }
