@@ -2,14 +2,14 @@
  * #%L
  * FOKProjects Common Internet
  * %%
- * Copyright (C) 2016 - 2020 Frederik Kammel
+ * Copyright (C) 2016 - 2021 Frederik Kammel
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,10 +17,9 @@
  * limitations under the License.
  * #L%
  */
-module common.internet {
-    exports com.github.vatbub.common.internet;
-    requires commons.lang;
-    requires common.core;
-    requires java.mail;
-    requires java.logging;
-}
+package com.github.vatbub.common.internet
+
+/**
+ * A class to represent error messages that can be sent over http in json
+ */
+class Error @JvmOverloads constructor(val error: String, val stacktrace: String = "")
