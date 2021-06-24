@@ -9,9 +9,9 @@ package com.github.vatbub.common.view.motd.core;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,11 @@ package com.github.vatbub.common.view.motd.core;
  */
 
 
-import com.github.vatbub.common.core.Common;
 import com.rometools.rome.io.FeedException;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class PlatformIndependentMOTDTest {
     private static URL testFeedURL;
     private static URL testEmptyFeedURL;
 
-    @Before
+    @BeforeEach
     public void prepare() throws MalformedURLException {
         Common.getInstance().setAppName(appName);
         testFeedURL = new URL("https://fredplus10.me/de/feed/");
@@ -52,7 +51,7 @@ public class PlatformIndependentMOTDTest {
         PlatformIndependentMOTD.setMotdFileOutputStreamProvider(new DummyMOTDFileOutputStreamProvider());
         PlatformIndependentMOTD motd = PlatformIndependentMOTD.getLatestMOTD(testEmptyFeedURL);
 
-        Assert.assertNull(motd);
+        Assertions.assertNull(motd);
     }
 
     @Test
@@ -60,18 +59,18 @@ public class PlatformIndependentMOTDTest {
         PlatformIndependentMOTD.setMotdFileOutputStreamProvider(new DummyMOTDFileOutputStreamProvider());
         PlatformIndependentMOTD motd = PlatformIndependentMOTD.getLatestMOTD(testFeedURL);
 
-        Assert.assertNotNull(motd);
-        Assert.assertFalse(motd.isMarkedAsRead());
-        Assert.assertNotNull(motd.getEntry());
-        Assert.assertNotNull(motd.getFeedTitle());
-        Assert.assertNotNull(motd.getImage());
+        Assertions.assertNotNull(motd);
+        Assertions.assertFalse(motd.isMarkedAsRead());
+        Assertions.assertNotNull(motd.getEntry());
+        Assertions.assertNotNull(motd.getFeedTitle());
+        Assertions.assertNotNull(motd.getImage());
 
         // mark as read
         motd.markAsRead();
-        Assert.assertTrue(motd.isMarkedAsRead());
+        Assertions.assertTrue(motd.isMarkedAsRead());
     }
 
-    @After
+    @AfterEach
     public void cleanUp() throws IOException {
         for (File f : PlatformIndependentMOTD.getSerializedMOTFiles()) {
             Files.delete(f.toPath());

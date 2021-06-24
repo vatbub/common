@@ -21,7 +21,7 @@ package com.github.vatbub.common.updater;
  */
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class VersionTest {
 

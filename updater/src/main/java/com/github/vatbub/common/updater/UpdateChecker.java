@@ -21,7 +21,6 @@ package com.github.vatbub.common.updater;
  */
 
 
-import com.github.vatbub.common.core.Common;
 import com.github.vatbub.common.core.Prefs;
 import com.github.vatbub.common.core.logging.FOKLogger;
 import javafx.application.Platform;
