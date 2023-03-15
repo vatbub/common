@@ -21,7 +21,7 @@ jobs:
           distribution: 'adopt-hotspot'
       - name: Import GPG key
         id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg-private-key: ${{ secrets.GPG_SECRET_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
