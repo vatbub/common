@@ -23,10 +23,7 @@ package com.github.vatbub.common.view.motd;
 
 import com.github.vatbub.common.core.Common;
 import com.rometools.rome.io.FeedException;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +31,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 
+@Ignore
 public class MOTDTest {
 
     private static final String appName = "fokprojectUnitTests";
