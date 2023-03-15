@@ -22,6 +22,7 @@ package com.github.vatbub.common.internet;
 
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -288,6 +289,7 @@ public class InternetTest {
     }
 
     @Test
+    @Ignore
     public void iftttMakerChannelTestWithValidKey() {
         String apiKey = System.getenv("CommonUnitTestsIFTTTMakerAPIKey");
         String eventName = "vatbubUnitTest";
